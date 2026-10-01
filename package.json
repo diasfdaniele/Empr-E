@@ -1,0 +1,27 @@
+{
+  "name": "empr-e",
+  "version": "1.0.0",
+  "description": "Este projeto foi desenvolvido como parte integrante do Projeto de Extensão do 4º Semestre do Curso Superior de Tecnologia em Análise e Desenvolvimento de Sistemas do IFSP - Campinas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diasfdaniele/Empr-E.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/diasfdaniele/Empr-E/issues"
+  },
+  "homepage": "https://github.com/diasfdaniele/Empr-E#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "dotenv": "^18.0.5",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1"
+  }
+}

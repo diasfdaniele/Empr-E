@@ -1,0 +1,804 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Empr-E | Marketplace B2B especializado em produtos e soluções de acessibilidade. Conectamos empresas comprometidas com inclusão." />
+  <meta name="theme-color" content="#F97316" />
+  <title>Empr-e | Marketplace de Acessibilidade</title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='20,6 44,6 56,26 44,46 20,46 8,26' fill='%23F97316'/%3E%3Crect x='19' y='16' width='5' height='20' rx='1.5' fill='white'/%3E%3Crect x='19' y='16' width='16' height='5' rx='1.5' fill='white'/%3E%3Crect x='19' y='25' width='12' height='4' rx='1.5' fill='white'/%3E%3Crect x='19' y='32' width='16' height='5' rx='1.5' fill='white'/%3E%3Ccircle cx='45' cy='11' r='5' fill='%231E293B'/%3E%3Ccircle cx='45' cy='11' r='2.5' fill='%23F97316'/%3E%3C/svg%3E" />
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <!-- CSS principal -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/toast.css" />
+</head>
+
+<body>
+
+  <!-- SKIP LINKS - Acessibilidade: navegação por teclado -->
+  <a href="#conteudo-principal" class="skip-link">Ir para o conteúdo principal</a>
+  <a href="#navegacao-principal" class="skip-link">Ir para a navegação</a>
+  <a href="#rodape" class="skip-link">Ir para o rodapé</a>
+
+  <!-- BARRA DE ACESSIBILIDADE -->
+  <div id="barra-acessibilidade" class="barra-acessibilidade" role="toolbar">
+    <div class="barra-acessibilidade__inner">
+      <span class="barra-acessibilidade__label" aria-hidden="true">Acessibilidade:</span>
+
+      <button id="btn-contraste" class="btn-acess" aria-pressed="false" title="Alternar alto contraste"
+        aria-label="Alternar modo alto contraste">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 2v20" />
+        </svg>
+        <span>Contraste</span>
+      </button>
+
+      <button id="btn-aumentar-fonte" class="btn-acess" title="Aumentar tamanho da fonte"
+        aria-label="Aumentar tamanho da fonte">
+        <span>A+</span>
+      </button>
+
+      <button id="btn-diminuir-fonte" class="btn-acess" title="Diminuir tamanho da fonte"
+        aria-label="A- Diminuir tamanho da fonte">
+        <span>A-</span>
+      </button>
+
+      <button id="btn-layout" class="btn-acess" aria-pressed="false" title="Ativar layout simplificado"
+        aria-label="Alternar layout simplificado">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="3" y1="15" x2="21" y2="15" />
+        </svg>
+        <span>Simplificado</span>
+      </button>
+
+      <button id="btn-leitura" class="btn-acess" aria-pressed="false" title="Ativar modo leitura"
+        aria-label="Alternar modo leitura">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </svg>
+        <span>Leitura</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- HEADER STICKY -->
+  <header id="header" class="header" role="banner">
+    <div class="container header__inner">
+
+      <!-- Logo -->
+      <a href="index.html" class="header__logo" aria-label="Página inicial da Empr-e">
+        <svg class="brand-logo" width="110" height="36" viewBox="0 0 220 72" fill="none" aria-hidden="true">
+          <polygon class="brand-logo__hex" points="28,4 52,4 64,24 52,44 28,44 16,24" fill="#F97316" />
+          <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white" />
+          <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white" />
+          <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white" />
+          <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white" />
+          <circle class="brand-logo__dot-outer" cx="52" cy="8" r="4" fill="#1E293B" />
+          <circle class="brand-logo__dot-inner" cx="52" cy="8" r="2" fill="#F97316" />
+          <text class="brand-logo__wordmark" x="74" y="32" font-family="'Plus Jakarta Sans',sans-serif" font-size="26"
+            font-weight="800" fill="#1E293B" letter-spacing="-0.5">Empr<tspan class="brand-logo__wordmark-accent"
+              fill="#F97316">-E</tspan></text>
+          <text class="brand-logo__tagline" x="74" y="48" font-family="'Plus Jakarta Sans',sans-serif" font-size="9"
+            font-weight="500" fill="#64748B" letter-spacing="0.3">Marketplace de Acessibilidade</text>
+        </svg>
+      </a>
+
+      <!-- Navegação principal -->
+      <nav id="navegacao-principal" class="nav" aria-label="Navegação principal">
+        <ul class="nav__list" role="list">
+          <li><a href="index.html" class="nav__link nav__link--active" aria-current="page">Início</a></li>
+          <li><a href="pages/catalogo.html" class="nav__link" aria-label="Catálogo">Produtos</a></li>
+          <li><a href="#sobre" class="nav__link">Sobre</a></li>
+          <li><a href="#empresas" class="nav__link" aria-label="Empresas">Empresas</a></li>
+          <li><a href="#contato" class="nav__link">Contato</a></li>
+        </ul>
+      </nav>
+
+      <!-- Área direita -->
+      <div class="header__actions d-flex align-items-center gap-3">
+        <a href="pages/login.html" class="btn btn--outline btn-header-auth">Entrar</a>
+        <a href="pages/cadastro.html" class="btn btn--primary btn-header-auth">Criar conta</a>
+      </div>
+
+      <!-- Botão menu mobile -->
+      <button id="btn-menu-mobile" class="btn-menu-mobile" aria-expanded="false" aria-controls="menu-mobile"
+        aria-label="Abrir menu de navegação">
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <!-- Menu mobile -->
+    <div id="menu-mobile" class="menu-mobile" hidden>
+      <nav aria-label="Navegação mobile">
+        <ul class="menu-mobile__list" role="list">
+          <li><a href="index.html" class="menu-mobile__link" aria-current="page">Início</a></li>
+          <li><a href="pages/catalogo.html" class="menu-mobile__link" aria-label="Catálogo">Produtos</a></li>
+          <li><a href="pages/conta.html" class="menu-mobile__link">Minha conta</a></li>
+          <li><a href="#sobre" class="menu-mobile__link" aria-current="page">Sobre</a></li>
+          <li><a href="#empresas" class="menu-mobile__link" aria-label="Empresas">Empresas</a></li>
+          <li><a href="#contato" class="menu-mobile__link">Contato</a></li>
+          <li class="menu-mobile__separator"></li>
+          <li><a href="pages/login.html" class="menu-mobile__link menu-mobile__link--cta">Entrar</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main id="conteudo-principal" tabindex="-1" role="main">
+
+    <!-- HERO SECTION -->
+    <section class="hero" aria-labelledby="hero-titulo">
+      <div class="container hero__inner">
+
+        <div class="hero__content">
+          <div class="hero__badge" aria-hidden="true">
+            <span class="hero__badge-dot"></span>
+            Plataforma B2B de Acessibilidade
+          </div>
+
+          <h1 id="hero-titulo" class="hero__titulo">
+            Conectando empresas que<br />
+            <em class="hero__titulo-destaque">acreditam na inclusão.</em>
+          </h1>
+
+          <p class="hero__subtitulo">
+            A Empr-E conecta empresas especializadas em soluções acessíveis,
+            do chão aos leitores de tela, para transformar espaços, serviços e experiências.
+            Tudo em um único ecossistema digital B2B.
+          </p>
+
+          <div class="hero__acoes d-flex flex-wrap align-items-center gap-3">
+            <a href="pages/catalogo.html" class="btn btn--primary btn--lg" aria-label="Catálogo">
+              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+              Explorar o catálogo
+            </a>
+            <a href="#empresas" class="btn btn--outline btn--lg" aria-label="Empresas">
+              Conhecer as empresas
+              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Ilustração hero -->
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__card-flutuante hero__card-flutuante--1">
+            <div>
+              <div class="hero__card-nome">Pisos Táteis de Alerta</div>
+              <div class="hero__card-empresa">Cerâmica Klinker</div>
+            </div>
+            <div class="hero__card-badge">✓ Verificado</div>
+          </div>
+
+          <div class="hero__card-flutuante hero__card-flutuante--2">
+            <div>
+              <div class="hero__card-nome">Consultoria de Software para Acessibilidade</div>
+              <div class="hero__card-empresa">Acessify</div>
+            </div>
+            <div class="hero__card-badge">✓ Verificado</div>
+          </div>
+
+          <div class="hero__card-flutuante hero__card-flutuante--3">
+            <div>
+              <div class="hero__card-nome">Leitor de Tela Corporativo</div>
+              <div class="hero__card-empresa">DigitalInclude</div>
+            </div>
+            <div class="hero__card-badge">✓ Verificado</div>
+          </div>
+
+          <div class="hero__card-flutuante hero__card-flutuante--4">
+            <div>
+              <div class="hero__card-nome">Rampa Antiderrapante para degraus</div>
+              <div class="hero__card-empresa">Sobrodas</div>
+            </div>
+            <div class="hero__card-badge">✓ Verificado</div>
+          </div>
+
+          <div class="hero__central">
+            <div class="hero__central-texto">Empr-E</div>
+            <div class="hero__central-sub">Ecossistema B2B de acessibilidade</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Decorações de fundo -->
+      <div class="hero__bg-deco" aria-hidden="true">
+        <div class="hero__bg-blob hero__bg-blob--1"></div>
+        <div class="hero__bg-blob hero__bg-blob--2"></div>
+        <div class="hero__bg-grid"></div>
+      </div>
+    </section>
+
+    <!-- CATEGORIAS -->
+    <section class="categorias" aria-labelledby="categorias-titulo">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="categorias-titulo" class="section-titulo">Categorias de produtos</h2>
+          <p class="section-subtitulo">Diferentes soluções para diferentes necessidades.</p>
+        </div>
+
+        <div class="categorias__grid" role="list">
+
+          <article class="categoria-card">
+            <a href="pages/catalogo.html?categoria=mobilidade" class="categoria-card__link"
+              aria-label="Mobilidade e Locomoção 12 produtos">
+              <div class="categoria-card__icon" aria-hidden="true">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="5" r="3"></circle>
+                  <path d="M10 8v5l3 1"></path>
+                  <path d="M9 11H6"></path>
+                  <path d="M13 13l5 5"></path>
+                  <circle cx="12" cy="19" r="4"></circle>
+                </svg>
+              </div>
+              <h3 class="categoria-card__nome">Mobilidade e Locomoção</h3>
+              <p class="categoria-card__qtd">12 produtos</p>
+            </a>
+          </article>
+
+          <article class="categoria-card">
+            <a href="pages/catalogo.html?categoria=visual" class="categoria-card__link"
+              aria-label="Deficiência Visual 6 produtos">
+              <div class="categoria-card__icon" aria-hidden="true">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </div>
+              <h3 class="categoria-card__nome">Deficiência Visual</h3>
+              <p class="categoria-card__qtd">6 produtos</p>
+            </a>
+          </article>
+
+          <article class="categoria-card">
+            <a href="pages/catalogo.html?categoria=digital" class="categoria-card__link"
+              aria-label="Acessibilidade Digital 15 produtos">
+              <div class="categoria-card__icon" aria-hidden="true">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="12" rx="2"></rect>
+                  <path d="M8 20h8"></path>
+                  <path d="M12 16v4"></path>
+                </svg>
+              </div>
+              <h3 class="categoria-card__nome">Acessibilidade Digital</h3>
+              <p class="categoria-card__qtd">15 produtos</p>
+            </a>
+          </article>
+
+        </div>
+
+        <div class="categorias__rodape">
+          <a href="pages/catalogo.html" class="btn btn--ghost" aria-label="Catálogo">Explorar o catálogo →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE A Empr-E -->
+    <section id="sobre" class="sobre" aria-labelledby="sobre-titulo">
+      <div class="container">
+
+        <div class="sobre__inner">
+          <div class="sobre__conteudo">
+            <div class="section-badge">Nossa missão</div>
+            <h2 id="sobre-titulo" class="section-titulo">Somos uma plataforma construída para quem <em>transforma
+                vidas.</em></h2>
+            <p class="sobre__texto">
+              A Empr-E nasceu com um propósito claro: eliminar as barreiras que separam empresas especializadas em
+              acessibilidade das organizações que precisam de suas soluções. Somos um marketplace B2B que entende que
+              inclusão não é tendência, é uma responsabilidade.
+            </p>
+            <p class="sobre__texto">
+              Conectamos fabricantes, distribuidores e prestadores de serviços acessíveis a empresas, instituições
+              públicas e organizações que buscam tornar seus espaços e operações verdadeiramente inclusivos.
+            </p>
+            <a href="#como-funciona" class="btn btn--primary">Como funciona →</a>
+          </div>
+
+          <!-- Pilares -->
+          <div class="sobre__pilares" role="list">
+            <div class="pilar" role="listitem">
+              <div class="pilar__icone" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <h3 class="pilar__titulo">Conexão B2B real</h3>
+              <p class="pilar__texto">Negócios que precisam de soluções acessíveis encontram empresas verificadas com
+                facilidade.</p>
+            </div>
+
+            <div class="pilar" role="listitem">
+              <div class="pilar__icone" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <h3 class="pilar__titulo">Curadoria especializada</h3>
+              <p class="pilar__texto">Cada empresa e produto passa por verificação técnica antes de entrar no
+                ecossistema Empr-E.</p>
+            </div>
+
+            <div class="pilar" role="listitem">
+              <div class="pilar__icone" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+              </div>
+              <h3 class="pilar__titulo">Conformidade com normas</h3>
+              <p class="pilar__texto">Soluções alinhadas à ABNT NBR 9050, Lei Brasileira de Inclusão e padrões
+                internacionais.</p>
+            </div>
+
+            <div class="pilar" role="listitem">
+              <div class="pilar__icone" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+              </div>
+              <h3 class="pilar__titulo">Impacto social mensurável</h3>
+              <p class="pilar__texto">Cada negociação realizada representa um passo real em direção a um mundo mais
+                inclusivo.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- EMPRESAS PARCEIRAS -->
+    <section id="empresas" class="empresas-parceiras" aria-labelledby="empresas-titulo">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Ecossistema Empr-E</div>
+          <h2 id="empresas-titulo" class="section-titulo">Empresas que fazem a diferença</h2>
+          <p class="section-subtitulo">Conheça algumas organizações que já fazem parte do nosso ecossistema</p>
+        </div>
+
+        <div class="empresas__grid" role="list">
+
+          <article class="empresa-card" aria-label="Ceramica Klinker - Pisos Táteis para Acessibilidade">
+            <div class="empresa-card__topo">
+              <div class="empresa-card__logo"> 
+                <img src="assets/img/klinker.png"
+                  alt="Logo da Ceramica Klinker, empresa de pisos táteis para acessibilidade parceira da Empr-E"
+                  class="empresa-card__logo-img" width="48"
+                  height="58" loading="lazy" decoding="async" aria-describedby="empresa-klinker-descricao" />
+              </div>
+              <div class="empresa-card__selo">
+                <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24"
+                  fill="currentColor">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                Verificada
+              </div>
+            </div>
+            <div class="empresa-card__corpo">
+              <h3 class="empresa-card__nome">Klinker </h3>
+              <span class="empresa-card__categoria">Mobilidade e Sinalização</span>
+              <p id="empresa-klinker-descricao" class="empresa-card__descricao">Especializada em pisos táteis e sinalização acessível para pessoas com deficiência visual.</p>
+            </div>
+            <div class="empresa-card__rodape">
+              <a href="#empresas" class="btn btn--ghost btn--sm" aria-label="Empresas">Ver empresa →</a>
+            </div>
+          </article>
+
+          <article class="empresa-card" aria-label="Acessify - Soluções de Acessibilidade Digital para Empresas">
+            <div class="empresa-card__topo">
+              <div class="empresa-card__logo">
+                <img src="assets/img/acessify-logo.png"
+                  alt="Logo da Acessify, empresa de acessibilidade digital parceira da Empr-E"
+                  class="empresa-card__logo-img" width="48"
+                  height="58" loading="lazy" decoding="async" aria-describedby="empresa-acessify-descricao" />
+              </div>
+              <div class="empresa-card__selo">
+                <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24"
+                  fill="currentColor">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                Verificada
+              </div>
+            </div>
+            <div class="empresa-card__corpo">
+              <h3 class="empresa-card__nome">Acessify</h3>
+              <span class="empresa-card__categoria">Acessibilidade Digital</span>
+              <p id="empresa-acessify-descricao" class="empresa-card__descricao">Empresa especializada em soluções de acessibilidade digital para empresas.</p>
+            </div>
+            <div class="empresa-card__rodape">
+              <a href="#empresas" class="btn btn--ghost btn--sm" aria-label="Empresas">Ver empresa →</a>
+            </div>
+          </article>
+
+          <article class="empresa-card empresa-card--cta" role="listitem" aria-label="Cadastre sua empresa na Empr-E">
+            <div class="empresa-card__cta-interno">
+              <div class="empresa-card__cta-icone" aria-hidden="true">+</div>
+              <h3 class="empresa-card__cta-titulo">Sua empresa aqui</h3>
+              <p class="empresa-card__cta-texto">Cadastre-se e alcance centenas de organizações que buscam soluções
+                acessíveis.</p>
+              <a href="pages/cadastro.html" class="btn btn--primary btn--sm">Criar conta</a>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="empresas__rodape">
+          <a href="#empresas" class="btn btn--outline" aria-label="Empresas">Ver todas as empresas →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section id="como-funciona" class="como-funciona" aria-labelledby="como-titulo">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">Simples e eficiente</div>
+          <h2 id="como-titulo" class="section-titulo">Como funciona a Empr-E</h2>
+          <p class="section-subtitulo">Do cadastro à negociação em quatro passos</p>
+        </div>
+
+        <ol class="passos__lista" aria-label="Passos para usar a plataforma Empr-E">
+          <li class="passo">
+            <div class="passo__numero" aria-hidden="true">01</div>
+            <div class="passo__icone" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-1.5-3.07" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <h3 class="passo__titulo">Empresas se cadastram</h3>
+            <p class="passo__texto">Fornecedoras de soluções acessíveis criam seu perfil verificado na plataforma, com
+              dados, certificações e catálogo de produtos.</p>
+          </li>
+
+          <li class="passo__conector" aria-hidden="true" role="presentation">→</li>
+
+          <li class="passo">
+            <div class="passo__numero" aria-hidden="true">02</div>
+            <div class="passo__icone" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+              </svg>
+            </div>
+            <h3 class="passo__titulo">Publicam seus produtos</h3>
+            <p class="passo__texto">Produtos e soluções são publicados com fichas técnicas completas, especificações,
+              normas atendidas e preços B2B.</p>
+          </li>
+
+          <li class="passo__conector" aria-hidden="true" role="presentation">→</li>
+
+          <li class="passo">
+            <div class="passo__numero" aria-hidden="true">03</div>
+            <div class="passo__icone" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </div>
+            <h3 class="passo__titulo">Empresas encontram soluções</h3>
+            <p class="passo__texto">Organizações que precisam tornar-se mais acessíveis navegam pelo catálogo por
+              categoria ou tipo de deficiência atendida.</p>
+          </li>
+
+          <li class="passo__conector" aria-hidden="true" role="presentation">→</li>
+
+          <li class="passo">
+            <div class="passo__numero" aria-hidden="true">04</div>
+            <div class="passo__icone" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 12V22H4V12" />
+                <path d="M22 7H2v5h20V7z" />
+                <path d="M12 22V7" />
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+              </svg>
+            </div>
+            <h3 class="passo__titulo">Negociação e compra B2B</h3>
+            <p class="passo__texto">Contato direto entre empresas, orçamentos personalizados e compras diretamente pelo site.</p>
+          </li>
+        </ol>
+
+        <div class="como-funciona__cta">
+          <a href="pages/cadastro.html" class="btn btn--primary btn--lg">Criar conta</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIFERENCIAIS -->
+    <section class="diferenciais" aria-labelledby="diferenciais-titulo">
+      <div class="container">
+        <div class="section-header section-header--claro">
+          <div class="section-badge section-badge--claro">Por que a Empr-E</div>
+          <h2 id="diferenciais-titulo" class="section-titulo section-titulo--claro">Feita por quem entende de
+            acessibilidade</h2>
+        </div>
+
+        <div class="diferenciais__grid" role="list">
+
+          <div class="diferencial" role="listitem">
+            <div class="diferencial__icone" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+            </div>
+            <h3 class="diferencial__titulo">Empresas verificadas</h3>
+            <p class="diferencial__texto">Todas as empresas do ecossistema passam por processo de curadoria e verificação técnica antes
+              de publicar na plataforma.</p>
+          </div>
+
+          <div class="diferencial" role="listitem">
+            <div class="diferencial__icone" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+            </div>
+            <h3 class="diferencial__titulo">Acessibilidade digital nativa</h3>
+            <p class="diferencial__texto">Nosso maior compromisso é a acessibilidade. Toda a nossa plataforma é construída seguindo WCAG 2.1 AA. Nós somos o que
+              pregamos.</p>
+          </div>
+
+          <div class="diferencial" role="listitem">
+            <div class="diferencial__icone" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8" />
+                <path d="M12 17v4" />
+              </svg>
+            </div>
+            <h3 class="diferencial__titulo">Suporte especializado</h3>
+            <p class="diferencial__texto">Nossa equipe é formada por especialistas em acessibilidade prontos para
+              orientar sua empresa.</p>
+          </div>
+
+          <div class="diferencial" role="listitem">
+            <div class="diferencial__icone" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14,2 14,8 20,8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10,9 9,9 8,9" />
+              </svg>
+            </div>
+            <h3 class="diferencial__titulo">Conformidade normativa</h3>
+            <p class="diferencial__texto">Produtos alinhados à ABNT NBR 9050, Lei Brasileira de Inclusão (LBI) e padrões
+              internacionais de acessibilidade.</p>
+          </div>
+
+          <div class="diferencial" role="listitem">
+            <div class="diferencial__icone" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <h3 class="diferencial__titulo">Ecossistema colaborativo</h3>
+            <p class="diferencial__texto">Não somos apenas um marketplace. Somos uma comunidade de empresas
+              comprometidas com inclusão.</p>
+          </div>
+
+          <div class="diferencial" role="listitem">
+            <div class="diferencial__icone" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" />
+              </svg>
+            </div>
+            <h3 class="diferencial__titulo">Impacto mensurável</h3>
+            <p class="diferencial__texto">Relatórios de impacto social para que sua empresa comprove e comunique seus
+              avanços em acessibilidade.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta-final" aria-labelledby="cta-titulo">
+      <div class="container">
+        <div class="cta-final__inner">
+          <h2 id="cta-titulo" class="cta-final__titulo">Pronto para tornar seu espaço mais inclusivo?</h2>
+          <p class="cta-final__subtitulo">Cadastre sua empresa ou explore nosso catálogo de soluções acessíveis agora mesmo.
+          </p>
+          <div class="cta-final__acoes">
+            <a href="pages/cadastro.html" class="btn btn--primary btn--lg">Criar conta</a>
+            <a href="pages/catalogo.html" class="btn btn--primary btn--lg" aria-label="Catálogo">Explorar o catálogo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="rodape" class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+
+        <!-- Col 1: Marca -->
+        <div class="footer__col footer__col--marca">
+          <a href="index.html" class="footer__logo" aria-label="Página inicial da Empr-e">
+            <svg class="brand-logo" width="110" height="36" viewBox="0 0 220 72" fill="none" aria-hidden="true">
+              <polygon class="brand-logo__hex" points="28,4 52,4 64,24 52,44 28,44 16,24" fill="#F97316" />
+              <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white" />
+              <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white" />
+              <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white" />
+              <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white" />
+              <circle class="brand-logo__dot-outer" cx="52" cy="8" r="4" fill="#1E293B" />
+              <circle class="brand-logo__dot-inner" cx="52" cy="8" r="2" fill="#F97316" />
+              <text class="brand-logo__wordmark" x="74" y="32" font-family="'Plus Jakarta Sans',sans-serif"
+                font-size="26" font-weight="800" fill="#1E293B" letter-spacing="-0.5">Empr<tspan
+                  class="brand-logo__wordmark-accent" fill="#F97316">-E</tspan></text>
+              <text class="brand-logo__tagline" x="74" y="48" font-family="'Plus Jakarta Sans',sans-serif" font-size="9"
+                font-weight="500" fill="#64748B" letter-spacing="0.3">Marketplace de Acessibilidade</text>
+            </svg>
+          </a>
+          <p class="footer__descricao">Marketplace B2B especializado em produtos e soluções de acessibilidade.
+            Conectando empresas que acreditam na inclusão.</p>
+          <div class="footer__redes d-flex flex-wrap gap-2">
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="footer__rede"
+              aria-label="LinkedIn da Empr-E (abre em nova guia)" title="Abre em nova guia">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="footer__rede"
+              aria-label="Instagram da Empr-E (abre em nova guia)" title="Abre em nova guia">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" class="footer__rede"
+              aria-label="YouTube da Empr-E (abre em nova guia)" title="Abre em nova guia">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path
+                  d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+                <polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Navegação -->
+        <nav class="footer__col" aria-label="Links da plataforma">
+          <h3 class="footer__col-titulo">Plataforma</h3>
+          <ul class="footer__links" role="list">
+            <li><a href="pages/catalogo.html" class="footer__link">Explorar o catálogo</a></li>
+            <li><a href="#empresas" class="footer__link" aria-label="Empresas">Empresas</a></li>
+            <li><a href="pages/cadastro.html" class="footer__link">Criar conta</a></li>
+            <li><a href="pages/login.html" class="footer__link">Entrar</a></li>
+            <li><a href="pages/conta.html" class="footer__link">Minha conta</a></li>
+          </ul>
+        </nav>
+
+        <!-- Col 3: Suporte -->
+        <nav class="footer__col" aria-label="Links de suporte">
+          <h3 class="footer__col-titulo">Suporte</h3>
+          <ul class="footer__links" role="list">
+            <li><a href="pages/institucional.html#ajuda" class="footer__link">Central de ajuda</a></li>
+            <li><a href="#contato" class="footer__link">Contato</a></li>
+            <li><a href="pages/institucional.html#politica-privacidade" class="footer__link">Política de privacidade</a>
+            </li>
+            <li><a href="pages/institucional.html#termos-uso" class="footer__link">Termos de uso</a></li>
+            <li><a href="pages/institucional.html#acessibilidade" class="footer__link">Acessibilidade</a></li>
+          </ul>
+        </nav>
+
+        <!-- Col 4: Contato -->
+        <div id="contato" class="footer__col">
+          <h3 class="footer__col-titulo">Contato</h3>
+          <address class="footer__contato">
+            <p>
+              <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+              <a href="mailto:contato@empr-e.com.br" class="footer__link">contato@empr-e.com.br</a>
+            </p>
+            <p>
+              <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <a href="tel:+551140042727" class="footer__link">(11) 4004-2727</a>
+            </p>
+          </address>
+
+          <!-- Botão reportar barreira -->
+          <button id="btn-reportar" class="btn-reportar"
+            aria-label="Reportar barreira de acessibilidade">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            Reportar barreira de acessibilidade
+          </button>
+        </div>
+
+      </div>
+
+      <div class="footer__rodape">
+        <p class="footer__copy">© 2026 Empr-E. Todos os direitos reservados. Construído com acessibilidade em primeiro
+          lugar.</p>
+        <div class="footer__selos">
+          <span class="footer__selo">WCAG 2.1 AA</span>
+          <span class="footer__selo">LBI Conforme</span>
+          <span class="footer__selo">ABNT NBR 9050</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!--TOAST-->
+<div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true" role="status" hidden></div>
+
+  <!--VLIBRAS-->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,103 @@
+<!-- Skip link de acessibilidade -->
+<a href="#formulario-cadastro" class="skip-link">Ir para o formulário de cadastro</a>
+
+<!-- BARRA DE ACESSIBILIDADE (padrão em todo o sistema) -->
+<div id="barra-acessibilidade" class="barra-acessibilidade" role="toolbar">
+    <div class="barra-acessibilidade__inner">
+        <span class="barra-acessibilidade__label" aria-hidden="true">Acessibilidade:</span>
+
+        <button id="btn-contraste" class="btn-acess" aria-pressed="false" aria-label="Alternar modo alto contraste">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2v20" />
+            </svg>
+            <span>Contraste</span>
+        </button>
+
+        <button id="btn-aumentar-fonte" class="btn-acess" aria-label="Aumentar tamanho da fonte">
+            <span>A+</span>
+        </button>
+
+        <button id="btn-diminuir-fonte" class="btn-acess" aria-label="Diminuir tamanho da fonte">
+            <span>A-</span>
+        </button>
+
+        <button id="btn-layout" class="btn-acess" aria-pressed="false" aria-label="Alternar layout simplificado">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="3" y1="9" x2="21" y2="9" />
+                <line x1="3" y1="15" x2="21" y2="15" />
+            </svg>
+            <span>Simplificado</span>
+        </button>
+
+        <button id="btn-leitura" class="btn-acess" aria-pressed="false" aria-label="Alternar modo leitura">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <span>Leitura</span>
+        </button>
+    </div>
+</div>
+
+<!-- HEADER (igual ao restante do sistema) -->
+<header id="header" class="header" role="banner">
+    <div class="container header__inner">
+
+        <a href="../index.html" class="header__logo" aria-label="Empr-E - Página inicial">
+            <svg class="brand-logo" width="110" height="36" viewBox="0 0 220 72" fill="none" aria-hidden="true">
+                <polygon class="brand-logo__hex" points="28,4 52,4 64,24 52,44 28,44 16,24" fill="#F97316" />
+                <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white" />
+                <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white" />
+                <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white" />
+                <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white" />
+                <circle class="brand-logo__dot-outer" cx="52" cy="8" r="4" fill="#1E293B" />
+                <circle class="brand-logo__dot-inner" cx="52" cy="8" r="2" fill="#F97316" />
+                <text class="brand-logo__wordmark" x="74" y="32" font-family="'Plus Jakarta Sans',sans-serif"
+                    font-size="26" font-weight="800" fill="#1E293B" letter-spacing="-0.5">Empr<tspan
+                        class="brand-logo__wordmark-accent" fill="#F97316">-E</tspan></text>
+                <text class="brand-logo__tagline" x="74" y="48" font-family="'Plus Jakarta Sans',sans-serif"
+                    font-size="9" font-weight="500" fill="#64748B" letter-spacing="0.3">Marketplace de
+                    Acessibilidade</text>
+            </svg>
+        </a>
+
+        <!--MENU PRINCIPAL-->
+        <nav id="navegacao-principal" class="nav" aria-label="Navegação principal">
+            <ul class="nav__list" role="list">
+                <li><a href="../index.html" class="nav__link" aria-current="page">Início</a></li>
+                <li><a href="catalogo.html" class="nav__link">Produtos</a></li>
+                <li><a href="../index.html#sobre" class="nav__link">Sobre</a></li>
+                <li><a href="../index.html#empresas" class="nav__link">Empresas</a></li>
+                <li><a href="#contato" class="nav__link">Contato</a></li>
+            </ul>
+        </nav>
+
+        <!-- MENU MOBILE -->
+        <button id="btn-menu-mobile" class="btn-menu-mobile" aria-expanded="false" aria-controls="menu-mobile"
+            aria-label="Abrir menu de navegação">
+            <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+            <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+            <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <div id="menu-mobile" class="menu-mobile" hidden>
+        <nav aria-label="Navegação mobile">
+            <ul class="menu-mobile__list" role="list">
+                <li><a href="../index.html" class="menu-mobile__link" aria-current="page">Início</a></li>
+                <li><a href="catalogo.html" class="menu-mobile__link">Produtos</a></li>
+                <li><a href="../index.html#sobre" class="menu-mobile__link" aria-current="page">Sobre</a></li>
+                <li><a href="../index.html#empresas" class="menu-mobile__link">Empresas</a></li>
+                <li><a href="#contato" class="menu-mobile__link">Contato</a></li>
+                <li class="menu-mobile__separator"></li>
+                <li><a href="login.html" class="menu-mobile__link menu-mobile__link--cta">Entrar na plataforma</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>

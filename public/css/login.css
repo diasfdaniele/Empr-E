@@ -1,0 +1,870 @@
+/* Estilos específicos da tela de login */
+
+/* Botão de login com Google */
+.btn-login-google, .btn--google {
+  background: #fff;
+  color: #1a202c;
+  border: 1px solid #d1d5db;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.btn-login-google svg, .btn--google svg {
+  margin-right: 0.5rem;
+}
+.btn-login-google:focus, .btn-login-google:hover,
+.btn--google:focus, .btn--google:hover {
+  border-color: #4285f4;
+  box-shadow: 0 0 0 2px #4285f433;
+  color: #4285f4;
+}
+
+body.pagina-login {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden; 
+  height: 100dvh;   
+}
+
+body.pagina-login .header {
+  border-bottom: 1px solid var(--cinza-200);
+}
+
+/* 2. LAYOUT PRINCIPAL – DOIS PAINÉIS */
+
+.login-main {
+  flex: 1 1 0;
+  display: flex;
+  align-items: stretch;
+  overflow-y: auto;
+}
+
+.login-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: calc(100dvh - var(--altura-barra-acess) - var(--altura-header));
+  overflow: hidden; 
+}
+
+/* 3. PAINEL LATERAL INSTITUCIONAL */
+
+.login-lateral {
+  position: relative;
+  overflow: hidden;
+  background: var(--azul-profundo);
+  display: flex;
+  align-items: stretch;
+  height: 100%; 
+}
+
+.login-lateral__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(0.75rem, 1.8vh, 1.5rem) 2.75rem;
+  width: 100%;
+  overflow: hidden;
+  height: 100%; 
+}
+
+/* Link voltar */
+.login-lateral__voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--fonte-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  padding-bottom: 1.5rem;
+  transition: color var(--transicao-rapida), gap var(--transicao-rapida);
+  width: fit-content;
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+}
+
+.login-lateral__voltar:hover,
+.login-lateral__voltar:focus-visible {
+  color: rgba(255, 255, 255, 0.95);
+  gap: 0.6rem;
+}
+
+.login-lateral__voltar:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 4px;
+  border-radius: var(--raio-sm);
+}
+
+/* Conteúdo central */
+.login-lateral__conteudo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1.2vh, 1.1rem);
+  justify-content: center;
+  padding: clamp(0.2rem, 0.8vh, 0.75rem) 0;
+  min-height: 0; 
+}
+
+.login-lateral__logo {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--raio-lg);
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+
+.login-lateral__titulo {
+  font-family: var(--fonte-display);
+  font-size: clamp(1.3rem, 2vw, 1.85rem);  
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.login-lateral__titulo-destaque {
+  color: var(--laranja-claro);
+}
+
+.login-lateral__subtitulo {
+  font-size: 0.875rem;    
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 340px;
+}
+
+/* Lista de diferenciais */
+.login-lateral__diferenciais {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.2rem, 0.6vh, 0.5rem);
+}
+
+.login-lateral__diferencial {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.login-lateral__diferencial-icone {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: var(--raio-sm);
+  color: var(--laranja-vivo);
+}
+
+/* Rodapé lateral */
+.login-lateral__rodape {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  padding-left: 5rem;
+  padding-top: 1rem;
+}
+
+.login-lateral__selos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.login-lateral__selo {
+  font-size: 0.65rem;
+  font-weight: 700;
+  font-family: var(--fonte-display);
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.18rem 0.45rem;
+  border-radius: var(--raio-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.login-lateral__tagline {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Ornamentos visuais */
+.login-lateral__ornamentos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.login-lateral__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+}
+
+.login-lateral__orb--1 {
+  width: 320px;
+  height: 320px;
+  background: rgba(249, 115, 22, 0.18);
+  top: -80px;
+  right: -80px;
+}
+
+.login-lateral__orb--2 {
+  width: 250px;
+  height: 250px;
+  background: rgba(37, 99, 235, 0.25);
+  bottom: -60px;
+  left: -60px;
+}
+
+.login-lateral__grade {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* 4. PAINEL DO FORMULÁRIO */
+
+.login-painel {
+  display: flex;
+  align-items: flex-start; 
+  justify-content: center;
+  background: var(--branco);
+  padding: clamp(0.75rem, 2vh, 1.5rem) 2rem;
+  height: 100%;       
+  overflow-y: auto;   
+}
+
+.login-painel__inner {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1.2vh, 1.1rem);
+  padding-block: clamp(0.5rem, 1.5vh, 1rem);
+}
+
+/* Cabeçalho do formulário */
+.login-form-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.login-form-titulo {
+  font-family: var(--fonte-display);
+  font-size: clamp(1.35rem, 1.8vw, 1.65rem);  /* Compacto */
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--cinza-900);
+  line-height: 1.2;
+}
+
+.login-form-subtitulo {
+  font-size: 0.855rem;
+  color: var(--cinza-500);
+  line-height: 1.5;
+}
+
+/* 5. FORMULÁRIO – CAMPOS */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1vh, 0.875rem);
+}
+/* Grupo de campo */
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.campo-label {
+  font-family: var(--fonte-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--cinza-700);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.campo-obrigatorio {
+  color: var(--laranja-vivo);
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+/* Wrapper do campo com ícones */
+.campo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.campo-icone {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cinza-400);
+  pointer-events: none;
+  transition: color var(--transicao-rapida);
+  z-index: 1;
+}
+
+.campo-icone--esquerda { left: 0.875rem; }
+.campo-icone--direita  { right: 0.875rem; }
+
+.campo-icone--botao {
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: var(--raio-sm);
+  transition: color var(--transicao-rapida), background var(--transicao-rapida);
+}
+
+.campo-icone--botao:hover {
+  color: var(--laranja-vivo);
+  background: var(--laranja-palido);
+}
+
+.campo-icone--botao:focus-visible {
+  outline: 2px solid var(--laranja-vivo);
+  outline-offset: 2px;
+}
+
+/* Input — altura compacta */
+.campo-input {
+  width: 100%;
+  font-family: var(--fonte-corpo);
+  font-size: 0.9rem;
+  color: var(--cinza-800);
+  background: var(--cinza-50);
+  border: 1.5px solid var(--cinza-200);
+  border-radius: var(--raio-md);
+  padding: 0.6rem 0.875rem 0.6rem 2.75rem;  /* Compacto */
+  transition:
+    border-color var(--transicao-rapida),
+    background var(--transicao-rapida),
+    box-shadow var(--transicao-rapida);
+  line-height: 1.5;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.campo-input--com-acao {
+  padding-right: 2.75rem;
+}
+
+.campo-input::placeholder {
+  color: var(--cinza-300);
+  font-size: 0.875rem;
+}
+
+/* Foco */
+.campo-input:focus {
+  outline: none;
+  border-color: var(--laranja-vivo);
+  background: var(--branco);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}
+
+.campo-wrapper:focus-within .campo-icone--esquerda {
+  color: var(--laranja-vivo);
+}
+
+/* Estado válido */
+.campo-grupo.valido .campo-input {
+  border-color: var(--cor-sucesso);
+  background: #F0FDF4;
+}
+.campo-grupo.valido .campo-icone--esquerda { color: var(--cor-sucesso); }
+
+/* Estado inválido */
+.campo-grupo.invalido .campo-input {
+  border-color: var(--cor-erro);
+  background: #FFF1F2;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+.campo-grupo.invalido .campo-icone--esquerda { color: var(--cor-erro); }
+
+/* Textos auxiliares */
+.campo-dica {
+  font-size: 0.72rem;
+  color: var(--cinza-400);
+  line-height: 1.4;
+}
+
+.campo-erro {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cor-erro);
+  font-family: var(--fonte-display);
+  line-height: 1.4;
+  animation: erroEntrada 0.2s ease;
+}
+
+.campo-erro::before {
+  content: '';
+  width: 13px;
+  height: 13px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23DC2626' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='15' y1='9' x2='9' y2='15'/%3E%3Cline x1='9' y1='9' x2='15' y2='15'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+@keyframes erroEntrada {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Força de senha (estrutura mantida, oculta no login) */
+.forca-senha {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.2rem;
+}
+
+.forca-senha__barras {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+}
+
+.forca-senha__barra {
+  height: 3px;
+  flex: 1;
+  border-radius: 2px;
+  background: var(--cinza-200);
+  transition: background var(--transicao-normal);
+}
+
+.forca-senha__texto {
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--fonte-display);
+  color: var(--cinza-400);
+  white-space: nowrap;
+}
+
+.forca-senha[data-forca="1"] .forca-senha__barra:nth-child(1) { background: var(--cor-erro); }
+.forca-senha[data-forca="1"] .forca-senha__texto { color: var(--cor-erro); }
+.forca-senha[data-forca="2"] .forca-senha__barra:nth-child(-n+2) { background: #F59E0B; }
+.forca-senha[data-forca="2"] .forca-senha__texto { color: #D97706; }
+.forca-senha[data-forca="3"] .forca-senha__barra:nth-child(-n+3) { background: #10B981; }
+.forca-senha[data-forca="3"] .forca-senha__texto { color: #059669; }
+.forca-senha[data-forca="4"] .forca-senha__barra { background: var(--cor-sucesso); }
+.forca-senha[data-forca="4"] .forca-senha__texto { color: var(--cor-sucesso); }
+
+/* ------------------------------------------------------------
+   6. OPÇÕES (Lembrar-me + Esqueci senha)
+   ------------------------------------------------------------ */
+
+.login-form-opcoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: -0.125rem;
+}
+
+/* Checkbox customizado */
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.checkbox-custom {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--cinza-300);
+  border-radius: 4px;
+  background: var(--branco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color var(--transicao-rapida),
+    background var(--transicao-rapida),
+    box-shadow var(--transicao-rapida);
+  position: relative;
+}
+
+.checkbox-custom::after {
+  content: '';
+  width: 9px;
+  height: 6px;
+  border-left: 2px solid var(--branco);
+  border-bottom: 2px solid var(--branco);
+  transform: rotate(-45deg) translateY(-1px);
+  opacity: 0;
+  transition: opacity var(--transicao-rapida);
+  position: absolute;
+  top: 3px;
+}
+
+.checkbox-input:checked ~ .checkbox-custom {
+  background: var(--laranja-vivo);
+  border-color: var(--laranja-vivo);
+}
+
+.checkbox-input:checked ~ .checkbox-custom::after { opacity: 1; }
+
+.checkbox-input:focus-visible ~ .checkbox-custom {
+  outline: 2px solid var(--laranja-vivo);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.checkbox-label:hover .checkbox-custom { border-color: var(--laranja-vivo); }
+
+.checkbox-texto {
+  font-size: 0.82rem;
+  color: var(--cinza-600);
+  font-weight: 500;
+}
+
+/* Link esqueceu senha */
+.login-link-esqueceu {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--cor-acento);
+  text-decoration: none;
+  font-family: var(--fonte-display);
+  transition: color var(--transicao-rapida);
+  white-space: nowrap;
+}
+
+.login-link-esqueceu:hover {
+  color: var(--laranja-vivo);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 7. BOTÃO PRINCIPAL DE SUBMIT — altura compacta */
+
+.btn-login-submit {
+  width: 100%;
+  justify-content: center;
+  position: relative;
+  min-height: 46px;       
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  overflow: hidden;
+}
+
+.btn-login-submit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.btn-login-submit:hover::after { transform: translateX(100%); }
+
+.btn-login-submit[aria-busy="true"] {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.btn-login-submit__loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Loading spinner */
+.loading-spinner { animation: girar 0.8s linear infinite; }
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* DIVISÓRIA */
+
+.login-divisoria {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.login-divisoria__linha {
+  flex: 1;
+  height: 1px;
+  background: var(--cinza-200);
+}
+
+.login-divisoria__texto {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cinza-400);
+  font-family: var(--fonte-display);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* 9. BOTÃO CRIAR CONTA — altura compacta */
+
+.btn-criar-conta {
+  width: 100%;
+  justify-content: center;
+  min-height: 46px;        
+  font-size: 0.9rem;
+  gap: 0.625rem;
+  border-color: var(--cinza-200);
+  transition: all var(--transicao-normal);
+}
+
+.btn-criar-conta:hover,
+.btn-criar-conta:focus-visible {
+  border-color: var(--azul-medio);
+  color: var(--azul-medio);
+  background: var(--azul-palido);
+}
+
+/* 10. TEXTOS AUXILIARES */
+
+.login-suporte-texto {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--cinza-400);
+  line-height: 1.5;
+}
+
+.login-link {
+  color: var(--cor-acento);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transicao-rapida);
+}
+
+.login-link:hover {
+  color: var(--laranja-vivo);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* 11. RODAPÉ DO PAINEL */
+
+.login-painel-rodape {
+  padding-top: clamp(0.3rem, 0.6vh, 0.6rem);
+  border-top: 1px solid var(--cinza-100);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.login-painel-rodape__logo {
+  align-self: center;
+  text-decoration: none;
+  margin-bottom: 0.35rem;
+}
+
+.login-painel-rodape__logo .brand-logo {
+  width: 150px;
+}
+
+.login-painel-rodape p {
+  font-size: 0.72rem;
+  color: var(--cinza-400);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.login-painel-rodape__acess {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  color: var(--cinza-400);
+}
+
+.login-painel-rodape__acess svg { color: var(--cor-sucesso); }
+
+/* 12. UTILITÁRIA – SCREEN READER ONLY */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* 13. ANIMAÇÕES DE ENTRADA */
+
+.login-painel__inner {
+  animation: painelEntrada 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes painelEntrada {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.login-lateral__conteudo > * {
+  animation: lateralEntrada 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.login-lateral__conteudo > *:nth-child(1) { animation-delay: 0.05s; }
+.login-lateral__conteudo > *:nth-child(2) { animation-delay: 0.12s; }
+.login-lateral__conteudo > *:nth-child(3) { animation-delay: 0.18s; }
+.login-lateral__conteudo > *:nth-child(4) { animation-delay: 0.24s; }
+
+@keyframes lateralEntrada {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-painel__inner,
+  .login-lateral__conteudo > * { animation: none; }
+  .loading-spinner { animation: none; }
+}
+
+/* 14. ALTO CONTRASTE */
+
+body.modo-alto-contraste .login-painel {
+  background: #000000;
+  border-left: 2px solid #FFFFFF;
+}
+
+body.modo-alto-contraste .campo-input {
+  background: #000000;
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+body.modo-alto-contraste .campo-input::placeholder { color: #888888; }
+
+body.modo-alto-contraste .login-lateral {
+  background: #111111;
+  border-right: 2px solid rgba(255,255,255,0.3);
+}
+
+body.modo-alto-contraste .campo-grupo.invalido .campo-input {
+  border-color: #FF6B6B;
+  background: #1A0000;
+}
+
+body.modo-alto-contraste .campo-grupo.valido .campo-input {
+  border-color: #00FF88;
+  background: #001A0D;
+}
+
+/* 15. RESPONSIVIDADE */
+
+/* Tablet — oculta lateral, centraliza form, permite scroll suave */
+@media (max-width: 1024px) {
+  body.pagina-login {
+    height: auto;
+    overflow: auto;
+  }
+
+  .login-main { overflow: visible; }
+
+  .login-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: calc(100dvh - var(--altura-barra-acess) - var(--altura-header));
+  }
+
+  .login-lateral { display: none; }
+
+  .login-painel {
+    padding: 2.5rem 1.5rem;
+    overflow-y: visible;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .login-painel__inner {
+    max-width: 460px;
+    margin-inline: auto;
+    gap: 1.25rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .login-painel { padding: 2rem 1rem; }
+
+  .login-painel__inner { gap: 1.1rem; }
+
+  .login-form-titulo { font-size: 1.4rem; }
+
+  .login-form-opcoes {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .btn-login-submit,
+  .btn-criar-conta { min-height: 48px; }
+}
+
+/* Telas muito largas */
+@media (min-width: 1400px) {
+  .login-layout { grid-template-columns: 480px 1fr; }
+}
+

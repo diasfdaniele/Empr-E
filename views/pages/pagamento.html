@@ -1,0 +1,428 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Finalize a compra dos itens selecionados no marketplace Empr-E." />
+  <title>Pagamento - Empr-E Marketplace de Acessibilidade</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='20,6 44,6 56,26 44,46 20,46 8,26' fill='%23F97316'/%3E%3Crect x='19' y='16' width='5' height='20' rx='1.5' fill='white'/%3E%3Crect x='19' y='16' width='16' height='5' rx='1.5' fill='white'/%3E%3Crect x='19' y='25' width='12' height='4' rx='1.5' fill='white'/%3E%3Crect x='19' y='32' width='16' height='5' rx='1.5' fill='white'/%3E%3Ccircle cx='45' cy='11' r='5' fill='%231E293B'/%3E%3Ccircle cx='45' cy='11' r='2.5' fill='%23F97316'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/pagamento.css" />
+  <link rel="stylesheet" href="css/toast.css" />
+
+</head>
+<body class="pagina-pagamento">
+  <a href="#pagamento-form" class="skip-link">Ir para o formulário de pagamento</a>
+  <a href="#navegacao-principal" class="skip-link">Ir para a navegação</a>
+
+  <div id="barra-acessibilidade" class="barra-acessibilidade" role="toolbar">
+    <div class="barra-acessibilidade__inner">
+      <span class="barra-acessibilidade__label" aria-hidden="true">Acessibilidade:</span>
+      <button id="btn-contraste" class="btn-acess" aria-pressed="false" aria-label="Alternar modo alto contraste">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/></svg>
+        <span>Contraste</span>
+      </button>
+
+      <button id="btn-aumentar-fonte" class="btn-acess" aria-label="Aumentar tamanho da fonte">
+        <span>A+</span>
+      </button>
+
+      <button id="btn-diminuir-fonte" class="btn-acess" aria-label="Diminuir tamanho da fonte">
+        <span>A-</span>
+      </button>
+
+      <button id="btn-layout" class="btn-acess" aria-pressed="false" aria-label="Alternar layout simplificado">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+        <span>Simplificado</span>
+      </button>
+
+      <button id="btn-leitura" class="btn-acess" aria-pressed="false" aria-label="Alternar modo leitura">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>Leitura</span>
+      </button>
+    </div>
+  </div>
+
+  <header id="header" class="header" role="banner">
+    <div class="container header__inner">
+      <a href="../index.html" class="header__logo" aria-label="Empr-E - página inicial">
+        <svg class="brand-logo" width="110" height="36" viewBox="0 0 220 72" fill="none" aria-hidden="true">
+          <polygon class="brand-logo__hex" points="28,4 52,4 64,24 52,44 28,44 16,24" fill="#F97316"/>
+          <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white"/>
+          <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white"/>
+          <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white"/>
+          <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white"/>
+          <circle class="brand-logo__dot-outer" cx="52" cy="8" r="4" fill="#1E293B"/>
+          <circle class="brand-logo__dot-inner" cx="52" cy="8" r="2" fill="#F97316"/>
+          <text class="brand-logo__wordmark" x="74" y="32" font-family="'Plus Jakarta Sans',sans-serif" font-size="26" font-weight="800" fill="#1E293B" letter-spacing="-0.5">Empr<tspan class="brand-logo__wordmark-accent" fill="#F97316">-E</tspan></text>
+          <text class="brand-logo__tagline" x="74" y="48" font-family="'Plus Jakarta Sans',sans-serif" font-size="9" font-weight="500" fill="#64748B" letter-spacing="0.3">Marketplace de Acessibilidade</text>
+        </svg>
+      </a>
+
+      <nav id="navegacao-principal" class="nav" aria-label="Navegação principal">
+        <ul class="nav__list" role="list">
+          <li><a href="../index.html" class="nav__link">Início</a></li>
+          <li><a href="catalogo.html" class="nav__link">Produtos</a></li>
+          <li><a href="../index.html#empresas" class="nav__link">Empresas</a></li>
+          <li><a href="../index.html#sobre" class="nav__link">Sobre</a></li>
+          <li><a href="../index.html#contato" class="nav__link">Contato</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <a href="carrinho.html" class="btn-carrinho" aria-label="Ver itens do carrinho">
+          <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="btn-carrinho__badge" id="quantidadeCarrinho" aria-live="polite">0</span>
+        </a>
+        <a href="login.html" class="btn btn--outline">Entrar</a>
+      </div>
+
+      <button id="btn-menu-mobile" class="btn-menu-mobile" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu de navegacao">
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div id="menu-mobile" class="menu-mobile" hidden>
+      <nav aria-label="Navegacao mobile">
+        <ul class="menu-mobile__list" role="list">
+          <li><a href="../index.html" class="menu-mobile__link">Inicio</a></li>
+          <li><a href="catalogo.html" class="menu-mobile__link">Produtos</a></li>
+          <li><a href="../index.html#empresas" class="menu-mobile__link">Empresas</a></li>
+          <li><a href="../index.html#sobre" class="menu-mobile__link">Sobre</a></li>
+          <li><a href="../index.html#contato" class="menu-mobile__link">Contato</a></li>
+          <li class="menu-mobile__separator"></li>
+          <li><a href="carrinho.html" class="menu-mobile__link">Carrinho</a></li>
+          <li><a href="pagamento.html" class="menu-mobile__link menu-mobile__link--cta" aria-current="page">Pagamento</a></li>
+          <li><a href="login.html" class="menu-mobile__link">Entrar</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo-principal" tabindex="-1">
+    <section class="pagamento-hero" aria-labelledby="pagamento-titulo">
+      <div class="container">
+        <div class="pagamento-hero__content">
+          <span class="section-badge">Finalize sua compra</span>
+          <h1 id="pagamento-titulo" class="pagamento-hero__titulo">Pagamento do pedido</h1>
+          <p class="pagamento-hero__texto">Preencha seus dados e conclua sua compra.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="pagamento-section" aria-labelledby="pagamento-form-titulo">
+      <div class="container">
+        <div class="row g-4 align-items-start">
+          <div class="col-lg-7">
+            <section class="pagamento-shell" aria-labelledby="pagamento-form-titulo">
+              <div class="pagamento-shell__header">
+                <div>
+                  <h2 id="pagamento-form-titulo" class="pagamento-shell__titulo">Dados para pagamento</h2>
+                </div>
+                <a href="carrinho.html" class="btn btn--ghost">Voltar ao carrinho</a>
+              </div>
+
+              <form id="pagamento-form" class="pagamento-form" novalidate>
+                <div class="pagamento-form__grid">
+                  <div class="campo-grupo">
+                    <label for="empresa" class="campo-label">Empresa</label>
+                    <input id="empresa" name="empresa" class="campo-input" type="text" placeholder="Nome da empresa" required />
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="cnpj" class="campo-label">CNPJ</label>
+                    <input id="cnpj" name="cnpj" class="campo-input" type="text" placeholder="00.000.000/0001-00" required />
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="responsavel" class="campo-label">Responsável</label>
+                    <input id="responsavel" name="responsavel" class="campo-input" type="text" placeholder="Nome do responsável" required />
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="email" class="campo-label">E-mail corporativo</label>
+                    <input id="email" name="email" class="campo-input" type="email" placeholder="empresa@exemplo.com.br" required />
+                  </div>
+                </div>
+
+                <section class="pagamento-bloco" aria-labelledby="pagamento-endereco-titulo">
+                  <div class="pagamento-bloco__header">
+                    <h3 id="pagamento-endereco-titulo" class="pagamento-bloco__titulo">Confirmação de endereço</h3>
+                    <p class="pagamento-bloco__texto">Confirme o endereço para entrega e faturamento.</p>
+                  </div>
+
+                  <div class="pagamento-form__grid pagamento-form__grid--endereco-topo">
+                    <div class="campo-grupo">
+                      <label for="cep" class="campo-label">CEP</label>
+                      <input id="cep" name="cep" class="campo-input" type="text" inputmode="numeric" placeholder="00000-000" required />
+                    </div>
+                  </div>
+
+                  <div class="pagamento-form__grid pagamento-form__grid--endereco">
+                    <div class="campo-grupo pagamento-form__campo--logradouro">
+                      <label for="logradouro" class="campo-label">Logradouro</label>
+                      <input id="logradouro" name="logradouro" class="campo-input" type="text" placeholder="Rua, avenida ou alameda" required />
+                    </div>
+                    <div class="campo-grupo">
+                      <label for="numero" class="campo-label">Numero</label>
+                      <input id="numero" name="numero" class="campo-input" type="text" placeholder="123" required />
+                    </div>
+                    <div class="campo-grupo">
+                      <label for="complemento" class="campo-label">Complemento</label>
+                      <input id="complemento" name="complemento" class="campo-input" type="text" placeholder="Sala, bloco, andar" />
+                    </div>
+                    <div class="campo-grupo">
+                      <label for="bairro" class="campo-label">Bairro</label>
+                      <input id="bairro" name="bairro" class="campo-input" type="text" placeholder="Bairro" required />
+                    </div>
+                    <div class="campo-grupo">
+                      <label for="cidade" class="campo-label">Cidade</label>
+                      <input id="cidade" name="cidade" class="campo-input" type="text" placeholder="Cidade" required />
+                    </div>
+                    <div class="campo-grupo">
+                      <label for="estado" class="campo-label">Estado</label>
+                      <input id="estado" name="estado" class="campo-input" type="text" maxlength="2" placeholder="UF" required />
+                    </div>
+                  </div>
+                </section>
+
+                <div class="pagamento-form__grid pagamento-form__grid--financeiro">
+                  <div class="campo-grupo">
+                    <label for="metodo" class="campo-label">Método de pagamento</label>
+                    <select id="metodo" name="metodo" class="campo-select" required>
+                      <option value="">Selecione</option>
+                      <option value="cartao">Cartão</option>
+                      <option value="boleto">Boleto</option>
+                      <option value="pix">PIX</option>
+                    </select>
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="parcelas" class="campo-label">Parcelamento</label>
+                    <select id="parcelas" name="parcelas" class="campo-select" required>
+                      <option value="1x">1x</option>
+                      <option value="2x">2x</option>
+                      <option value="3x">3x</option>
+                      <option value="6x">6x</option>
+                    </select>
+                  </div>
+                </div>
+
+                <section id="painel-cartao" class="pagamento-metodo" aria-labelledby="painel-cartao-titulo" hidden>
+                  <div class="pagamento-bloco__header">
+                    <h3 id="painel-cartao-titulo" class="pagamento-bloco__titulo">Pagamento por cartão de crédito</h3>
+                  </div>
+
+                  <div class="pagamento-form__grid pagamento-form__grid--cartao">
+                    <div class="campo-grupo pagamento-form__campo--cartao-numero">
+                      <label for="cartao-numero" class="campo-label">Número do cartão</label>
+                      <input id="cartao-numero" name="cartao-numero" class="campo-input" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" />
+                    </div>
+                    <div class="campo-grupo">
+                      <label for="cartao-nome" class="campo-label">Nome impresso</label>
+                      <input id="cartao-nome" name="cartao-nome" class="campo-input" type="text" placeholder="Nome como no cartao" />
+                    </div>
+                    <div class="campo-grupo">
+                      <label for="cartao-validade" class="campo-label">Validade</label>
+                      <input id="cartao-validade" name="cartao-validade" class="campo-input" type="text" inputmode="numeric" placeholder="MM/AA" />
+                    </div>
+                    <div class="campo-grupo">
+                      <label for="cartao-cvv" class="campo-label">CVV</label>
+                      <input id="cartao-cvv" name="cartao-cvv" class="campo-input" type="password" inputmode="numeric" placeholder="123" />
+                    </div>
+                  </div>
+                </section>
+
+                <section id="painel-pix" class="pagamento-metodo" aria-labelledby="painel-pix-titulo" hidden>
+                  <div class="pagamento-bloco__header">
+                    <h3 id="painel-pix-titulo" class="pagamento-bloco__titulo">Pagamento via PIX</h3>
+                  </div>
+
+                  <div class="pagamento-pix">
+                    <div class="pagamento-pix__qr-wrap">
+                      <img id="pix-qr-image" class="pagamento-pix__qr" alt="QR code PIX simulado" title="QR code PIX simulado" />
+                    </div>
+                    <div class="pagamento-pix__conteudo">
+                      <label for="pix-code" class="campo-label">Codigo PIX copia e cola</label>
+                      <textarea id="pix-code" class="campo-textarea pagamento-pix__codigo" rows="4" readonly></textarea>
+                      <div class="pagamento-pix__acoes">
+                        <button id="btn-copiar-pix" type="button" class="btn btn--outline">Copiar codigo PIX</button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section id="painel-boleto" class="pagamento-metodo" aria-labelledby="painel-boleto-titulo" hidden>
+                  <div class="pagamento-bloco__header">
+                    <h3 id="painel-boleto-titulo" class="pagamento-bloco__titulo">Boleto Bancário</h3>
+                  </div>
+
+                  <div class="pagamento-boleto">
+                    <strong>Prazo previsto</strong>
+                    <p>O boleto será gerado após a validação comercial do pedido e enviado ao e-mail corporativo informado.</p>
+                  </div>
+                </section>
+
+                <div class="campo-grupo">
+                  <label for="observacoes" class="campo-label">Observações do pedido</label>
+                  <textarea id="observacoes" name="observacoes" class="campo-textarea" rows="4" placeholder="Instruções de entrega, centro de custo ou observações para o financeiro."></textarea>
+                </div>
+
+                <div class="pagamento-form__acoes">
+                  <button id="btn-confirmar-pagamento" type="submit" class="btn btn--primary btn--lg">Confirmar compra</button>
+                  <a href="carrinho.html" class="btn btn--outline btn--lg">Voltar para carrinho</a>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <div class="col-lg-5">
+            <aside class="pagamento-resumo" aria-label="Resumo do pagamento">
+              <span class="pagamento-resumo__eyebrow">Checkout</span>
+              <h2 class="pagamento-resumo__titulo">Resumo do seu pedido</h2>
+              <p id="pagamento-resumo-texto" class="pagamento-resumo__texto">Seus itens de checkout serao exibidos aqui.</p>
+
+              <div id="pagamento-lista" class="pagamento-lista" aria-live="polite"></div>
+
+              <dl class="pagamento-metricas">
+                <div class="pagamento-metrica">
+                  <dt>Itens totais</dt>
+                  <dd id="pagamento-total-itens">0</dd>
+                </div>
+                <div class="pagamento-metrica">
+                  <dt>Pagamento imediato</dt>
+                  <dd id="pagamento-itens-imediatos">0</dd>
+                </div>
+                <div class="pagamento-metrica">
+                  <dt>Total</dt>
+                  <dd id="pagamento-total-valor">A confirmar</dd>
+                </div>
+              </dl>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="rodape" class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+
+        <!-- Col 1: Marca -->
+        <div class="footer__col footer__col--marca">
+          <a href="../index.html" class="footer__logo" aria-label="Empr-E - Página inicial">
+            <svg class="brand-logo" width="110" height="36" viewBox="0 0 220 72" fill="none" aria-hidden="true">
+              <polygon class="brand-logo__hex" points="28,4 52,4 64,24 52,44 28,44 16,24" fill="#F97316"/>
+              <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white"/>
+              <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white"/>
+              <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white"/>
+              <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white"/>
+              <circle class="brand-logo__dot-outer" cx="52" cy="8" r="4" fill="#1E293B"/>
+              <circle class="brand-logo__dot-inner" cx="52" cy="8" r="2" fill="#F97316"/>
+              <text class="brand-logo__wordmark" x="74" y="32" font-family="'Plus Jakarta Sans',sans-serif" font-size="26" font-weight="800" fill="#1E293B" letter-spacing="-0.5">Empr<tspan class="brand-logo__wordmark-accent" fill="#F97316">-E</tspan></text>
+              <text class="brand-logo__tagline" x="74" y="48" font-family="'Plus Jakarta Sans',sans-serif" font-size="9" font-weight="500" fill="#64748B" letter-spacing="0.3">Marketplace de Acessibilidade</text>
+            </svg>
+          </a>
+          <p class="footer__descricao">Marketplace B2B especializado em produtos e soluções de acessibilidade. Conectando empresas que acreditam na inclusão.</p>
+          <div class="footer__redes">
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="footer__rede" aria-label="LinkedIn da Empr-E (abre em nova guia)">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="footer__rede" aria-label="Instagram da Empr-E (abre em nova guia)">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" class="footer__rede" aria-label="YouTube da Empr-E (abre em nova guia)">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Navegação -->
+        <nav class="footer__col" aria-label="Links da plataforma">
+          <h3 class="footer__col-titulo">Plataforma</h3>
+          <ul class="footer__links" role="list">
+            <li><a href="catalogo.html" class="footer__link">Produtos</a></li>
+            <li><a href="#empresas" class="footer__link">Empresas</a></li>
+            <li><a href="cadastro.html" class="footer__link">Cadastrar empresa</a></li>
+            <li><a href="login.html" class="footer__link">Entrar</a></li>
+            <li><a href="conta.html#conta-vendedor-shell" class="footer__link">Painel do vendedor</a></li>
+          </ul>
+        </nav>
+
+        <!-- Col 3: Suporte -->
+        <nav class="footer__col" aria-label="Links de suporte">
+          <h3 class="footer__col-titulo">Suporte</h3>
+          <ul class="footer__links" role="list">
+            <li><a href="institucional.html#ajuda" class="footer__link">Central de ajuda</a></li>
+            <li><a href="../index.html#contato" class="footer__link">Contato</a></li>
+            <li><a href="institucional.html#politica-privacidade" class="footer__link">Política de privacidade</a></li>
+            <li><a href="institucional.html#termos-uso" class="footer__link">Termos de uso</a></li>
+            <li><a href="institucional.html#acessibilidade" class="footer__link">Acessibilidade</a></li>
+          </ul>
+        </nav>
+
+        <!-- Col 4: Contato -->
+        <div id="contato" class="footer__col">
+          <h3 class="footer__col-titulo">Contato</h3>
+          <address class="footer__contato">
+            <p>
+              <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:contato@empr-e.com.br" class="footer__link">contato@empr-e.com.br</a>
+            </p>
+            <p>
+              <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:+551140042727" class="footer__link">(11) 4004-2727</a>
+            </p>
+          </address>
+
+          <!-- Botão reportar barreira -->
+          <button
+            id="btn-reportar"
+            class="btn-reportar"
+            aria-label="Reportar uma barreira de acessibilidade encontrada na plataforma"
+          >
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Reportar barreira de acessibilidade
+          </button>
+        </div>
+
+      </div>
+
+      <div class="footer__rodape">
+        <p class="footer__copy">© 2026 Empr-E. Todos os direitos reservados. Construído com acessibilidade em primeiro lugar.</p>
+        <div class="footer__selos">
+          <span class="footer__selo">WCAG 2.1 AA</span>
+          <span class="footer__selo">LBI Conforme</span>
+          <span class="footer__selo">ABNT NBR 9050</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--TOAST-->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true" role="status" hidden></div>
+
+<!--VLIBRAS-->
+<div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
+
+</body>
+</html>
+
+
+
+

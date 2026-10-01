@@ -1,0 +1,465 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Acompanhe favoritos, interações e informações da sua conta na Empr-E." />
+  <title>Minha conta - Empr-E Marketplace de Acessibilidade</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='20,6 44,6 56,26 44,46 20,46 8,26' fill='%23F97316'/%3E%3Crect x='19' y='16' width='5' height='20' rx='1.5' fill='white'/%3E%3Crect x='19' y='16' width='16' height='5' rx='1.5' fill='white'/%3E%3Crect x='19' y='25' width='12' height='4' rx='1.5' fill='white'/%3E%3Crect x='19' y='32' width='16' height='5' rx='1.5' fill='white'/%3E%3Ccircle cx='45' cy='11' r='5' fill='%231E293B'/%3E%3Ccircle cx='45' cy='11' r='2.5' fill='%23F97316'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/conta.css" />
+  <link rel="stylesheet" href="css/toast.css" />
+
+</head>
+<body class="pagina-conta">
+  <a href="#conteudo-principal" class="skip-link">Ir para o conteúdo principal</a>
+  <a href="#navegacao-principal" class="skip-link">Ir para a navegação</a>
+
+  <div id="barra-acessibilidade" class="barra-acessibilidade" role="toolbar">
+    <div class="barra-acessibilidade__inner">
+      <span class="barra-acessibilidade__label" aria-hidden="true">Acessibilidade:</span>
+
+      <button id="btn-contraste" class="btn-acess" aria-pressed="false" aria-label="Alternar modo alto contraste">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/></svg>
+        <span>Contraste</span>
+      </button>
+
+      <button id="btn-aumentar-fonte" class="btn-acess" aria-label="Aumentar tamanho da fonte">
+        <span>A+</span>
+      </button>
+
+      <button id="btn-diminuir-fonte" class="btn-acess" aria-label="Diminuir tamanho da fonte">
+        <span>A-</span>
+      </button>
+
+      <button
+        id="btn-layout"
+        class="btn-acess"
+        aria-pressed="false"
+        title="Ativar layout simplificado"
+        aria-label="Alternar layout simplificado"
+      >
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+        <span>Simplificado</span>
+      </button>
+
+      <button
+        id="btn-leitura"
+        class="btn-acess"
+        aria-pressed="false"
+        title="Ativar modo leitura"
+        aria-label="Alternar modo leitura"
+      >
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>Leitura</span>
+      </button>
+    </div>
+  </div>
+
+  <header id="header" class="header" role="banner">
+    <div class="container header__inner">
+      <a href="../index.html" class="header__logo" aria-label="Empr-E - página inicial">
+        <svg class="brand-logo" width="110" height="36" viewBox="0 0 220 72" fill="none" aria-hidden="true">
+          <polygon class="brand-logo__hex" points="28,4 52,4 64,24 52,44 28,44 16,24" fill="#F97316"/>
+          <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white"/>
+          <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white"/>
+          <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white"/>
+          <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white"/>
+          <circle class="brand-logo__dot-outer" cx="52" cy="8" r="4" fill="#1E293B"/>
+          <circle class="brand-logo__dot-inner" cx="52" cy="8" r="2" fill="#F97316"/>
+          <text class="brand-logo__wordmark" x="74" y="32" font-family="'Plus Jakarta Sans',sans-serif" font-size="26" font-weight="800" fill="#1E293B" letter-spacing="-0.5">Empr<tspan class="brand-logo__wordmark-accent" fill="#F97316">-E</tspan></text>
+          <text class="brand-logo__tagline" x="74" y="48" font-family="'Plus Jakarta Sans',sans-serif" font-size="9" font-weight="500" fill="#64748B" letter-spacing="0.3">Marketplace de Acessibilidade</text>
+        </svg>
+      </a>
+
+      <nav id="navegacao-principal" class="nav" aria-label="Navegacao principal">
+        <ul class="nav__list" role="list">
+          <li><a href="../index.html" class="nav__link">Inicio</a></li>
+          <li><a href="catalogo.html" class="nav__link">Produtos</a></li>
+          <li><a href="conta.html" class="nav__link nav__link--active" aria-current="page">Minha conta</a></li>
+          <li><a href="../index.html#sobre" class="nav__link">Sobre</a></li>
+          <li><a href="../index.html#contato" class="nav__link">Contato</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__actions d-flex align-items-center gap-3">
+        <a href="carrinho.html" class="btn-carrinho" aria-label="Ver itens do carrinho">
+          <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="btn-carrinho__badge" id="quantidadeCarrinho" aria-live="polite">0</span>
+        </a>
+      </div>
+
+      <button id="btn-menu-mobile" class="btn-menu-mobile" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu de navegacao">
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+        <span class="btn-menu-mobile__bar" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div id="menu-mobile" class="menu-mobile" hidden>
+      <nav aria-label="Navegacao mobile">
+        <ul class="menu-mobile__list" role="list">
+          <li><a href="../index.html" class="menu-mobile__link">Inicio</a></li>
+          <li><a href="catalogo.html" class="menu-mobile__link">Produtos</a></li>
+          <li><a href="conta.html" class="menu-mobile__link" aria-current="page">Minha conta</a></li>
+          <li><a href="../index.html#sobre" class="menu-mobile__link">Sobre</a></li>
+          <li><a href="../index.html#contato" class="menu-mobile__link">Contato</a></li>
+          <li class="menu-mobile__separator"></li>
+          <li><a href="carrinho.html" class="menu-mobile__link">Carrinho</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo-principal" tabindex="-1">
+    <section class="conta-hero" aria-labelledby="conta-titulo">
+      <div class="container">
+        <div class="conta-hero__content">
+          <span class="section-badge">Área do usuário</span>
+          <h1 id="conta-titulo" class="conta-hero__titulo">Minha conta</h1>
+          <p id="conta-hero-texto" class="conta-hero__texto">Acompanhe favoritos, interações e informações do seu perfil em um único lugar.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="conta-admin-shell" class="conta-shell conta-shell--secundario conta-admin-shell" aria-labelledby="conta-admin-titulo" hidden>
+      <div class="container">
+        <div class="conta-shell__header">
+          <div>
+            <span class="conta-resumo__eyebrow">Administração</span>
+            <h2 id="conta-admin-titulo" class="conta-shell__titulo">Painel administrativo</h2>
+            <p id="conta-admin-texto" class="conta-shell__subtitulo">Visualize empresas, produtos e vendas.</p>
+          </div>
+        </div>
+
+        <dl class="conta-admin-metricas" aria-label="Resumo do painel administrativo">
+          <div class="conta-admin-metrica">
+            <dt>Vendedoras</dt>
+            <dd id="admin-total-vendedoras">0</dd>
+          </div>
+          <div class="conta-admin-metrica">
+            <dt>Compradoras</dt>
+            <dd id="admin-total-compradoras">0</dd>
+          </div>
+          <div class="conta-admin-metrica">
+            <dt>Produtos</dt>
+            <dd id="admin-total-produtos">0</dd>
+          </div>
+          <div class="conta-admin-metrica">
+            <dt>Vendas</dt>
+            <dd id="admin-total-vendas">0</dd>
+          </div>
+        </dl>
+
+        <p id="admin-painel-texto" class="conta-admin-painel"></p>
+
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <section class="conta-admin-bloco" aria-labelledby="admin-vendedoras-titulo">
+              <div class="conta-shell__header">
+                <div>
+                  <h3 id="admin-vendedoras-titulo" class="conta-shell__titulo conta-shell__titulo--secundario">Empresas vendedoras</h3>
+                  <p class="conta-shell__subtitulo">Dados básicos das empresas que anunciam produtos na plataforma.</p>
+                </div>
+              </div>
+              <div id="admin-vendedoras-lista" class="conta-admin-lista" aria-live="polite"></div>
+              <div class="conta-admin-rodape">
+                <button type="button" id="admin-vendedoras-toggle" class="btn btn--outline btn--sm conta-admin-toggle" hidden>Ver mais</button>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-lg-6">
+            <section class="conta-admin-bloco" aria-labelledby="admin-compradoras-titulo">
+              <div class="conta-shell__header">
+                <div>
+                  <h3 id="admin-compradoras-titulo" class="conta-shell__titulo conta-shell__titulo--secundario">Empresas compradoras</h3>
+                  <p class="conta-shell__subtitulo">Empresas que se cadastraram para comprar soluções.</p>
+                </div>
+              </div>
+              <div id="admin-compradoras-lista" class="conta-admin-lista" aria-live="polite"></div>
+              <div class="conta-admin-rodape">
+                <button type="button" id="admin-compradoras-toggle" class="btn btn--outline btn--sm conta-admin-toggle" hidden>Ver mais</button>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-lg-6">
+            <section class="conta-admin-bloco" aria-labelledby="admin-produtos-titulo">
+              <div class="conta-shell__header">
+                <div>
+                  <h3 id="admin-produtos-titulo" class="conta-shell__titulo conta-shell__titulo--secundario">Produtos cadastrados</h3>
+                  <p class="conta-shell__subtitulo">Todos os produtos anunciados na plataforma.</p>
+                </div>
+              </div>
+              <div id="admin-produtos-lista" class="conta-admin-lista" aria-live="polite"></div>
+              <div class="conta-admin-rodape">
+                <button type="button" id="admin-produtos-toggle" class="btn btn--outline btn--sm conta-admin-toggle" hidden>Ver mais</button>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-lg-6">
+            <section class="conta-admin-bloco" aria-labelledby="admin-vendas-titulo">
+              <div class="conta-shell__header">
+                <div>
+                  <h3 id="admin-vendas-titulo" class="conta-shell__titulo conta-shell__titulo--secundario">Vendas realizadas</h3>
+                  <p class="conta-shell__subtitulo">Pedidos e transações registradas na plataforma.</p>
+                </div>
+              </div>
+              <div id="admin-vendas-lista" class="conta-admin-lista" aria-live="polite"></div>
+              <div class="conta-admin-rodape">
+                <button type="button" id="admin-vendas-toggle" class="btn btn--outline btn--sm conta-admin-toggle" hidden>Ver mais</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="conta-padrao-shell" class="conta-section" aria-labelledby="conta-resumo-titulo">
+      <div class="container">
+        <div class="row g-4 align-items-start">
+          <div class="col-lg-4">
+            <aside class="conta-resumo" aria-labelledby="conta-resumo-titulo">
+              <span class="conta-resumo__eyebrow">Perfil</span>
+              <h2 id="conta-resumo-titulo" class="conta-resumo__titulo">Resumo da conta</h2>
+              <p id="conta-resumo-texto" class="conta-resumo__texto">Entre com sua conta para visualizar sua área personalizada.</p>
+
+              <dl class="conta-metricas">
+                <div class="conta-metrica">
+                  <dt>Favoritos</dt>
+                  <dd id="conta-total-favoritos">0</dd>
+                </div>
+                <div class="conta-metrica">
+                  <dt>Interações</dt>
+                  <dd id="conta-total-interacoes">0</dd>
+                </div>
+              </dl>
+
+              <div class="conta-resumo__acoes">
+                <a href="catalogo.html" class="btn btn--outline btn--lg w-100">Explorar catálogo</a>
+              </div>
+            </aside>
+          </div>
+
+          <div class="col-lg-8">
+            <section class="conta-shell" aria-labelledby="conta-favoritos-titulo">
+              <div class="conta-shell__header">
+                <div>
+                  <h2 id="conta-favoritos-titulo" class="conta-shell__titulo">Favoritos</h2>
+                  <p id="conta-favoritos-texto" class="conta-shell__subtitulo">Seus favoritos aparecem aqui.</p>
+                </div>
+                <a href="catalogo.html" class="btn btn--ghost">Voltar ao catálogo</a>
+              </div>
+
+              <div id="conta-favoritos-lista" class="conta-favoritos-lista" aria-live="polite"></div>
+            </section>
+
+            <section class="conta-shell conta-shell--secundario" aria-labelledby="conta-carrinho-titulo">
+              <div class="conta-shell__header">
+                <div>
+                  <h2 id="conta-carrinho-titulo" class="conta-shell__titulo">Carrinho e compras</h2>
+                  <p id="conta-carrinho-texto" class="conta-shell__subtitulo">Itens do carrinho e atalho para continuar sua compra.</p>
+                </div>
+                <a href="carrinho.html" class="btn btn--ghost">Abrir carrinho</a>
+              </div>
+
+              <div id="conta-carrinho-lista" class="conta-favoritos-lista" aria-live="polite"></div>
+            </section>
+
+            <section class="conta-shell conta-shell--secundario" aria-labelledby="conta-compras-titulo">
+              <div class="conta-shell__header">
+                <div>
+                  <h2 id="conta-compras-titulo" class="conta-shell__titulo">Histórico de compras</h2>
+                  <p id="conta-compras-texto" class="conta-shell__subtitulo">Acompanhe aqui seus pedidos.</p>
+                </div>
+                <a href="pagamento.html" class="btn btn--ghost">Novo pagamento</a>
+              </div>
+
+              <div id="conta-compras-lista" class="conta-interacoes-lista" aria-live="polite"></div>
+            </section>
+
+            <section id="conta-vendedor-shell" class="conta-shell conta-shell--secundario" aria-labelledby="conta-vendedor-titulo" hidden>
+              <div class="conta-shell__header">
+                <div>
+                  <h2 id="conta-vendedor-titulo" class="conta-shell__titulo">Painel gerencial de produtos</h2>
+                  <p id="conta-vendedor-texto" class="conta-shell__subtitulo">Cadastre aqui seus produtos para venda.</p>
+                </div>
+              </div>
+
+              <div class="row g-4 align-items-start">
+                <div class="col-lg-5">
+                  <form id="produto-form" class="conta-produto-form" novalidate>
+                    <div class="mb-3">
+                      <label for="produto-nome" class="campo-label">Nome do produto</label>
+                      <input id="produto-nome" class="campo-input" type="text" placeholder="Ex: Plataforma elevatoria compacta" required />
+                    </div>
+                    <div class="mb-3">
+                      <label for="produto-categoria" class="campo-label">Categoria</label>
+                      <select id="produto-categoria" class="campo-input campo-select" required>
+                        <option value="">Selecione</option>
+                        <option value="mobilidade">Mobilidade</option>
+                        <option value="visual">Deficiencia visual</option>
+                        <option value="digital">Acessibilidade digital</option>
+                        <option value="auditiva">Deficiencia auditiva</option>
+                        <option value="predial">Acessibilidade predial</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="produto-modalidade" class="campo-label">Modalidade</label>
+                      <select id="produto-modalidade" class="campo-input campo-select" required>
+                        <option value="">Selecione</option>
+                        <option value="compra-imediata">Compra imediata</option>
+                        <option value="sob-consulta">Sob consulta</option>
+                        <option value="projeto-personalizado">Projeto personalizado</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="produto-preco" class="campo-label">Preço ou condição comercial</label>
+                      <input id="produto-preco" class="campo-input" type="text" placeholder="Ex: A partir de R$ 1.290" required />
+                    </div>
+                    <div class="mb-3">
+                      <label for="produto-descricao" class="campo-label">Descrição</label>
+                      <textarea id="produto-descricao" class="campo-input campo-textarea" rows="5" placeholder="Descreva o produto, aplicação e diferencial." required></textarea>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                      <button type="submit" class="btn btn--primary btn--sm">Cadastrar produto</button>
+                      <span id="produto-status" class="conta-shell__subtitulo" aria-live="polite"></span>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="col-lg-7">
+                  <div id="conta-produtos-lista" class="conta-favoritos-lista" aria-live="polite"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="conta-shell conta-shell--secundario" aria-labelledby="conta-interacoes-titulo">
+              <div class="conta-shell__header">
+                <div>
+                  <h2 id="conta-interacoes-titulo" class="conta-shell__titulo">Histórico de interações</h2>
+                  <p id="conta-interacoes-texto" class="conta-shell__subtitulo">Acompanhe suas interações aqui.</p>
+                </div>
+              </div>
+
+              <div id="conta-interacoes-lista" class="conta-interacoes-lista" aria-live="polite"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="rodape" class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col footer__col--marca">
+          <a href="../index.html" class="footer__logo" aria-label="Empr-E - Pagina inicial">
+            <svg class="brand-logo" width="110" height="36" viewBox="0 0 220 72" fill="none" aria-hidden="true">
+              <polygon class="brand-logo__hex" points="28,4 52,4 64,24 52,44 28,44 16,24" fill="#F97316"/>
+              <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white"/>
+              <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white"/>
+              <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white"/>
+              <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white"/>
+              <circle class="brand-logo__dot-outer" cx="52" cy="8" r="4" fill="#1E293B"/>
+              <circle class="brand-logo__dot-inner" cx="52" cy="8" r="2" fill="#F97316"/>
+              <text class="brand-logo__wordmark" x="74" y="32" font-family="'Plus Jakarta Sans',sans-serif" font-size="26" font-weight="800" fill="#1E293B" letter-spacing="-0.5">Empr<tspan class="brand-logo__wordmark-accent" fill="#F97316">-E</tspan></text>
+              <text class="brand-logo__tagline" x="74" y="48" font-family="'Plus Jakarta Sans',sans-serif" font-size="9" font-weight="500" fill="#64748B" letter-spacing="0.3">Marketplace de Acessibilidade</text>
+            </svg>
+          </a>
+          <p class="footer__descricao">Marketplace B2B especializado em produtos e soluções de acessibilidade. Conectando empresas que acreditam na inclusão.</p>
+          <div class="footer__redes d-flex flex-wrap gap-2">
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="footer__rede" aria-label="LinkedIn da Empr-E (abre em nova guia)">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="footer__rede" aria-label="Instagram da Empr-E (abre em nova guia)">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" class="footer__rede" aria-label="YouTube da Empr-E (abre em nova guia)">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <nav class="footer__col" aria-label="Links da plataforma">
+          <h3 class="footer__col-titulo">Plataforma</h3>
+          <ul class="footer__links" role="list">
+            <li><a href="catalogo.html" class="footer__link">Produtos</a></li>
+            <li><a href="../index.html#empresas" class="footer__link">Empresas</a></li>
+            <li><a href="cadastro.html" class="footer__link">Cadastrar empresa</a></li>
+            <li><a href="login.html" class="footer__link">Entrar</a></li>
+            <li><a href="conta.html#conta-vendedor-shell" class="footer__link">Painel do vendedor</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer__col" aria-label="Links de suporte">
+          <h3 class="footer__col-titulo">Suporte</h3>
+          <ul class="footer__links" role="list">
+            <li><a href="institucional.html#ajuda" class="footer__link">Central de ajuda</a></li>
+            <li><a href="../index.html#contato" class="footer__link">Contato</a></li>
+            <li><a href="institucional.html#politica-privacidade" class="footer__link">PolÃ­tica de privacidade</a></li>
+            <li><a href="institucional.html#termos-uso" class="footer__link">Termos de uso</a></li>
+            <li><a href="institucional.html#acessibilidade" class="footer__link">Acessibilidade</a></li>
+          </ul>
+        </nav>
+
+        <div id="contato" class="footer__col">
+          <h3 class="footer__col-titulo">Contato</h3>
+          <address class="footer__contato">
+            <p>
+              <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:contato@empr-e.com.br" class="footer__link">contato@empr-e.com.br</a>
+            </p>
+            <p>
+              <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:+551140042727" class="footer__link">(11) 4004-2727</a>
+            </p>
+          </address>
+
+          <button
+            id="btn-reportar"
+            class="btn-reportar"
+            aria-label="Reportar uma barreira de acessibilidade encontrada na plataforma"
+          >
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Reportar barreira de acessibilidade
+          </button>
+        </div>
+      </div>
+
+      <div class="footer__rodape">
+        <p class="footer__copy">© 2026 Empr-E. Todos os direitos reservados. Construído com acessibilidade em primeiro lugar.</p>
+        <div class="footer__selos">
+          <span class="footer__selo">WCAG 2.1 AA</span>
+          <span class="footer__selo">LBI Conforme</span>
+          <span class="footer__selo">ABNT NBR 9050</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!--TOAST-->
+<div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true" role="status" hidden></div>
+
+<!--VLIBRAS-->
+<div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
+
+</body>
+</html>
+
+

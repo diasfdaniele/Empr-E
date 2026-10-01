@@ -1,0 +1,415 @@
+body.pagina-pagamento {
+  background: linear-gradient(180deg, var(--cinza-50) 0%, #ffffff 24%, var(--cinza-50) 100%);
+}
+
+.pagamento-hero {
+  padding: 1.75rem 0 1rem;
+}
+
+.pagamento-hero__content {
+  background: #0B183B;
+  border-radius: var(--raio-xl);
+  width: 100%;
+  padding: clamp(1.1rem, 2.2vw, 1.75rem) clamp(1.2rem, 2.5vw, 2rem);
+  box-shadow: var(--sombra-lg);
+}
+
+.pagamento-hero__titulo {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--branco);
+  margin-top: 0.7rem;
+}
+
+.pagamento-hero__texto {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1.02rem;
+  max-width: 680px;
+  margin-top: 0.55rem;
+}
+
+.pagamento-section {
+  padding-bottom: var(--espaco-4xl);
+}
+
+.pagamento-shell,
+.pagamento-resumo {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--raio-xl);
+  box-shadow: var(--sombra-md);
+  backdrop-filter: blur(12px);
+}
+
+.pagamento-shell {
+  padding: 1.35rem;
+}
+
+.pagamento-shell__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.pagamento-shell__titulo {
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+}
+
+.pagamento-shell__subtitulo {
+  margin-top: 0.35rem;
+  color: var(--cor-texto-suave);
+}
+
+.pagamento-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pagamento-form .campo-grupo {
+  min-width: 0;
+}
+
+.pagamento-bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: var(--raio-xl);
+  background: var(--cinza-50);
+  border: 1px solid var(--cinza-200);
+}
+
+.pagamento-bloco__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pagamento-bloco__titulo {
+  font-size: 1rem;
+}
+
+.pagamento-bloco__texto {
+  color: var(--cor-texto-suave);
+  line-height: 1.6;
+}
+
+.pagamento-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pagamento-form__grid--endereco-topo {
+  grid-template-columns: minmax(180px, 280px);
+}
+
+.pagamento-form__grid--endereco {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pagamento-form__grid--cartao {
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+}
+
+.pagamento-form__campo--logradouro,
+.pagamento-form__campo--cartao-numero {
+  grid-column: span 2;
+}
+
+.pagamento-form__hint-box {
+  padding: 0.95rem 1rem;
+  border-radius: var(--raio-lg);
+  background: linear-gradient(180deg, rgba(255, 247, 237, 0.95) 0%, rgba(255, 255, 255, 0.96) 100%);
+  border: 1px solid rgba(249, 115, 22, 0.22);
+}
+
+.pagamento-form__hint {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--laranja-escuro);
+}
+
+.pagamento-form__hint-texto {
+  margin: 0.35rem 0 0;
+  color: var(--cor-texto-suave);
+  line-height: 1.6;
+}
+
+.pagamento-form__grid--financeiro {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.pagamento-form .campo-input,
+.pagamento-form .campo-select,
+.pagamento-form .campo-textarea {
+  width: 100%;
+  min-height: 48px;
+  border-radius: var(--raio-md);
+  border: 1.5px solid var(--cinza-200);
+  background: var(--cinza-50);
+  color: var(--cinza-800);
+  padding: 0.85rem 0.95rem;
+}
+
+.pagamento-form .campo-textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.pagamento-form .campo-input:focus,
+.pagamento-form .campo-select:focus,
+.pagamento-form .campo-textarea:focus {
+  border-color: var(--laranja-vivo);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.14);
+  background: var(--branco);
+  outline: none;
+}
+
+.pagamento-form__acoes {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+.pagamento-metodo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: var(--raio-xl);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--cinza-200);
+}
+
+.pagamento-pix {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.pagamento-pix__qr-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem;
+  border-radius: var(--raio-xl);
+  background: var(--branco);
+  border: 1px solid var(--cinza-200);
+}
+
+.pagamento-pix__qr {
+  width: 100%;
+  max-width: 188px;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.pagamento-pix__conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pagamento-pix__codigo {
+  min-height: 120px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.pagamento-pix__acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pagamento-pix__status {
+  color: var(--cor-texto-suave);
+  font-size: 0.85rem;
+}
+
+.pagamento-boleto {
+  padding: 0.95rem 1rem;
+  border-radius: var(--raio-lg);
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%);
+  border: 1px solid var(--cinza-200);
+}
+
+.pagamento-boleto p {
+  margin: 0.45rem 0 0;
+  color: var(--cor-texto-suave);
+  line-height: 1.6;
+}
+
+.pagamento-resumo {
+  padding: 1.35rem;
+  position: sticky;
+  top: calc(var(--altura-barra-acess) + var(--altura-header) + 1rem);
+}
+
+.pagamento-resumo__eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--laranja-escuro);
+}
+
+.pagamento-resumo__titulo {
+  margin-top: 0.65rem;
+  font-size: 1.4rem;
+}
+
+.pagamento-resumo__texto {
+  margin-top: 0.45rem;
+  color: var(--cor-texto-suave);
+  line-height: 1.65;
+}
+
+.pagamento-alerta {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: var(--raio-lg);
+  background: linear-gradient(180deg, rgba(255, 247, 237, 0.95) 0%, rgba(255, 255, 255, 0.96) 100%);
+  border: 1px solid rgba(249, 115, 22, 0.22);
+}
+
+.pagamento-alerta strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.pagamento-alerta p {
+  margin: 0;
+  color: var(--cor-texto-suave);
+  line-height: 1.6;
+}
+
+.pagamento-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.pagamento-item {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.85rem;
+  border-radius: var(--raio-lg);
+  background: var(--cinza-50);
+  border: 1px solid var(--cinza-200);
+}
+
+.pagamento-item__media {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(11, 24, 59, 0.98) 0%, rgba(249, 115, 22, 0.88) 100%);
+  color: var(--branco);
+  display: grid;
+  place-items: center;
+  font-family: var(--fonte-display);
+  font-weight: 800;
+}
+
+.pagamento-item__nome {
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  color: var(--cinza-900);
+}
+
+.pagamento-item__empresa,
+.pagamento-item__meta {
+  color: var(--cor-texto-suave);
+  font-size: 0.86rem;
+}
+
+.pagamento-item__preco {
+  text-align: right;
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  color: var(--laranja-escuro);
+}
+
+.pagamento-metricas {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.pagamento-metrica {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0.95rem;
+  background: var(--cinza-50);
+  border-radius: var(--raio-lg);
+  border: 1px solid var(--cinza-200);
+}
+
+.pagamento-metrica dt {
+  color: var(--cor-texto-suave);
+  font-weight: 600;
+}
+
+.pagamento-metrica dd {
+  margin: 0;
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  color: var(--cinza-900);
+}
+
+.pagamento-vazio {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  text-align: center;
+  border: 2px dashed var(--cor-borda);
+  border-radius: var(--raio-xl);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.pagamento-vazio p {
+  margin: 0.55rem 0 1rem;
+  color: var(--cor-texto-suave);
+}
+
+@media (max-width: 991px) {
+  .pagamento-resumo {
+    position: static;
+  }
+}
+
+@media (max-width: 767px) {
+  .pagamento-form__grid,
+  .pagamento-form__grid--financeiro,
+  .pagamento-form__grid--endereco-topo,
+  .pagamento-form__grid--endereco,
+  .pagamento-form__grid--cartao,
+  .pagamento-pix,
+  .pagamento-item {
+    grid-template-columns: 1fr;
+  }
+
+  .pagamento-form__campo--logradouro,
+  .pagamento-form__campo--cartao-numero {
+    grid-column: auto;
+  }
+
+  .pagamento-item__preco {
+    text-align: left;
+  }
+}

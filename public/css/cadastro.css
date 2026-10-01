@@ -1,0 +1,429 @@
+/* Tela de cadastro */
+
+body.pagina-cadastro {
+  background-color: var(--cinza-50);
+}
+
+/* Container central do formulário */
+.cadastro-wrapper {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0.5rem;}
+
+
+/* CABEÇALHO DA PÁGINA (título e subtítulo) */
+.cadastro-topo {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.cadastro-titulo {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 800;
+  color: var(--cinza-900);
+}
+
+.cadastro-subtitulo {
+  font-size: 1rem;
+  color: var(--cinza-500);
+  max-width: 480px;
+}
+
+
+/* FORMULÁRIO PRINCIPAL */
+
+.cadastro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* SEÇÕES (fieldsets) */
+.form-secao {
+  border: 1.5px solid var(--cinza-200);
+  border-radius: var(--raio-lg);
+  padding: 1.5rem;
+  background: var(--branco);
+
+  /* Remove o estilo padrão do navegador no fieldset */
+  margin: 0;
+}
+
+.form-secao__titulo {
+  font-family: var(--fonte-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cinza-800);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  /* Remove o estilo padrão da legend */
+  padding: 0;
+  float: none;
+  width: auto;
+}
+
+
+/* 6. GRUPOS DE CAMPO */
+
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+/* Dois campos lado a lado */
+.campos-linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Label */
+.campo-label {
+  font-family: var(--fonte-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cinza-900);
+}
+
+.campo-obrigatorio {
+  color: var(--laranja-vivo);
+}
+
+/* Input, select e textarea — mesmo estilo base */
+.campo-input {
+  width: 100%;
+  font-family: var(--fonte-corpo);
+  font-size: 0.9rem;
+  color: var(--cinza-800);
+  background: var(--cinza-50);
+  border: 1.5px solid var(--cinza-00);
+  border-radius: var(--raio-md);
+  padding: 0.65rem 0.875rem;
+  min-height: 44px; 
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.campo-input::placeholder {
+  color: var(--cinza-300);
+}
+
+/* Foco — anel laranja */
+.campo-input:focus {
+  outline: none;
+  border-color: var(--laranja-vivo);
+  background: var(--branco);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}
+
+/* Select — seta customizada */
+.campo-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+/* Textarea */
+.campo-textarea {
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.6;
+}
+
+/* Campo com botão de ver senha */
+.campo-wrapper-senha {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.campo-wrapper-senha .campo-input {
+  padding-right: 2.75rem;
+}
+
+/* Botão de mostrar/ocultar senha */
+.btn-ver-senha {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--raio-sm);
+  color: var(--cinza-400);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.btn-ver-senha:hover {
+  color: var(--laranja-vivo);
+  background: var(--laranja-palido);
+}
+
+.btn-ver-senha:focus-visible {
+  outline: 2px solid var(--laranja-vivo);
+  outline-offset: 2px;
+}
+
+/* Estados válido/inválido dos campos */
+.campo-grupo.valido .campo-input {
+  border-color: var(--cor-sucesso);
+  background: #F0FDF4;
+}
+
+.campo-grupo.invalido .campo-input {
+  border-color: var(--cor-erro);
+  background: #FFF1F2;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+/* Textos auxiliares */
+.campo-dica {
+  font-size: 0.74rem;
+  color: var(--cinza-400);
+}
+
+/* Mensagem de erro — com ícone via CSS */
+.campo-erro {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--cor-erro);
+  font-family: var(--fonte-display);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.campo-erro::before {
+  content: '!';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cor-erro);
+  font-size: 0.65rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Rodapé do campo (erro + contador lado a lado) */
+.campo-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 1.2rem; /* evita pulo de layout quando o erro aparece */
+}
+
+/* Contador de caracteres */
+.campo-contador {
+  font-size: 0.72rem;
+  color: var(--cinza-400);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* CHECKBOX CUSTOMIZADO (mesmo padrão do login.css) */
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-input {
+  /* Escondido visualmente, mas acessível */
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.checkbox-custom {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px; 
+  border: 1.5px solid var(--cinza-300);
+  border-radius: 4px;
+  background: var(--branco);
+  position: relative;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+/* Checkmark via pseudo-elemento */
+.checkbox-custom::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 8px;
+  height: 5px;
+  border-left: 2px solid var(--branco);
+  border-bottom: 2px solid var(--branco);
+  transform: rotate(-45deg);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.checkbox-input:checked ~ .checkbox-custom {
+  background: var(--laranja-vivo);
+  border-color: var(--laranja-vivo);
+}
+
+.checkbox-input:checked ~ .checkbox-custom::after {
+  opacity: 1;
+}
+
+/* Foco visível no checkbox */
+.checkbox-input:focus-visible ~ .checkbox-custom {
+  outline: 2px solid var(--laranja-vivo);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.checkbox-label:hover .checkbox-custom {
+  border-color: var(--laranja-vivo);
+}
+
+.checkbox-texto {
+  font-size: 0.875rem;
+  color: var(--cinza-600);
+  line-height: 1.5;
+}
+
+/* Links dentro do checkbox */
+.link-termos {
+  color: var(--cor-acento);
+  font-weight: 600;
+  text-underline-offset: 2px;
+}
+
+.link-termos:hover {
+  color: var(--laranja-vivo);
+}
+
+
+/* BOTÃO DE ENVIO E LINK DE LOGIN */
+
+.cadastro-acoes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Botão ocupa toda a largura e tem loading state */
+.btn-cadastrar {
+  width: 100%;
+  justify-content: center;
+  min-height: 50px;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+.btn-cadastrar[aria-busy="true"] {
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Spinner de loading */
+.loading-spinner {
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.cadastro-login-texto {
+  font-size: 0.875rem;
+  color: var(--cinza-500);
+  text-align: center;
+}
+
+
+/* RESPONSIVIDADE */
+
+/* Tablet: campos lado a lado viram empilhados */
+@media (max-width: 640px) {
+  .campos-linha {
+    grid-template-columns: 1fr;
+  }
+
+  .cadastro-wrapper {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .form-secao {
+    padding: 1.25rem 1rem;
+  }
+
+  .etapa__texto {
+    display: none; /* Mostra só o número em telas pequenas */
+  }
+}
+
+
+/* ALTO CONTRASTE (herda do script.js global) */
+
+body.modo-alto-contraste .form-secao {
+  background: #111111;
+  border-color: #FFFFFF;
+}
+
+body.modo-alto-contraste .campo-input {
+  background: var(--cinza-400);
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+body.modo-alto-contraste .campo-input::placeholder {
+  color: #777777;
+}
+
+body.modo-alto-contraste .campo-grupo.invalido .campo-input {
+  border-color: #FF6B6B;
+  background: #1A0000;
+}
+
+body.modo-alto-contraste .campo-grupo.valido .campo-input {
+  border-color: #00FF88;
+  background: #001A0D;
+}
+
+/*Mensagem de cadastro*/
+.hidden {
+    display: none;
+}
+#mensagem {
+    background: #4CAF50;
+    color: white;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 5px;
+    align-self: center;
+}
