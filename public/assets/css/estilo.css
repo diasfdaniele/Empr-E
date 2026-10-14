@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+}
+
+h1{
+    color: #F97316;
+}
+
+.container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 1rem; 
+}
+.cabecalho, .rodape { 
+    background-color: #F1F5F9; 
+}
+.cabecalho .container { 
+    display: flex; 
+    justify-content: 
+    space-between; 
+    flex-wrap: wrap; 
+    gap: 1rem; 
+}
+.navegacao { 
+    display: flex; 
+    gap: 1rem; 
+}
+main.container { 
+    min-height: 50vh; 
+}
