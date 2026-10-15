@@ -3,19 +3,12 @@
 }
 
 .catalogo-destaque__conteudo {
-  display: block;
   background: #0b183b;
   border-radius: var(--raio-xl);
-  width: 100%;
-  max-width: none;
   padding: clamp(1rem, 2vw, 1.5rem) clamp(1.1rem, 2.4vw, 1.9rem);
   box-shadow: var(--sombra-lg);
   position: relative;
   overflow: hidden;
-}
-
-.catalogo-destaque__conteudo::after {
-  content: none;
 }
 
 .catalogo-destaque__titulo {
@@ -211,10 +204,6 @@
   justify-content: flex-end;
   gap: 0.5rem;
   align-items: center;
-}
-
-.produto-cartao__favorito-icone {
-  min-height: 38px;
 }
 
 .produto-cartao__favorito-icone {

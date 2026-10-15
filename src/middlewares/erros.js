@@ -1,13 +1,8 @@
-import { exibirIndisponibilidade } from '../utils/apresentacao.js';
+import { exibirIndisponibilidade, renderizarPagina } from '../utils/apresentacao.js';
 
 export function paginaNaoEncontrada(req, res) {
-  exibirIndisponibilidade(
-    req,
-    res,
-    404,
-    'Página não encontrada',
-    'O endereço ou produto solicitado não existe.',
-  );
+  res.status(404);
+  renderizarPagina(res, 'nao-encontrada', 'Página não encontrada | Empr-E');
 }
 
 export function tratarErro(err, req, res, next) {

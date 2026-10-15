@@ -1,5 +1,4 @@
 .cadastro-titulo {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 800;
   color: var(--cinza-900);
 }
@@ -49,9 +48,6 @@
   color: var(--cinza-900);
 }
 
-.campo-obrigatorio {
-  color: var(--laranja-vivo);
-}
 .campo-entrada {
   width: 100%;
   font-family: var(--fonte-corpo);
@@ -87,117 +83,9 @@
   padding-right: 2.5rem;
   cursor: pointer;
 }
-.campo-texto {
-  resize: vertical;
-  min-height: 90px;
-  line-height: 1.6;
-}
 .campo-dica {
   font-size: 0.74rem;
   color: var(--cinza-400);
-}
-.campo-erro {
-  font-size: 0.76rem;
-  font-weight: 600;
-  color: var(--cor-erro);
-  font-family: var(--fonte-titulos);
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.campo-erro::before {
-  content: "!";
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 1.5px solid var(--cor-erro);
-  font-size: 0.65rem;
-  font-weight: 800;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.caixa-selecao-rotulo {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  cursor: pointer;
-  user-select: none;
-}
-
-.caixa-selecao-entrada {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
-.caixa-selecao-personalizado {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  margin-top: 2px;
-  border: 1.5px solid var(--cinza-300);
-  border-radius: 4px;
-  background: var(--branco);
-  position: relative;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
-}
-.caixa-selecao-personalizado::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 4px;
-  width: 8px;
-  height: 5px;
-  border-left: 2px solid var(--branco);
-  border-bottom: 2px solid var(--branco);
-  transform: rotate(-45deg);
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.caixa-selecao-entrada:checked ~ .caixa-selecao-personalizado {
-  background: var(--laranja-vivo);
-  border-color: var(--laranja-vivo);
-}
-
-.caixa-selecao-entrada:checked ~ .caixa-selecao-personalizado::after {
-  opacity: 1;
-}
-.caixa-selecao-entrada:focus-visible ~ .caixa-selecao-personalizado {
-  outline: 2px solid var(--laranja-vivo);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
-}
-
-.caixa-selecao-rotulo:hover .caixa-selecao-personalizado {
-  border-color: var(--laranja-vivo);
-}
-
-.caixa-selecao-texto {
-  font-size: 0.875rem;
-  color: var(--cinza-600);
-  line-height: 1.5;
-}
-.carregando-indicador {
-  animation: girar 0.8s linear infinite;
-}
-
-@keyframes girar {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 @media (max-width: 640px) {
   .campos-linha {
@@ -222,12 +110,4 @@ body.modo-alto-contraste .campo-entrada {
 
 body.modo-alto-contraste .campo-entrada::placeholder {
   color: #777777;
-}
-#mensagem {
-  background: #4caf50;
-  color: white;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 5px;
-  align-self: center;
 }
