@@ -1,0 +1,225 @@
+.pagamento-destaque {
+  padding: 1.75rem 0 1rem;
+}
+
+.pagamento-destaque__conteudo {
+  background: #0b183b;
+  border-radius: var(--raio-xl);
+  width: 100%;
+  padding: clamp(1.1rem, 2.2vw, 1.75rem) clamp(1.2rem, 2.5vw, 2rem);
+  box-shadow: var(--sombra-lg);
+}
+
+.pagamento-destaque__titulo {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--branco);
+  margin-top: 0.7rem;
+}
+
+.pagamento-destaque__texto {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1.02rem;
+  max-width: 680px;
+  margin-top: 0.55rem;
+}
+
+.pagamento-secao {
+  padding-bottom: var(--espaco-4xl);
+}
+
+.pagamento-painel,
+.pagamento-resumo {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--raio-xl);
+  box-shadow: var(--sombra-md);
+  backdrop-filter: blur(12px);
+}
+
+.pagamento-painel {
+  padding: 1.35rem;
+}
+
+.pagamento-painel__cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.pagamento-painel__titulo {
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+}
+
+.pagamento-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pagamento-formulario .campo-grupo {
+  min-width: 0;
+}
+
+.pagamento-bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: var(--raio-xl);
+  background: var(--cinza-50);
+  border: 1px solid var(--cinza-200);
+}
+
+.pagamento-bloco__cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pagamento-bloco__titulo {
+  font-size: 1rem;
+}
+
+.pagamento-bloco__texto {
+  color: var(--cor-texto-suave);
+  line-height: 1.6;
+}
+
+.pagamento-formulario__grade {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pagamento-formulario__grade--endereco-topo {
+  grid-template-columns: minmax(180px, 280px);
+}
+
+.pagamento-formulario__grade--endereco {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pagamento-formulario__campo--logradouro {
+  grid-column: span 2;
+}
+
+.pagamento-formulario__grade--financeiro {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.pagamento-formulario .campo-entrada,
+.pagamento-formulario .campo-seletor,
+.pagamento-formulario .campo-texto {
+  width: 100%;
+  min-height: 48px;
+  border-radius: var(--raio-md);
+  border: 1.5px solid var(--cinza-200);
+  background: var(--cinza-50);
+  color: var(--cinza-800);
+  padding: 0.85rem 0.95rem;
+}
+
+.pagamento-formulario .campo-texto {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.pagamento-formulario .campo-entrada:focus,
+.pagamento-formulario .campo-seletor:focus,
+.pagamento-formulario .campo-texto:focus {
+  border-color: var(--laranja-vivo);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.14);
+  background: var(--branco);
+  outline: none;
+}
+
+.pagamento-formulario__acoes {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+.pagamento-resumo {
+  padding: 1.35rem;
+  position: sticky;
+  top: calc(var(--altura-barra-acess) + var(--altura-cabecalho) + 1rem);
+}
+
+.pagamento-resumo__rotulo {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--laranja-escuro);
+}
+
+.pagamento-resumo__titulo {
+  margin-top: 0.65rem;
+  font-size: 1.4rem;
+}
+
+.pagamento-resumo__texto {
+  margin-top: 0.45rem;
+  color: var(--cor-texto-suave);
+  line-height: 1.65;
+}
+
+.pagamento-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.pagamento-metricas {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.pagamento-metrica {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0.95rem;
+  background: var(--cinza-50);
+  border-radius: var(--raio-lg);
+  border: 1px solid var(--cinza-200);
+}
+
+.pagamento-metrica dt {
+  color: var(--cor-texto-suave);
+  font-weight: 600;
+}
+
+.pagamento-metrica dd {
+  margin: 0;
+  font-family: var(--fonte-titulos);
+  font-weight: 800;
+  color: var(--cinza-900);
+}
+
+@media (max-width: 991px) {
+  .pagamento-resumo {
+    position: static;
+  }
+}
+
+@media (max-width: 767px) {
+  .pagamento-formulario__grade,
+  .pagamento-formulario__grade--financeiro,
+  .pagamento-formulario__grade--endereco-topo,
+  .pagamento-formulario__grade--endereco {
+    grid-template-columns: 1fr;
+  }
+
+  .pagamento-formulario__campo--logradouro {
+    grid-column: auto;
+  }
+}

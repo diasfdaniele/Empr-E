@@ -6,7 +6,9 @@
   "main": "src/servidor.js",
   "scripts": {
     "start": "node src/servidor.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node --watch src/servidor.js",
+    "test": "node --test tests/aplicacao.test.js",
+    "test:browser": "node --test tests/navegador.test.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +26,13 @@
     "ejs": "^7.0.1",
     "express": "^5.3.0",
     "lucide-static": "^1.56.0"
+  },
+  "devDependencies": {
+    "acorn": "^8.19.0",
+    "cheerio": "^1.2.0",
+    "playwright": "^1.64.1",
+    "postcss": "^8.5.30",
+    "postcss-selector-parser": "^7.1.6",
+    "prettier": "^3.9.10"
   }
 }

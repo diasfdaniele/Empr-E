@@ -1,0 +1,120 @@
+<main id="conteudo-principal" tabindex="-1">
+  <section class="conta-destaque" aria-labelledby="conta-titulo">
+    <div class="container">
+      <div class="conta-destaque__conteudo">
+        <span class="secao-selo">Área do usuário</span>
+        <h1 id="conta-titulo" class="conta-destaque__titulo">Minha conta</h1>
+        <p id="conta-destaque-texto" class="conta-destaque__texto">
+          Acompanhe favoritos, interações e informações do seu perfil em um único lugar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <%- include("administracao") %>
+
+  <section id="conta-padrao-painel" class="conta-secao" aria-labelledby="conta-resumo-titulo">
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-4">
+          <aside class="conta-resumo" aria-labelledby="conta-resumo-titulo">
+            <span class="conta-resumo__rotulo">Perfil</span>
+            <h2 id="conta-resumo-titulo" class="conta-resumo__titulo">Resumo da conta</h2>
+            <p id="conta-resumo-texto" class="conta-resumo__texto">
+              Entre com sua conta para visualizar sua área personalizada.
+            </p>
+
+            <dl class="conta-metricas">
+              <div class="conta-metrica">
+                <dt>Favoritos</dt>
+                <dd id="conta-total-favoritos">0</dd>
+              </div>
+              <div class="conta-metrica">
+                <dt>Interações</dt>
+                <dd id="conta-total-interacoes">0</dd>
+              </div>
+            </dl>
+
+            <div class="conta-resumo__acoes">
+              <a href="/catalogo" class="btn botao--contorno botao--lg w-100">Explorar catálogo</a>
+            </div>
+          </aside>
+        </div>
+
+        <div class="col-lg-8">
+          <section class="conta-painel" aria-labelledby="conta-favoritos-titulo">
+            <div class="conta-painel__cabecalho">
+              <div>
+                <h2 id="conta-favoritos-titulo" class="conta-painel__titulo">Favoritos</h2>
+                <p id="conta-favoritos-texto" class="conta-painel__subtitulo">
+                  Seus favoritos aparecem aqui.
+                </p>
+              </div>
+              <a href="/catalogo" class="btn botao--discreto">Voltar ao catálogo</a>
+            </div>
+
+            <div id="conta-favoritos-lista" class="conta-favoritos-lista" aria-live="polite"></div>
+          </section>
+
+          <section
+            class="conta-painel conta-painel--secundario"
+            aria-labelledby="conta-carrinho-titulo"
+          >
+            <div class="conta-painel__cabecalho">
+              <div>
+                <h2 id="conta-carrinho-titulo" class="conta-painel__titulo">Carrinho e compras</h2>
+                <p id="conta-carrinho-texto" class="conta-painel__subtitulo">
+                  Itens do carrinho e atalho para continuar sua compra.
+                </p>
+              </div>
+              <a href="/carrinho" class="btn botao--discreto">Abrir carrinho</a>
+            </div>
+
+            <div id="conta-carrinho-lista" class="conta-favoritos-lista" aria-live="polite"></div>
+          </section>
+
+          <section
+            class="conta-painel conta-painel--secundario"
+            aria-labelledby="conta-compras-titulo"
+          >
+            <div class="conta-painel__cabecalho">
+              <div>
+                <h2 id="conta-compras-titulo" class="conta-painel__titulo">Histórico de compras</h2>
+                <p id="conta-compras-texto" class="conta-painel__subtitulo">
+                  Acompanhe aqui seus pedidos.
+                </p>
+              </div>
+              <a href="/pagamento" class="btn botao--discreto">Novo pagamento</a>
+            </div>
+
+            <div id="conta-compras-lista" class="conta-interacoes-lista" aria-live="polite"></div>
+          </section>
+
+          <%- include("vendedor") %>
+
+          <section
+            class="conta-painel conta-painel--secundario"
+            aria-labelledby="conta-interacoes-titulo"
+          >
+            <div class="conta-painel__cabecalho">
+              <div>
+                <h2 id="conta-interacoes-titulo" class="conta-painel__titulo">
+                  Histórico de interações
+                </h2>
+                <p id="conta-interacoes-texto" class="conta-painel__subtitulo">
+                  Acompanhe suas interações aqui.
+                </p>
+              </div>
+            </div>
+
+            <div
+              id="conta-interacoes-lista"
+              class="conta-interacoes-lista"
+              aria-live="polite"
+            ></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

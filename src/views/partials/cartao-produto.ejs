@@ -1,0 +1,45 @@
+<article class="produto-cartao" aria-label="<%= produto.nome %>">
+  <a href="/produto/<%= produto.id %>" class="produto-cartao__link">
+    <div class="produto-cartao__midia">
+      <img
+        src="<%= produto.imagens[0] %>"
+        alt="<%= produto.nome %>"
+        class="produto-cartao__imagem"
+        loading="lazy"
+        width="320"
+        height="220"
+      />
+      <span class="produto-cartao__empresa"><%= produto.empresa.nome %></span>
+    </div>
+  </a>
+  <div class="produto-cartao__conteudo">
+    <span class="produto-cartao__categoria"><%= produto.categoria.nome %></span>
+    <h3 class="produto-cartao__titulo"><a href="/produto/<%= produto.id %>"><%= produto.nome %></a></h3>
+    <p class="produto-cartao__descricao"><%= produto.descricao %></p>
+    <span class="produto-cartao__modalidade"><%= produto.nomeModalidade %></span>
+    <div class="produto-cartao__rodape">
+      <span class="produto-cartao__preco"><%= formatarMoeda(produto.preco) %>/<%= produto.unidade %></span>
+      <div class="produto-cartao__acoes">
+        <button
+          type="button"
+          class="produto-cartao__favorito-icone"
+          aria-pressed="false"
+          aria-label="Favoritar <%= produto.nome %> na simulação"
+          title="Favoritar na simulação"
+          data-favorito="<%= produto.id %>"
+        >
+          <img src="/icones/heart.svg" width="20" height="20" alt="" />
+        </button>
+        <button
+          type="button"
+          class="btn botao--principal botao--sm"
+          title="Adicionar somente nesta página"
+          data-adicionar-carrinho="<%= produto.id %>"
+          data-variacao="<%= produto.variacoes[0] %>"
+        >
+          Simular adição
+        </button>
+      </div>
+    </div>
+  </div>
+</article>

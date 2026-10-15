@@ -1,3 +1,207 @@
-<footer class="rodape">
-  <div class="container"><p>Empr-E — Acessibilidade para pessoas e empresas.</p></div>
+<footer id="rodape" class="rodape" role="contentinfo">
+  <div class="container">
+    <div class="rodape__grade">
+      <div class="rodape__col rodape__col--marca">
+        <a href="/" class="rodape__logo" aria-label="Empr-E - Página inicial">
+          <svg
+            class="marca-logo"
+            width="110"
+            height="36"
+            viewBox="0 0 220 72"
+            fill="none"
+            aria-hidden="true"
+          >
+            <polygon
+              class="marca-logo__hex"
+              points="28,4 52,4 64,24 52,44 28,44 16,24"
+              fill="#F97316"
+            ></polygon>
+            <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white"></rect>
+            <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white"></rect>
+            <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white"></rect>
+            <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white"></rect>
+            <circle class="marca-logo__ponto-externo" cx="52" cy="8" r="4" fill="#1E293B"></circle>
+            <circle class="marca-logo__ponto-interno" cx="52" cy="8" r="2" fill="#F97316"></circle>
+            <text
+              class="marca-logo__nome"
+              x="74"
+              y="32"
+              font-family="'Plus Jakarta Sans',sans-serif"
+              font-size="26"
+              font-weight="800"
+              fill="#1E293B"
+              letter-spacing="-0.5"
+            >
+              Empr
+              <tspan class="marca-logo__nome-destaque" fill="#F97316">-E</tspan>
+            </text>
+            <text
+              class="marca-logo__assinatura"
+              x="74"
+              y="48"
+              font-family="'Plus Jakarta Sans',sans-serif"
+              font-size="9"
+              font-weight="500"
+              fill="#64748B"
+              letter-spacing="0.3"
+            >
+              Marketplace de Acessibilidade
+            </text>
+          </svg>
+        </a>
+        <p class="rodape__descricao">
+          Soluções de acessibilidade para pessoas e empresas. Catálogo demonstrativo Empr-E.
+        </p>
+        <div class="rodape__redes">
+          <a
+            href="https://www.linkedin.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rodape__rede"
+            aria-label="LinkedIn da Empr-E (abre em nova guia)"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+              ></path>
+              <rect x="2" y="9" width="4" height="12"></rect>
+              <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+          </a>
+          <a
+            href="https://www.instagram.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rodape__rede"
+            aria-label="Instagram da Empr-E (abre em nova guia)"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a
+            href="https://www.youtube.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rodape__rede"
+            aria-label="YouTube da Empr-E (abre em nova guia)"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"
+              ></path>
+              <polygon
+                points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02"
+                fill="currentColor"
+                stroke="none"
+              ></polygon>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <nav class="rodape__col" aria-label="Links da plataforma">
+        <h3 class="rodape__col-titulo">Plataforma</h3>
+        <ul class="rodape__links" role="list">
+          <li><a href="/catalogo" class="rodape__link">Produtos</a></li>
+          <li><a href="/#empresas" class="rodape__link">Empresas</a></li>
+          <li><a href="/cadastro" class="rodape__link">Criar conta</a></li>
+          <li><a href="/login" class="rodape__link">Entrar</a></li>
+          <li><a href="/conta/vendedor" class="rodape__link">Painel do vendedor</a></li>
+        </ul>
+      </nav>
+
+      <nav class="rodape__col" aria-label="Links de suporte">
+        <h3 class="rodape__col-titulo">Suporte</h3>
+        <ul class="rodape__links" role="list">
+          <li><a href="/institucional#ajuda" class="rodape__link">Central de ajuda</a></li>
+          <li><a href="/#contato" class="rodape__link">Contato</a></li>
+          <li>
+            <a href="/institucional#politica-privacidade" class="rodape__link"
+              >Política de privacidade</a
+            >
+          </li>
+          <li><a href="/institucional#termos-uso" class="rodape__link">Termos de uso</a></li>
+          <li><a href="/institucional#acessibilidade" class="rodape__link">Acessibilidade</a></li>
+        </ul>
+      </nav>
+
+      <div id="contato" class="rodape__col">
+        <h3 class="rodape__col-titulo">Contato</h3>
+        <address class="rodape__contato">
+          <p>
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+              ></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <a href="mailto:contato@empr-e.com.br" class="rodape__link">contato@empr-e.com.br</a>
+          </p>
+          <p>
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+              ></path>
+            </svg>
+            <a href="tel:+551140042727" class="rodape__link">(11) 4004-2727</a>
+          </p>
+        </address>
+
+        <a class="botao-reportar" href="/institucional#acessibilidade">Acessibilidade</a>
+      </div>
+    </div>
+
+    <div class="rodape__rodape">
+      <p class="rodape__direitos">
+        © 2026 Empr-E. Todos os direitos reservados. Construído com acessibilidade em primeiro
+        lugar.
+      </p>
+    </div>
+  </div>
 </footer>

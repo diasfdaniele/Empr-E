@@ -36,7 +36,15 @@ A nova fase da Empr-E busca:
 
 ## Funcionalidades
 
-Em desenvolvimento.
+O catálogo demonstrativo oferece busca, filtros por categoria, empresa e preço,
+além de páginas de detalhe com variações e imagens locais. O carrinho e o checkout
+exibem exemplos independentes: as interações são temporárias, não criam pedidos e
+não realizam cobranças. Cadastro, login, conta, administração, favoritos persistidos,
+histórico e painel do vendedor estão indisponíveis nesta fase.
+
+Pessoas físicas e jurídicas poderão comprar; somente pessoas jurídicas poderão
+vender. Essa regra está preparada na interface e nos contratos do model, mas ainda
+não representa autenticação ou autorização implementada.
 
 ## Arquitetura do Sistema
 
@@ -55,7 +63,14 @@ Em desenvolvimento.
 
 ## Estrutura do Projeto
 
-A estrutura do projeto está sendo reorganizada nesta nova fase para separar a aplicação frontend, o backend e o banco de dados.
+O backend Express renderiza páginas EJS e segue MVC. Os seis módulos principais,
+com nomes e campos do domínio em português, são usuário, produto, empresa, pedido,
+pagamento e vendas. Endereços, contatos e favoritos ficam com usuário; carrinho,
+itens e orçamento ficam com pedido. Views compartilhadas ficam em `src/views/partials`.
+
+O CSS, as imagens e as interações do navegador ficam em `public/assets/`. O HTML
+usa as classes Bootstrap necessárias para manter o layout existente. Os dados dos
+models são demonstrações em memória: não há persistência nem conexão ao banco.
 
 ## Banco de Dados
 
@@ -63,25 +78,44 @@ Em desenvolvimento.
 
 ## Como Executar o Projeto
 
-As instruções de instalação e execução serão atualizadas conforme a implementação definitiva do backend e do banco de dados.
-
-De forma geral, o projeto será executado localmente a partir do ambiente de desenvolvimento, com o frontend se comunicando com o backend por meio de APIs.
-
-```bash
-npm install
-```
-
-Para iniciar a aplicação:
+Requisito: Node.js 24 ou superior. Na raiz do projeto, instale as dependências
+registradas no lockfile e inicie o servidor:
 
 ```bash
+npm ci
 npm start
 ```
+
+O endereço padrão é http://localhost:3001. Para desenvolvimento com reinício
+automático após alterações em JavaScript:
+
+```bash
+npm run dev
+```
+
+Para usar outra porta, defina `PORT` no ambiente antes de iniciar. Não é necessário
+criar um arquivo `.env` nem configurar banco para executar a demonstração.
+
+## Testes
+
+```bash
+npm test
+npx playwright install chromium --no-shell
+npm run test:browser
+```
+
+Os testes HTTP e de domínio verificam rotas, filtros, escape EJS, modelos e limites
+das operações demonstrativas. Os testes com Chromium conferem desktop e mobile,
+imagens, navegação por teclado e interações. O teste de navegador funciona sem
+depender de uma cópia da aplicação antiga em outra pasta.
 
 ## Projeto Acadêmico
 
 A Empr-E é um projeto acadêmico desenvolvido por alunos do curso de **Análise e Desenvolvimento de Sistemas do IFSP - Campinas**, tendo como objetivo aplicar conhecimentos de Desenvolvimento Web 2, Engenharia de Software 2, Redes de Computadores e Gestão de TI em um projeto prático.
 
-A nova fase representa a evolução da plataforma desenvolvida anteriormente, incorporando novas funcionalidades, uma nova arquitetura e uma estrutura de backend e banco de dados.
+A nova fase representa a evolução da plataforma desenvolvida anteriormente. O
+banco de dados, autenticação, operações comerciais e integração de pagamento
+continuam planejados e não fazem parte desta versão demonstrativa.
 
 ## Licença
 

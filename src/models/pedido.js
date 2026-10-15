@@ -1,0 +1,111 @@
+import { listarProdutos } from './produto.js';
+import {
+  identificador,
+  inteiroPositivo,
+  valorMonetario,
+  calcularSubtotal,
+  somarValores,
+} from '../utils/validacao.js';
+
+export class ItemCarrinho {
+  constructor({ produtoId, quantidade, precoUnitario, modalidade, variacao = '' }) {
+    this.produtoId = identificador(produtoId, 'Produto');
+    this.quantidade = inteiroPositivo(quantidade);
+    this.precoUnitario = valorMonetario(precoUnitario);
+    if (!['compra', 'projeto'].includes(modalidade))
+      throw new TypeError('Modalidade de compra inválida.');
+    if (typeof variacao !== 'string') throw new TypeError('Variação deve ser texto.');
+    this.modalidade = modalidade;
+    this.variacao = variacao;
+    Object.freeze(this);
+  }
+
+  get total() {
+    return this.modalidade === 'compra' ? calcularSubtotal(this.precoUnitario, this.quantidade) : 0;
+  }
+}
+
+export class Carrinho {
+  constructor({ id, usuarioId = null, itens }) {
+    this.id = identificador(id, 'Carrinho');
+    this.usuarioId = usuarioId === null ? null : identificador(usuarioId, 'Usuário');
+    if (!Array.isArray(itens) || itens.some((item) => !(item instanceof ItemCarrinho)))
+      throw new TypeError('Carrinho exige itens válidos.');
+    this.itens = Object.freeze([...itens]);
+    Object.freeze(this);
+  }
+
+  get quantidade() {
+    return this.itens.reduce((total, item) => total + item.quantidade, 0);
+  }
+
+  get total() {
+    return somarValores(this.itens.map((item) => item.total));
+  }
+}
+
+export function obterCarrinhoExemplo() {
+  return new Carrinho({
+    id: 'carrinho-exemplo',
+    itens: listarProdutos().map(
+      (produto) =>
+        new ItemCarrinho({
+          produtoId: produto.id,
+          quantidade: produto.modalidade === 'compra' ? 2 : 1,
+          precoUnitario: produto.preco,
+          modalidade: produto.modalidade,
+          variacao: produto.variacoes[0],
+        }),
+    ),
+  });
+}
+
+export class ItemPedido {
+  constructor({ produtoId, quantidade, precoUnitario, variacao = '' }) {
+    this.produtoId = identificador(produtoId, 'Produto');
+    this.quantidade = inteiroPositivo(quantidade);
+    this.precoUnitario = valorMonetario(precoUnitario);
+    if (typeof variacao !== 'string') throw new TypeError('Variação deve ser texto.');
+    this.variacao = variacao;
+    Object.freeze(this);
+  }
+
+  get total() {
+    return calcularSubtotal(this.precoUnitario, this.quantidade);
+  }
+}
+
+export const situacoesPedido = Object.freeze(['aberto', 'pago', 'cancelado', 'enviado']);
+
+export class Pedido {
+  constructor({ id, compradorId, enderecoId, itens, situacao = 'aberto' }) {
+    this.id = identificador(id, 'Pedido');
+    this.compradorId = identificador(compradorId, 'Comprador');
+    this.enderecoId = identificador(enderecoId, 'Endereço');
+    if (!situacoesPedido.includes(situacao)) throw new TypeError('Situação de pedido inválida.');
+    if (
+      !Array.isArray(itens) ||
+      !itens.length ||
+      itens.some((item) => !(item instanceof ItemPedido))
+    )
+      throw new TypeError('Pedido exige itens válidos.');
+    this.situacao = situacao;
+    this.itens = Object.freeze([...itens]);
+    Object.freeze(this);
+  }
+
+  get total() {
+    return somarValores(this.itens.map((item) => item.total));
+  }
+}
+
+export class Orcamento {
+  constructor({ id, compradorId, produtoId, quantidade, descricao }) {
+    this.id = identificador(id, 'Orçamento');
+    this.compradorId = identificador(compradorId, 'Comprador');
+    this.produtoId = identificador(produtoId, 'Produto');
+    this.quantidade = inteiroPositivo(quantidade);
+    this.descricao = identificador(descricao, 'Descrição do projeto');
+    Object.freeze(this);
+  }
+}

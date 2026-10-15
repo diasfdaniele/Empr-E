@@ -1,6 +1,73 @@
-<header class="cabecalho">
-  <div class="container">
-    <a href="/">Empr-E</a>
-    <%- include('navegacao') %>
+<header id="cabecalho" class="cabecalho" role="banner">
+  <div class="container cabecalho__interno">
+    <a href="/" class="cabecalho__logo" aria-label="Página inicial da Empr-e">
+      <svg
+        class="marca-logo"
+        width="110"
+        height="36"
+        viewBox="0 0 220 72"
+        fill="none"
+        aria-hidden="true"
+      >
+        <polygon
+          class="marca-logo__hex"
+          points="28,4 52,4 64,24 52,44 28,44 16,24"
+          fill="#F97316"
+        ></polygon>
+        <rect x="23" y="11" width="4" height="22" rx="1.5" fill="white"></rect>
+        <rect x="23" y="11" width="16" height="4" rx="1.5" fill="white"></rect>
+        <rect x="23" y="21" width="12" height="3.5" rx="1.5" fill="white"></rect>
+        <rect x="23" y="29" width="16" height="4" rx="1.5" fill="white"></rect>
+        <circle class="marca-logo__ponto-externo" cx="52" cy="8" r="4" fill="#1E293B"></circle>
+        <circle class="marca-logo__ponto-interno" cx="52" cy="8" r="2" fill="#F97316"></circle>
+        <text
+          class="marca-logo__nome"
+          x="74"
+          y="32"
+          font-family="'Plus Jakarta Sans',sans-serif"
+          font-size="26"
+          font-weight="800"
+          fill="#1E293B"
+          letter-spacing="-0.5"
+        >
+          Empr
+          <tspan class="marca-logo__nome-destaque" fill="#F97316">-E</tspan>
+        </text>
+        <text
+          class="marca-logo__assinatura"
+          x="74"
+          y="48"
+          font-family="'Plus Jakarta Sans',sans-serif"
+          font-size="9"
+          font-weight="500"
+          fill="#64748B"
+          letter-spacing="0.3"
+        >
+          Marketplace de Acessibilidade
+        </text>
+      </svg>
+    </a>
+
+    <%- include("navegacao", { movel: false }) %>
+
+    <div class="cabecalho__acoes d-flex align-items-center gap-3">
+      <a href="/carrinho" class="btn botao--discreto">Carrinho</a
+      ><a href="/login" class="btn botao--contorno botao-cabecalho-acesso">Entrar</a
+      ><a href="/cadastro" class="btn botao--principal botao-cabecalho-acesso">Criar conta</a>
+    </div>
+
+    <button
+      id="botao-menu-movel"
+      class="botao-menu-movel"
+      aria-expanded="false"
+      aria-controls="menu-movel"
+      aria-label="Abrir menu de navegação"
+    >
+      <span class="botao-menu-movel__barra" aria-hidden="true"></span>
+      <span class="botao-menu-movel__barra" aria-hidden="true"></span>
+      <span class="botao-menu-movel__barra" aria-hidden="true"></span>
+    </button>
   </div>
+
+  <%- include("navegacao", { movel: true }) %>
 </header>

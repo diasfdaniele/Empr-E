@@ -1,0 +1,80 @@
+<section
+  id="conta-vendedor-painel"
+  class="conta-painel conta-painel--secundario"
+  aria-labelledby="conta-vendedor-titulo"
+  hidden=""
+>
+  <div class="conta-painel__cabecalho">
+    <div>
+      <h2 id="conta-vendedor-titulo" class="conta-painel__titulo">Painel gerencial de produtos</h2>
+      <p id="conta-vendedor-texto" class="conta-painel__subtitulo">
+        Cadastre aqui seus produtos para venda.
+      </p>
+    </div>
+  </div>
+
+  <div class="row g-4 align-items-start">
+    <div class="col-lg-5">
+      <form id="produto-formulario" class="conta-produto-formulario" novalidate="">
+        <div class="mb-3">
+          <label for="produto-nome" class="campo-rotulo">Nome do produto</label>
+          <input
+            id="produto-nome"
+            class="campo-entrada"
+            type="text"
+            placeholder="Ex: Plataforma elevatoria compacta"
+            required=""
+          />
+        </div>
+        <div class="mb-3">
+          <label for="produto-categoria" class="campo-rotulo">Categoria</label>
+          <select id="produto-categoria" class="campo-entrada campo-seletor" required="">
+            <option value="">Selecione</option>
+            <option value="mobilidade">Mobilidade</option>
+            <option value="visual">Deficiencia visual</option>
+            <option value="digital">Acessibilidade digital</option>
+            <option value="auditiva">Deficiencia auditiva</option>
+            <option value="predial">Acessibilidade predial</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="produto-modalidade" class="campo-rotulo">Modalidade</label>
+          <select id="produto-modalidade" class="campo-entrada campo-seletor" required="">
+            <option value="">Selecione</option>
+            <option value="compra-imediata">Compra imediata</option>
+            <option value="sob-consulta">Sob consulta</option>
+            <option value="projeto-personalizado">Projeto personalizado</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="produto-preco" class="campo-rotulo">Preço ou condição comercial</label>
+          <input
+            id="produto-preco"
+            class="campo-entrada"
+            type="text"
+            placeholder="Ex: A partir de R$ 1.290"
+            required=""
+          />
+        </div>
+        <div class="mb-3">
+          <label for="produto-descricao" class="campo-rotulo">Descrição</label>
+          <textarea
+            id="produto-descricao"
+            class="campo-entrada campo-texto"
+            rows="5"
+            placeholder="Descreva o produto, aplicação e diferencial."
+            required=""
+          ></textarea>
+        </div>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <button type="submit" class="btn botao--principal botao--sm">Cadastrar produto</button>
+          <span id="produto-estado" class="conta-painel__subtitulo" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-7">
+      <div id="conta-produtos-lista" class="conta-favoritos-lista" aria-live="polite"></div>
+    </div>
+  </div>
+</section>

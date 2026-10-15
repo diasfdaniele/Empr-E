@@ -1,4 +1,42 @@
-<nav class="navegacao" aria-label="Navegação principal">
-  <a href="/">Início</a>
-  <a href="/#sobre">Sobre</a>
+<% const links = [
+  { endereco: '/', nome: 'Início', ativo: pagina === 'inicio' },
+  {
+    endereco: '/catalogo',
+    nome: 'Produtos',
+    ativo: ['catalogo', 'produto'].includes(pagina),
+  },
+  { endereco: '/#sobre', nome: 'Sobre' },
+  { endereco: '/#empresas', nome: 'Empresas' },
+  { endereco: '/#contato', nome: 'Contato' },
+]; %>
+<% if (movel) { %>
+<div id="menu-movel" class="menu-movel" hidden="">
+  <nav aria-label="Navegação mobile">
+    <ul class="menu-movel__lista">
+      <% for (const link of [...links, { endereco: "/carrinho", nome: "Carrinho" }, { endereco: "/conta", nome: "Minha conta" }, { endereco: "/login", nome: "Entrar" }, { endereco: "/cadastro", nome: "Criar conta" }]) { %>
+      <li>
+        <a class="menu-movel__link" href="<%= link.endereco %>" <% if (link.ativo) { %>aria-current="page" <% } %>
+          ><%= link.nome %></a
+        >
+      </li>
+      <% } %>
+    </ul>
+  </nav>
+</div>
+<% } else { %>
+<nav id="navegacao-principal" class="navegacao" aria-label="Navegação principal" tabindex="-1">
+  <ul class="navegacao__lista">
+    <% for (const link of links) { %>
+    <li>
+      <a
+        class="navegacao__link<%= link.ativo ? " navegacao__link--ativo" : "" %>"
+        href="<%= link.endereco %>"
+        <% if (link.ativo) { %>aria-current="page"
+        <% } %>
+        ><%= link.nome %></a
+      >
+    </li>
+    <% } %>
+  </ul>
 </nav>
+<% } %>

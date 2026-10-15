@@ -1,0 +1,70 @@
+<main id="conteudo-principal" tabindex="-1">
+  <section class="produto-detalhe-destaque">
+    <div class="container">
+      <div class="produto-detalhe-destaque__conteudo">
+        <h1 class="produto-detalhe-destaque__titulo">Detalhes do produto</h1>
+        <p class="demo-nota">Demonstração. Seleções e adições se perdem ao sair desta página.</p>
+      </div>
+    </div>
+  </section>
+  <section class="produto-detalhe-secao">
+    <div class="container">
+      <div class="produto-detalhe" id="produto-detalhe">
+        <div class="produto-detalhe__galeria">
+          <div class="produto-detalhe__imagem-principal-wrap">
+            <img
+              id="produto-detalhe-imagem-principal"
+              src="<%= produto.imagens[0] %>"
+              alt="<%= produto.nome %> — <%= produto.variacoes[0] %>"
+              class="produto-detalhe__imagem-principal"
+              width="600"
+              height="480"
+            />
+          </div>
+          <div class="produto-detalhe__miniaturas">
+            <% produto.imagens.forEach((imagem, indice) => { %>
+            <button
+              type="button"
+              class="produto-detalhe__miniatura<%= indice === 0 ? " produto-detalhe__miniatura--ativo" : "" %>"
+              aria-label="Selecionar <%= produto.variacoes[indice] %>"
+              aria-pressed="<%= indice === 0 %>"
+              data-imagem-miniatura="<%= imagem %>"
+              data-variacao="<%= produto.variacoes[indice] %>"
+            >
+              <img src="<%= imagem %>" alt="<%= produto.variacoes[indice] %>" width="60" height="60" />
+            </button>
+            <% }); %>
+          </div>
+        </div>
+        <div class="produto-detalhe__informacoes">
+          <a href="/catalogo" class="btn botao--discreto botao--sm">Voltar ao catálogo</a>
+          <span class="produto-detalhe__categoria"><%= produto.categoria.nome %></span>
+          <h2 class="produto-detalhe__titulo"><%= produto.nome %></h2>
+          <p class="produto-detalhe__empresa">Fornecedor: <%= produto.empresa.nome %></p>
+          <p class="produto-detalhe__descricao"><%= produto.descricao %></p>
+          <div class="produto-detalhe__resumo">
+            <div class="produto-detalhe__painel">
+              <span class="produto-detalhe__painel-rotulo">Preço demonstrativo</span>
+              <div class="produto-detalhe__preco"><%= formatarMoeda(produto.preco) %>/<%= produto.unidade %></div>
+            </div>
+            <div class="produto-detalhe__painel">
+              <span class="produto-detalhe__painel-rotulo">Modalidade</span>
+              <div class="produto-detalhe__modalidade"><%= produto.nomeModalidade %></div>
+            </div>
+          </div>
+          <p id="variacao-estado" role="status">Variação: <%= produto.variacoes[0] %></p>
+          <div class="produto-detalhe__acoes">
+            <button
+              type="button"
+              class="btn botao--principal"
+              data-adicionar-carrinho="<%= produto.id %>"
+              data-variacao="<%= produto.variacoes[0] %>"
+            >
+              Simular adição</button
+            ><a href="/carrinho" class="btn botao--contorno">Ver carrinho de exemplo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

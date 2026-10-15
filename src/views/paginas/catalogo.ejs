@@ -1,0 +1,86 @@
+<main id="conteudo-principal" tabindex="-1">
+  <section class="catalogo-destaque" aria-labelledby="catalogo-titulo">
+    <div class="container">
+      <div class="catalogo-destaque__conteudo">
+        <span class="secao-selo">Marketplace B2B e B2C</span>
+        <h1 id="catalogo-titulo" class="catalogo-destaque__titulo">
+          Catálogo de produtos acessíveis
+        </h1>
+        <p class="catalogo-destaque__texto">Soluções de acessibilidade para pessoas e empresas.</p>
+        <p class="demo-nota">
+          Produtos demonstrativos. Favoritos e adições se perdem ao sair desta página.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="catalogo-produtos" aria-labelledby="catalogo-lista-titulo">
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-3">
+          <aside class="catalogo__lateral filtros" aria-label="Filtros do catálogo">
+            <h2 class="filtros__titulo">Filtros</h2>
+            <form id="filtros-catalogo" action="/catalogo" method="get">
+              <div class="filtro-grupo">
+                <label for="campo-busca" class="filtro-rotulo">Buscar produto</label>
+                <input
+                  id="campo-busca"
+                  name="busca"
+                  class="form-control"
+                  type="search"
+                  maxlength="160"
+                  value="<%= filtros.busca %>"
+                  placeholder="Nome, empresa ou solução"
+                />
+              </div>
+              <div class="filtro-grupo">
+                <label for="filtro-categoria" class="filtro-rotulo">Categoria</label>
+                <select id="filtro-categoria" name="categoria" class="form-select">
+                  <option value="">Todas as categorias</option>
+                  <% for (const categoria of categorias) { %>
+                  <option value="<%= categoria.id %>" <%= filtros.categoria === categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
+                  <% } %>
+                </select>
+              </div>
+              <div class="filtro-grupo">
+                <label for="filtro-preco" class="filtro-rotulo">Faixa de preço</label>
+                <select id="filtro-preco" name="preco" class="form-select">
+                  <% for (const opcao of opcoesPreco) { %>
+                  <option value="<%= opcao.valor %>" <%= filtros.preco === opcao.valor ? 'selected' : '' %>><%= opcao.nome %></option>
+                  <% } %>
+                </select>
+              </div>
+              <div class="filtro-grupo">
+                <label for="filtro-empresa" class="filtro-rotulo">Empresa</label>
+                <select id="filtro-empresa" name="empresa" class="form-select">
+                  <option value="">Todas as empresas</option>
+                  <% for (const empresa of empresas) { %>
+                  <option value="<%= empresa %>" <%= filtros.empresa === empresa ? 'selected' : '' %>><%= empresa %></option>
+                  <% } %>
+                </select>
+              </div>
+              <button type="submit" class="btn botao--principal">Filtrar</button>
+              <a href="/catalogo" class="btn botao--discreto">Limpar</a>
+            </form>
+          </aside>
+        </div>
+        <div class="col-lg-9">
+          <div class="catalogo__cabecalho">
+            <h2 id="catalogo-lista-titulo" class="catalogo__titulo">Soluções em destaque</h2>
+            <p class="catalogo__resultado" aria-live="polite"><%= produtos.length %> resultado(s)</p>
+          </div>
+          <div id="catalogo-lista" class="catalogo__grade">
+            <% for (const produto of produtos) { %>
+            <%- include('../partials/cartao-produto', { produto }) %>
+            <% } %>
+          </div>
+          <% if (!produtos.length) { %>
+          <p class="demo-nota">
+            Nenhum produto encontrado. Ajuste os filtros ou
+            <a href="/catalogo">veja todo o catálogo</a>.
+          </p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

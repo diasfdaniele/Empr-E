@@ -1,0 +1,123 @@
+<main id="conteudo-principal" class="cadastro-principal" tabindex="-1">
+  <div class="container cadastro-conteiner">
+    <div class="cadastro-cabecalho">
+      <span class="secao-selo">Pessoas e empresas</span>
+      <h1 class="cadastro-titulo">Criar conta</h1>
+      <p class="demo-nota" id="cadastro-aviso">
+        Cadastro indisponível nesta versão. Não informe dados pessoais; nenhum formulário será
+        enviado.
+      </p>
+    </div>
+    <form
+      class="cadastro-formulario"
+      aria-describedby="cadastro-aviso"
+      data-formulario-desabilitado=""
+    >
+      <fieldset class="formulario-secao">
+        <legend class="formulario-secao__titulo">Tipo de conta</legend>
+        <div class="campos-linha">
+          <div class="campo-grupo">
+            <label for="pessoa-tipo" class="campo-rotulo">Tipo de pessoa</label
+            ><select id="pessoa-tipo" class="campo-entrada campo-seletor">
+              <option value="pf">Pessoa física</option>
+              <option value="pj">Pessoa jurídica</option>
+            </select>
+          </div>
+          <div class="campo-grupo">
+            <label for="perfil-comercial" class="campo-rotulo">Objetivo na plataforma</label
+            ><select id="perfil-comercial" class="campo-entrada campo-seletor">
+              <option value="comprador">Comprar</option>
+              <option value="vendedor" disabled="">Vender — somente pessoa jurídica</option>
+            </select>
+          </div>
+        </div>
+        <p class="campo-dica">
+          Pessoa física e jurídica podem comprar. Apenas pessoa jurídica poderá vender.
+        </p>
+      </fieldset>
+      <fieldset class="formulario-secao" hidden="" disabled="" data-campos-pj="">
+        <legend class="formulario-secao__titulo">Dados da empresa</legend>
+        <div class="campos-linha">
+          <div class="campo-grupo">
+            <label for="razao-social" class="campo-rotulo">Razão social</label
+            ><input
+              id="razao-social"
+              class="campo-entrada"
+              placeholder="Nome da empresa"
+              disabled=""
+            />
+          </div>
+          <div class="campo-grupo">
+            <label for="cnpj" class="campo-rotulo">CNPJ</label
+            ><input id="cnpj" class="campo-entrada" placeholder="00.000.000/0000-00" disabled="" />
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="formulario-secao" disabled="">
+        <legend class="formulario-secao__titulo">Dados pessoais / responsável</legend>
+        <div class="campo-grupo">
+          <label for="nome" class="campo-rotulo">Nome completo</label
+          ><input
+            id="nome"
+            class="campo-entrada"
+            placeholder="Nome completo"
+            autocomplete="off"
+            disabled=""
+          />
+        </div>
+        <div class="campos-linha">
+          <div class="campo-grupo">
+            <label for="email" class="campo-rotulo">E-mail</label
+            ><input
+              id="email"
+              class="campo-entrada"
+              type="email"
+              placeholder="nome@exemplo.com"
+              autocomplete="off"
+              disabled=""
+            />
+          </div>
+          <div class="campo-grupo">
+            <label for="telefone" class="campo-rotulo">Telefone</label
+            ><input
+              id="telefone"
+              class="campo-entrada"
+              type="tel"
+              placeholder="(00) 00000-0000"
+              disabled=""
+            />
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="formulario-secao" disabled="">
+        <legend class="formulario-secao__titulo">Dados de acesso</legend>
+        <div class="campos-linha">
+          <div class="campo-grupo">
+            <label for="senha" class="campo-rotulo">Senha</label
+            ><input
+              id="senha"
+              class="campo-entrada"
+              type="password"
+              autocomplete="off"
+              disabled=""
+            />
+          </div>
+          <div class="campo-grupo">
+            <label for="confirmar-senha" class="campo-rotulo">Confirmar senha</label
+            ><input
+              id="confirmar-senha"
+              class="campo-entrada"
+              type="password"
+              autocomplete="off"
+              disabled=""
+            />
+          </div>
+        </div>
+      </fieldset>
+      <button type="submit" class="btn botao--principal botao--lg" disabled="">
+        Cadastro indisponível
+      </button>
+      <a href="/login" class="btn botao--discreto">Já tenho conta</a>
+    </form>
+  </div>
+</main>

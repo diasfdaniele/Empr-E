@@ -1,0 +1,161 @@
+<section
+  id="conta-administracao-painel"
+  class="conta-painel conta-painel--secundario conta-administracao-painel"
+  aria-labelledby="conta-admin-titulo"
+  hidden=""
+>
+  <div class="container">
+    <div class="conta-painel__cabecalho">
+      <div>
+        <span class="conta-resumo__rotulo">Administração</span>
+        <h2 id="conta-admin-titulo" class="conta-painel__titulo">Painel administrativo</h2>
+        <p id="conta-admin-texto" class="conta-painel__subtitulo">
+          Visualize empresas, produtos e vendas.
+        </p>
+      </div>
+    </div>
+
+    <dl class="conta-administracao-metricas" aria-label="Resumo do painel administrativo">
+      <div class="conta-administracao-metrica">
+        <dt>Vendedoras</dt>
+        <dd id="admin-total-vendedoras">0</dd>
+      </div>
+      <div class="conta-administracao-metrica">
+        <dt>Compradoras</dt>
+        <dd id="admin-total-compradoras">0</dd>
+      </div>
+      <div class="conta-administracao-metrica">
+        <dt>Produtos</dt>
+        <dd id="admin-total-produtos">0</dd>
+      </div>
+      <div class="conta-administracao-metrica">
+        <dt>Vendas</dt>
+        <dd id="admin-total-vendas">0</dd>
+      </div>
+    </dl>
+
+    <p id="admin-painel-texto" class="conta-administracao-painel"></p>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <section class="conta-administracao-bloco" aria-labelledby="admin-vendedoras-titulo">
+          <div class="conta-painel__cabecalho">
+            <div>
+              <h3
+                id="admin-vendedoras-titulo"
+                class="conta-painel__titulo conta-painel__titulo--secundario"
+              >
+                Empresas vendedoras
+              </h3>
+              <p class="conta-painel__subtitulo">
+                Dados básicos das empresas que anunciam produtos na plataforma.
+              </p>
+            </div>
+          </div>
+          <div
+            id="admin-vendedoras-lista"
+            class="conta-administracao-lista"
+            aria-live="polite"
+          ></div>
+          <div class="conta-administracao-rodape">
+            <button
+              type="button"
+              id="admin-vendedoras-toggle"
+              class="btn botao--contorno botao--sm conta-administracao-toggle"
+              hidden=""
+            >
+              Ver mais
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div class="col-lg-6">
+        <section class="conta-administracao-bloco" aria-labelledby="admin-compradoras-titulo">
+          <div class="conta-painel__cabecalho">
+            <div>
+              <h3
+                id="admin-compradoras-titulo"
+                class="conta-painel__titulo conta-painel__titulo--secundario"
+              >
+                Empresas compradoras
+              </h3>
+              <p class="conta-painel__subtitulo">
+                Empresas que se cadastraram para comprar soluções.
+              </p>
+            </div>
+          </div>
+          <div
+            id="admin-compradoras-lista"
+            class="conta-administracao-lista"
+            aria-live="polite"
+          ></div>
+          <div class="conta-administracao-rodape">
+            <button
+              type="button"
+              id="admin-compradoras-toggle"
+              class="btn botao--contorno botao--sm conta-administracao-toggle"
+              hidden=""
+            >
+              Ver mais
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div class="col-lg-6">
+        <section class="conta-administracao-bloco" aria-labelledby="admin-produtos-titulo">
+          <div class="conta-painel__cabecalho">
+            <div>
+              <h3
+                id="admin-produtos-titulo"
+                class="conta-painel__titulo conta-painel__titulo--secundario"
+              >
+                Produtos cadastrados
+              </h3>
+              <p class="conta-painel__subtitulo">Todos os produtos anunciados na plataforma.</p>
+            </div>
+          </div>
+          <div id="admin-produtos-lista" class="conta-administracao-lista" aria-live="polite"></div>
+          <div class="conta-administracao-rodape">
+            <button
+              type="button"
+              id="admin-produtos-toggle"
+              class="btn botao--contorno botao--sm conta-administracao-toggle"
+              hidden=""
+            >
+              Ver mais
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div class="col-lg-6">
+        <section class="conta-administracao-bloco" aria-labelledby="admin-vendas-titulo">
+          <div class="conta-painel__cabecalho">
+            <div>
+              <h3
+                id="admin-vendas-titulo"
+                class="conta-painel__titulo conta-painel__titulo--secundario"
+              >
+                Vendas realizadas
+              </h3>
+              <p class="conta-painel__subtitulo">Pedidos e transações registradas na plataforma.</p>
+            </div>
+          </div>
+          <div id="admin-vendas-lista" class="conta-administracao-lista" aria-live="polite"></div>
+          <div class="conta-administracao-rodape">
+            <button
+              type="button"
+              id="admin-vendas-toggle"
+              class="btn botao--contorno botao--sm conta-administracao-toggle"
+              hidden=""
+            >
+              Ver mais
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

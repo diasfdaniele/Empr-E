@@ -1,0 +1,271 @@
+<main id="conteudo-principal" tabindex="-1">
+  <section class="pagamento-destaque" aria-labelledby="pagamento-titulo">
+    <div class="container">
+      <div class="pagamento-destaque__conteudo">
+        <span class="secao-selo">Demonstração</span>
+        <h1 id="pagamento-titulo" class="pagamento-destaque__titulo">Pagamento ilustrativo</h1>
+        <p class="pagamento-destaque__texto">
+          Exemplo independente do carrinho. Nenhum pagamento ou pedido será realizado.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pagamento-secao" aria-labelledby="pagamento-formulario-titulo">
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-7">
+          <section class="pagamento-painel" aria-labelledby="pagamento-formulario-titulo">
+            <div class="pagamento-painel__cabecalho">
+              <div>
+                <h2 id="pagamento-formulario-titulo" class="pagamento-painel__titulo">
+                  Dados para pagamento
+                </h2>
+              </div>
+              <a href="/carrinho" class="btn botao--discreto">Voltar ao carrinho</a>
+            </div>
+
+            <form
+              id="pagamento-formulario"
+              class="pagamento-formulario"
+              novalidate=""
+              data-formulario-desabilitado=""
+            >
+              <div class="campo-grupo">
+                <label for="pessoa-tipo" class="campo-rotulo">Tipo de pessoa</label
+                ><select id="pessoa-tipo" class="campo-seletor">
+                  <option value="pf">Pessoa física</option>
+                  <option value="pj">Pessoa jurídica</option>
+                </select>
+              </div>
+              <div class="pagamento-formulario__grade">
+                <div class="campo-grupo" hidden="" data-campos-pj="">
+                  <label for="empresa" class="campo-rotulo">Empresa</label>
+                  <input
+                    id="empresa"
+                    class="campo-entrada"
+                    type="text"
+                    placeholder="Nome da empresa"
+                    disabled=""
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="campo-grupo" hidden="" data-campos-pj="">
+                  <label for="cnpj" class="campo-rotulo">CNPJ</label>
+                  <input
+                    id="cnpj"
+                    class="campo-entrada"
+                    type="text"
+                    placeholder="00.000.000/0001-00"
+                    disabled=""
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="campo-grupo">
+                  <label for="responsavel" class="campo-rotulo">Nome completo / responsável</label>
+                  <input
+                    id="responsavel"
+                    class="campo-entrada"
+                    type="text"
+                    placeholder="Nome do responsável"
+                    disabled=""
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="campo-grupo">
+                  <label for="email" class="campo-rotulo">E-mail</label>
+                  <input
+                    id="email"
+                    class="campo-entrada"
+                    type="email"
+                    placeholder="empresa@exemplo.com.br"
+                    disabled=""
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+
+              <section class="pagamento-bloco" aria-labelledby="pagamento-endereco-titulo">
+                <div class="pagamento-bloco__cabecalho">
+                  <h3 id="pagamento-endereco-titulo" class="pagamento-bloco__titulo">
+                    Confirmação de endereço
+                  </h3>
+                  <p class="pagamento-bloco__texto">
+                    Confirme o endereço para entrega e faturamento.
+                  </p>
+                </div>
+
+                <div class="pagamento-formulario__grade pagamento-formulario__grade--endereco-topo">
+                  <div class="campo-grupo">
+                    <label for="cep" class="campo-rotulo">CEP</label>
+                    <input
+                      id="cep"
+                      class="campo-entrada"
+                      type="text"
+                      inputmode="numeric"
+                      placeholder="00000-000"
+                      disabled=""
+                      autocomplete="off"
+                      value="01001000"
+                      readonly=""
+                      aria-describedby="cep-estado"
+                    /><button type="button" id="botao-consultar-cep" class="btn botao--contorno">
+                      Consultar CEP de exemplo
+                    </button>
+                    <p id="cep-estado" role="status">
+                      Consulta opcional ao ViaCEP: apenas o CEP de exemplo será enviado.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pagamento-formulario__grade pagamento-formulario__grade--endereco">
+                  <div class="campo-grupo pagamento-formulario__campo--logradouro">
+                    <label for="logradouro" class="campo-rotulo">Logradouro</label>
+                    <input
+                      id="logradouro"
+                      class="campo-entrada"
+                      type="text"
+                      placeholder="Rua, avenida ou alameda"
+                      disabled=""
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="numero" class="campo-rotulo">Numero</label>
+                    <input
+                      id="numero"
+                      class="campo-entrada"
+                      type="text"
+                      placeholder="123"
+                      disabled=""
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="complemento" class="campo-rotulo">Complemento</label>
+                    <input
+                      id="complemento"
+                      class="campo-entrada"
+                      type="text"
+                      placeholder="Sala, bloco, andar"
+                      disabled=""
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="bairro" class="campo-rotulo">Bairro</label>
+                    <input
+                      id="bairro"
+                      class="campo-entrada"
+                      type="text"
+                      placeholder="Bairro"
+                      disabled=""
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="cidade" class="campo-rotulo">Cidade</label>
+                    <input
+                      id="cidade"
+                      class="campo-entrada"
+                      type="text"
+                      placeholder="Cidade"
+                      disabled=""
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="campo-grupo">
+                    <label for="estado" class="campo-rotulo">Estado</label>
+                    <input
+                      id="estado"
+                      class="campo-entrada"
+                      type="text"
+                      maxlength="2"
+                      placeholder="UF"
+                      disabled=""
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+              </section>
+
+              <div class="pagamento-formulario__grade pagamento-formulario__grade--financeiro">
+                <div class="campo-grupo">
+                  <label for="metodo" class="campo-rotulo">Método de pagamento</label>
+                  <select id="metodo" class="campo-seletor" disabled="" autocomplete="off">
+                    <option value="">Selecione</option>
+                    <option value="cartao">Cartão</option>
+                    <option value="boleto">Boleto</option>
+                    <option value="pix">PIX</option>
+                  </select>
+                </div>
+                <div class="campo-grupo">
+                  <label for="parcelas" class="campo-rotulo">Parcelamento</label>
+                  <select id="parcelas" class="campo-seletor" disabled="" autocomplete="off">
+                    <option value="1x">1x</option>
+                    <option value="2x">2x</option>
+                    <option value="3x">3x</option>
+                    <option value="6x">6x</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="campo-grupo">
+                <label for="observacoes" class="campo-rotulo">Observações do pedido</label>
+                <textarea
+                  id="observacoes"
+                  class="campo-texto"
+                  rows="4"
+                  placeholder="Instruções de entrega, centro de custo ou observações para o financeiro."
+                  disabled=""
+                  autocomplete="off"
+                ></textarea>
+              </div>
+
+              <div class="pagamento-formulario__acoes">
+                <button
+                  id="botao-confirmar-pagamento"
+                  type="submit"
+                  class="btn botao--principal botao--lg"
+                  disabled=""
+                >
+                  Pagamento indisponível
+                </button>
+                <a href="/carrinho" class="btn botao--contorno botao--lg">Voltar para carrinho</a>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div class="col-lg-5">
+          <aside class="pagamento-resumo" aria-label="Resumo do pagamento">
+            <span class="pagamento-resumo__rotulo">Checkout</span>
+            <h2 class="pagamento-resumo__titulo">Resumo do seu pedido</h2>
+            <p id="pagamento-resumo-texto" class="pagamento-resumo__texto">
+              Exemplo fictício: duas peças de piso tátil. Não representa uma compra.
+            </p>
+
+            <div id="pagamento-lista" class="pagamento-lista" aria-live="polite">
+              <%= produto.nome %> — <%= quantidade %> peças
+            </div>
+
+            <dl class="pagamento-metricas">
+              <div class="pagamento-metrica">
+                <dt>Itens totais</dt>
+                <dd id="pagamento-total-itens"><%= quantidade %></dd>
+              </div>
+              <div class="pagamento-metrica">
+                <dt>Pagamento imediato</dt>
+                <dd id="pagamento-itens-imediatos"><%= quantidade %></dd>
+              </div>
+              <div class="pagamento-metrica">
+                <dt>Total</dt>
+                <dd id="pagamento-total-valor"><%= formatarMoeda(total) %></dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

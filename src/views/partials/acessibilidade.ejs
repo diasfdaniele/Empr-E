@@ -1,0 +1,93 @@
+<div id="barra-acessibilidade" class="barra-acessibilidade" role="toolbar">
+  <div class="barra-acessibilidade__interno">
+    <span class="barra-acessibilidade__rotulo" aria-hidden="true">Acessibilidade:</span>
+
+    <button
+      id="botao-contraste"
+      class="botao-acess"
+      aria-pressed="false"
+      title="Alternar alto contraste"
+      aria-label="Alternar modo alto contraste"
+    >
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 2v20"></path>
+      </svg>
+      <span>Contraste</span>
+    </button>
+
+    <button
+      id="botao-aumentar-fonte"
+      class="botao-acess"
+      title="Aumentar tamanho da fonte"
+      aria-label="Aumentar tamanho da fonte"
+    >
+      <span>A+</span>
+    </button>
+
+    <button
+      id="botao-diminuir-fonte"
+      class="botao-acess"
+      title="Diminuir tamanho da fonte"
+      aria-label="A- Diminuir tamanho da fonte"
+    >
+      <span>A-</span>
+    </button>
+
+    <button
+      id="botao-simplificado"
+      class="botao-acess"
+      aria-pressed="false"
+      title="Ativar layout simplificado"
+      aria-label="Alternar layout simplificado"
+    >
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        <line x1="3" y1="9" x2="21" y2="9"></line>
+        <line x1="3" y1="15" x2="21" y2="15"></line>
+      </svg>
+      <span>Simplificado</span>
+    </button>
+
+    <button
+      id="botao-leitura"
+      class="botao-acess"
+      aria-pressed="false"
+      title="Ativar modo leitura"
+      aria-label="Alternar modo leitura"
+    >
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+      </svg>
+      <span>Leitura</span>
+    </button>
+  </div>
+</div>

@@ -1,31 +1,31 @@
 import express from 'express';
-import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-const diretorioAtual = dirname(fileURLToPath(import.meta.url));
-const diretorioRaiz = resolve(diretorioAtual, '..');
+import rotas from './routes/site.js';
+import { paginaNaoEncontrada, tratarErro } from './middlewares/erros.js';
 
 const aplicacao = express();
+aplicacao.disable('x-powered-by');
 aplicacao.set('view engine', 'ejs');
-aplicacao.set('views', resolve(diretorioAtual, 'views'));
-
-aplicacao.use(express.urlencoded({ extended: true }));
-aplicacao.use(express.json());
-aplicacao.use(express.static(resolve(diretorioRaiz, 'public')));
-
-aplicacao.get('/', (req, res) => {
-    res.render('estrutura', {
-        titulo: 'Empr-E',
-        pagina: 'inicio'
-    });
+aplicacao.set('views', fileURLToPath(new URL('./views/', import.meta.url)));
+aplicacao.use((requisicao, resposta, proximo) => {
+  resposta.set('X-Content-Type-Options', 'nosniff');
+  resposta.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  proximo();
 });
-
-aplicacao.use((req, res) => {
-    res.status(404).render('estrutura', {
-        titulo: 'Página não encontrada',
-        pagina: 'nao-encontrada'
-    });
-});
+aplicacao.use(
+  '/assets',
+  express.static(fileURLToPath(new URL('../public/assets/', import.meta.url))),
+);
+aplicacao.use(
+  '/bibliotecas',
+  express.static(fileURLToPath(new URL('../node_modules/bootstrap/dist/css/', import.meta.url))),
+);
+aplicacao.use(
+  '/icones',
+  express.static(fileURLToPath(new URL('../node_modules/lucide-static/icons/', import.meta.url))),
+);
+aplicacao.use(rotas);
+aplicacao.use(paginaNaoEncontrada);
+aplicacao.use(tratarErro);
 
 export default aplicacao;
-

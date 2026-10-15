@@ -1,14 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= titulo %></title>
-  <link rel="stylesheet" href="/assets/css/estilo.css">
-</head>
-<body>
-  <%- include('partials/cabecalho') %>
-  <%- include('paginas/' + pagina) %>
-  <%- include('partials/rodape') %>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Empr-E: soluções de acessibilidade para pessoas e empresas. Versão demonstrativa."
+    />
+    <meta name="theme-color" content="#F97316" />
+    <title><%= titulo %></title>
+    <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="/bibliotecas/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/css/estilo.css" rel="stylesheet" />
+    <% const estilos = {
+  catalogo: ['catalogo'],
+  produto: ['detalhe-produto'],
+  carrinho: ['carrinho'],
+  pagamento: ['pagamento'],
+  login: ['login'],
+  cadastro: ['cadastro'],
+  indisponivel: ['conta'],
+}; %>
+    <% for (const estilo of estilos[pagina] || []) { %>
+    <link href="/assets/css/<%= estilo %>.css" rel="stylesheet" />
+    <% } %>
+    <link href="/assets/css/mvc.css" rel="stylesheet" />
+    <script src="/assets/js/interacoes.js" defer=""></script>
+  </head>
+  <body>
+    <a href="#conteudo-principal" class="atalho-navegacao">Ir para o conteúdo principal</a>
+    <a href="#navegacao-principal" class="atalho-navegacao">Ir para a navegação</a>
+    <a href="#rodape" class="atalho-navegacao">Ir para o rodapé</a>
+    <%- include("partials/acessibilidade") %> <%- include("partials/cabecalho") %> <%- include("paginas/" + pagina) %>
+    <div id="demo-estado" class="demo-estado" role="status" aria-live="polite" hidden=""></div>
+    <%- include("partials/rodape") %>
+    <div vw="" class="enabled">
+      <div vw-access-button="" class="active"></div>
+      <div vw-plugin-wrapper=""><div class="vw-plugin-top-wrapper"></div></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js" defer=""></script>
+  </body>
 </html>
