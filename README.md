@@ -86,7 +86,7 @@ npm ci
 npm start
 ```
 
-O endereço padrão é http://localhost:3001. Para desenvolvimento com reinício
+O endereço padrão é http://localhost:3000. Para desenvolvimento com reinício
 automático após alterações em JavaScript:
 
 ```bash
