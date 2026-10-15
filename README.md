@@ -88,6 +88,11 @@ npm run dev
 
 Para usar outra porta, defina `PORT` no ambiente antes de iniciar. Não é necessário criar um arquivo `.env` nem configurar banco para executar a demonstração.
 
+Para executar no VSCode, no terminal de comando use: 
+```bash
+node src/servidor.js
+``` 
+
 ## Projeto Acadêmico
 
 A Empr-E é um projeto acadêmico desenvolvido por alunos do curso de **Análise e Desenvolvimento de Sistemas do IFSP - Campinas**, tendo como objetivo aplicar conhecimentos de Desenvolvimento Web 2, Engenharia de Software 2, Redes de Computadores e Gestão de TI em um projeto prático.
