@@ -1,7 +1,7 @@
 import { obterPagamentoExemplo } from '../models/pagamento.js';
 import { renderizarPagina } from '../utils/apresentacao.js';
 
-export function exibirPagamento(requisicao, resposta) {
+export function exibirPagamento(req, res) {
   const exemplo = obterPagamentoExemplo();
-  renderizarPagina(resposta, 'pagamento', 'Pagamento ilustrativo | Empr-E', exemplo);
+  renderizarPagina(res, 'pagamento', 'Pagamento ilustrativo | Empr-E', exemplo);
 }

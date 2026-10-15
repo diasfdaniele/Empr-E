@@ -7,10 +7,10 @@ const aplicacao = express();
 aplicacao.disable('x-powered-by');
 aplicacao.set('view engine', 'ejs');
 aplicacao.set('views', fileURLToPath(new URL('./views/', import.meta.url)));
-aplicacao.use((requisicao, resposta, proximo) => {
-  resposta.set('X-Content-Type-Options', 'nosniff');
-  resposta.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  proximo();
+aplicacao.use((req, res, next) => {
+  res.set('X-Content-Type-Options', 'nosniff');
+  res.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
 });
 aplicacao.use(
   '/assets',

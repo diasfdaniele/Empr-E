@@ -2,7 +2,7 @@
 
 Este projeto foi desenvolvido como parte integrante do Projeto de Extensão do 4º Semestre do Curso Superior de Tecnologia em Análise e Desenvolvimento de Sistemas do IFSP - Campinas.
 
-Este sistema é uma nova fase da plataforma Empr-E desenvolvida no 3° Semestre, que anteriormente foi pensada como um marketplace B2B, mas que agora passa a ser uma plataforma de e-commerce mais abrangente, acessível e robusta, com suporte a empresas e usuários finais.
+Este sistema é uma nova fase da plataforma Empr-E desenvolvida no 1° Semestre de 2026, que anteriormente foi pensada como um marketplace B2B, mas que agora passa a ser uma plataforma de e-commerce mais abrangente, acessível e robusta, com vendas para empresas e usuários finais.
 
 ## Link de acesso
 
@@ -16,7 +16,7 @@ Em sua primeira versão, ela foi desenvolvida com foco no modelo B2B, conectando
 
 Nesta nova fase, a Empr-E será ampliada para atender também usuários finais, permitindo que diferentes perfis de clientes possam encontrar, consultar e adquirir produtos em um único ambiente centralizado.
 
-A evolução do sistema também contempla uma nova estrutura técnica, com a inclusão de um backend próprio e um banco de dados, compatíveis com os novos conhecimentos adquiridos na disciplina de Desenvolvimento Web 2.
+A evolução do sistema também contempla uma nova estrutura técnica, com a inclusão de um backend próprio e banco de dados, compatíveis com os novos conhecimentos adquiridos na disciplina de Desenvolvimento Web 2.
 
 Além disso, a Empr-E mantém a acessibilidade, a usabilidade e a experiência do usuário como princípios fundamentais ao projeto, buscando oferecer uma plataforma intuitiva e acessível.
 
@@ -63,14 +63,9 @@ Em desenvolvimento.
 
 ## Estrutura do Projeto
 
-O backend Express renderiza páginas EJS e segue MVC. Os seis módulos principais,
-com nomes e campos do domínio em português, são usuário, produto, empresa, pedido,
-pagamento e vendas. Endereços, contatos e favoritos ficam com usuário; carrinho,
-itens e orçamento ficam com pedido. Views compartilhadas ficam em `src/views/partials`.
+O backend Express renderiza páginas EJS e segue MVC. Os seis módulos principais, são usuário, produto, empresa, pedido, pagamento e vendas Endereços, contatos e favoritos ficam com usuário; carrinho, itens e orçamento ficam com pedido. Views compartilhadas ficam em `src/views/partials`.
 
-O CSS, as imagens e as interações do navegador ficam em `public/assets/`. O HTML
-usa as classes Bootstrap necessárias para manter o layout existente. Os dados dos
-models são demonstrações em memória: não há persistência nem conexão ao banco.
+O CSS, as imagens e as interações do navegador ficam em `public/assets/`. O HTML usa as classes Bootstrap necessárias para manter o layout existente. Os dados dos models são demonstrações em memória: não há persistência nem conexão ao banco por enquanto.
 
 ## Banco de Dados
 
@@ -78,44 +73,26 @@ Em desenvolvimento.
 
 ## Como Executar o Projeto
 
-Requisito: Node.js 24 ou superior. Na raiz do projeto, instale as dependências
-registradas no lockfile e inicie o servidor:
+Requisito: Node.js 24 ou superior. Na raiz do projeto, instale as dependências registradas no lockfile e inicie o servidor:
 
 ```bash
 npm ci
 npm start
 ```
 
-O endereço padrão é http://localhost:3000. Para desenvolvimento com reinício
-automático após alterações em JavaScript:
+O endereço padrão é http://localhost:3000. Para desenvolvimento com reinício automático após alterações em JavaScript:
 
 ```bash
 npm run dev
 ```
 
-Para usar outra porta, defina `PORT` no ambiente antes de iniciar. Não é necessário
-criar um arquivo `.env` nem configurar banco para executar a demonstração.
-
-## Testes
-
-```bash
-npm test
-npx playwright install chromium --no-shell
-npm run test:browser
-```
-
-Os testes HTTP e de domínio verificam rotas, filtros, escape EJS, modelos e limites
-das operações demonstrativas. Os testes com Chromium conferem desktop e mobile,
-imagens, navegação por teclado e interações. O teste de navegador funciona sem
-depender de uma cópia da aplicação antiga em outra pasta.
+Para usar outra porta, defina `PORT` no ambiente antes de iniciar. Não é necessário criar um arquivo `.env` nem configurar banco para executar a demonstração.
 
 ## Projeto Acadêmico
 
 A Empr-E é um projeto acadêmico desenvolvido por alunos do curso de **Análise e Desenvolvimento de Sistemas do IFSP - Campinas**, tendo como objetivo aplicar conhecimentos de Desenvolvimento Web 2, Engenharia de Software 2, Redes de Computadores e Gestão de TI em um projeto prático.
 
-A nova fase representa a evolução da plataforma desenvolvida anteriormente. O
-banco de dados, autenticação, operações comerciais e integração de pagamento
-continuam planejados e não fazem parte desta versão demonstrativa.
+A nova fase representa a evolução da plataforma desenvolvida anteriormente. 
 
 ## Licença
 

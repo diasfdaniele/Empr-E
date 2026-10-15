@@ -1,13 +1,13 @@
 (() => {
   const corpo = document.body;
   const aviso = document.querySelector('#demo-estado');
-  let temporizadorAviso;
+  let timeoutId;
 
   function avisar(mensagem) {
-    clearTimeout(temporizadorAviso);
+    clearTimeout(timeoutId);
     aviso.hidden = false;
     aviso.textContent = mensagem;
-    temporizadorAviso = setTimeout(() => {
+    timeoutId = setTimeout(() => {
       aviso.hidden = true;
     }, 6000);
   }
@@ -24,20 +24,20 @@
       );
     }
     botao.addEventListener('click', () => alternarMenu(menu.hidden));
-    menu.addEventListener('click', (evento) => {
-      if (evento.target.closest('a')) alternarMenu(false);
+    menu.addEventListener('click', (event) => {
+      if (event.target.closest('a')) alternarMenu(false);
     });
     document
       .querySelector('.atalho-navegacao[href="#navegacao-principal"]')
-      .addEventListener('click', (evento) => {
+      .addEventListener('click', (event) => {
         if (getComputedStyle(botao).display !== 'none') {
-          evento.preventDefault();
+          event.preventDefault();
           alternarMenu(true);
           menu.querySelector('a').focus();
         }
       });
-    document.addEventListener('keydown', (evento) => {
-      if (evento.key === 'Escape' && !menu.hidden) {
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.hidden) {
         alternarMenu(false);
         botao.focus();
       }
@@ -57,9 +57,9 @@
       'botao-leitura': 'modo-leitura',
     };
     for (const [id, classe] of Object.entries(modos)) {
-      document.getElementById(id).addEventListener('click', (evento) => {
+      document.getElementById(id).addEventListener('click', (event) => {
         const ativo = corpo.classList.toggle(classe);
-        evento.currentTarget.setAttribute('aria-pressed', String(ativo));
+        event.currentTarget.setAttribute('aria-pressed', String(ativo));
         atualizarFonte();
       });
     }
@@ -76,8 +76,8 @@
 
   function iniciarSimulacoes() {
     for (const formulario of document.querySelectorAll('[data-formulario-desabilitado]')) {
-      formulario.addEventListener('submit', (evento) => {
-        evento.preventDefault();
+      formulario.addEventListener('submit', (event) => {
+        event.preventDefault();
         avisar('Operação indisponível nesta versão demonstrativa.');
       });
     }
@@ -143,8 +143,8 @@
       document.querySelector('#resumo-quantidade').textContent = String(quantidade);
       document.querySelector('#resumo-valor').textContent = moeda.format(centavos / 100);
     }
-    lista.addEventListener('click', (evento) => {
-      const botao = evento.target.closest('button');
+    lista.addEventListener('click', (event) => {
+      const botao = event.target.closest('button');
       const linha = botao?.closest('[data-linha-carrinho]');
       if (!linha) return;
       if (botao.hasAttribute('data-remover')) linha.remove();
@@ -191,13 +191,13 @@
       botao.disabled = true;
       resultado.textContent = 'Consultando CEP de exemplo...';
       try {
-        const resposta = await fetch('https://viacep.com.br/ws/01001000/json/', {
+        const response = await fetch('https://viacep.com.br/ws/01001000/json/', {
           signal: AbortSignal.timeout(5000),
           credentials: 'omit',
           referrerPolicy: 'no-referrer',
         });
-        if (!resposta.ok) throw new Error('Consulta indisponível');
-        const endereco = await resposta.json();
+        if (!response.ok) throw new Error('Consulta indisponível');
+        const endereco = await response.json();
         if (endereco.erro || !endereco.localidade) throw new Error('CEP não encontrado');
         resultado.textContent = `${endereco.logradouro || ''}, ${endereco.bairro || ''} — ${endereco.localidade}/${endereco.uf}. Consulta de exemplo, sem pedido.`;
       } catch {

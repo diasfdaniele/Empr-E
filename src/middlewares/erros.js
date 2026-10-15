@@ -1,21 +1,21 @@
 import { exibirIndisponibilidade } from '../utils/apresentacao.js';
 
-export function paginaNaoEncontrada(requisicao, resposta) {
+export function paginaNaoEncontrada(req, res) {
   exibirIndisponibilidade(
-    requisicao,
-    resposta,
+    req,
+    res,
     404,
     'Página não encontrada',
     'O endereço ou produto solicitado não existe.',
   );
 }
 
-export function tratarErro(erro, requisicao, resposta, proximo) {
-  if (resposta.headersSent) return proximo(erro);
-  console.error('Falha ao renderizar a página:', erro.message);
+export function tratarErro(err, req, res, next) {
+  if (res.headersSent) return next(err);
+  console.error('Falha ao renderizar a página:', err.message);
   exibirIndisponibilidade(
-    requisicao,
-    resposta,
+    req,
+    res,
     500,
     'Não foi possível carregar a página',
     'Tente novamente em alguns instantes.',

@@ -1,9 +1,9 @@
 import { renderizarPagina } from '../utils/apresentacao.js';
 
-export function exibirInicio(requisicao, resposta) {
-  renderizarPagina(resposta, 'inicio', 'Empr-E | Marketplace de Acessibilidade');
+export function exibirInicio(req, res) {
+  renderizarPagina(res, 'inicio', 'Empr-E | Marketplace de Acessibilidade');
 }
 
-export function exibirInstitucional(requisicao, resposta) {
-  renderizarPagina(resposta, 'institucional', 'Institucional | Empr-E');
+export function exibirInstitucional(req, res) {
+  renderizarPagina(res, 'institucional', 'Institucional | Empr-E');
 }
