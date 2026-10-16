@@ -1,54 +1,113 @@
-import { buscarProduto, listarProdutos, listarCategorias, faixasPreco } from '../models/produto.js';
-import { renderizarPagina, exibirIndisponibilidade } from '../utils/apresentacao.js';
-import { paginaNaoEncontrada } from '../middlewares/erros.js';
+import {
+    buscarProduto,
+    listarProdutos,
+    listarCategorias,
+    faixasPreco
+} from '../models/produto.js';
+
+import {
+    renderizarPagina,
+    exibirIndisponibilidade
+} from '../utils/apresentacao.js';
+
+import {
+    paginaNaoEncontrada
+} from '../middlewares/erros.js';
 
 const opcoesPreco = [
-  { valor: '', nome: 'Todas as faixas' },
-  { valor: 'ate-100', nome: 'Até R$ 100' },
-  { valor: '100-500', nome: 'Acima de R$ 100 até R$ 500' },
-  { valor: '500-1000', nome: 'Acima de R$ 500 até R$ 1.000' },
-  { valor: '1000-5000', nome: 'Acima de R$ 1.000 até R$ 5.000' },
-  { valor: '5000-plus', nome: 'Acima de R$ 5.000' },
+    { valor: '', nome: 'Todas as faixas' },
+    { valor: 'ate-100', nome: 'Até R$ 100' },
+    { valor: '100-500', nome: 'Acima de R$ 100 até R$ 500' },
+    { valor: '500-1000', nome: 'Acima de R$ 500 até R$ 1.000' },
+    { valor: '1000-5000', nome: 'Acima de R$ 1.000 até R$ 5.000' },
+    { valor: '5000-plus', nome: 'Acima de R$ 5.000' }
 ];
 
-export function exibirCatalogo(req, res) {
-  const categorias = listarCategorias();
-  const filtros = {};
-  for (const chave of ['busca', 'categoria', 'empresa', 'preco']) {
-    if (req.query[chave] !== undefined && typeof req.query[chave] !== 'string') {
-      return exibirIndisponibilidade(
-        req,
-        res,
-        400,
-        'Filtro inválido',
-        'Informe apenas um valor por filtro.',
-      );
+export async function exibirCatalogo(req, res, next) {
+    try {
+        const filtros = {};
+
+        for (const chave of [
+            'busca',
+            'categoria',
+            'preco'
+        ]) {
+            const valor = req.query[chave];
+
+            if (
+                valor !== undefined &&
+                typeof valor !== 'string'
+            ) {
+                return exibirIndisponibilidade(
+                    res,
+                    400,
+                    'Filtro inválido.'
+                );
+            }
+
+            filtros[chave] = (valor || '')
+                .trim()
+                .slice(0, 160);
+        }
+
+        if (
+            filtros.categoria &&
+            !/^[1-9]\d*$/.test(filtros.categoria)
+        ) {
+            return exibirIndisponibilidade(
+                res,
+                400,
+                'Categoria inválida.'
+            );
+        }
+
+        if (
+            filtros.preco &&
+            !Object.hasOwn(faixasPreco, filtros.preco)
+        ) {
+            return exibirIndisponibilidade(
+                res,
+                400,
+                'Faixa de preço inválida.'
+            );
+        }
+
+        const [categorias, produtos] = await Promise.all([
+            listarCategorias(),
+            listarProdutos(filtros)
+        ]);
+
+        renderizarPagina(
+            res,
+            'catalogo',
+            'Catálogo | Empr-E',
+            {
+                produtos,
+                filtros,
+                categorias,
+                opcoesPreco
+            }
+        );
+    } catch (erro) {
+        next(erro);
     }
-    filtros[chave] = (req.query[chave] || '').trim().slice(0, 160);
-  }
-  if (
-    (filtros.categoria && !categorias.some((categoria) => categoria.id === filtros.categoria)) ||
-    (filtros.empresa && !res.locals.empresas.includes(filtros.empresa)) ||
-    (filtros.preco && !Object.hasOwn(faixasPreco, filtros.preco))
-  ) {
-    return exibirIndisponibilidade(
-      req,
-      res,
-      400,
-      'Filtro inválido',
-      'Escolha uma das opções disponíveis no catálogo.',
-    );
-  }
-  renderizarPagina(res, 'catalogo', 'Catálogo | Empr-E', {
-    produtos: listarProdutos(filtros),
-    filtros,
-    categorias,
-    opcoesPreco,
-  });
 }
 
-export function exibirDetalhes(req, res) {
-  const produto = buscarProduto(req.params.id);
-  if (!produto) return paginaNaoEncontrada(req, res);
-  renderizarPagina(res, 'produto', `${produto.nome} | Empr-E`, { produto });
+export async function exibirDetalhes(req, res, next) {
+    try {
+        const produto = await buscarProduto(req.params.id);
+
+        if (!produto) {
+            return paginaNaoEncontrada(req, res);
+        }
+
+        renderizarPagina(
+            res,
+            'produto',
+            `${produto.nome} | Empr-E`,
+            { produto }
+        );
+    } catch (erro) {
+        next(erro);
+    }
 }

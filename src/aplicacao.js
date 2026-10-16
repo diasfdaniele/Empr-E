@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import rotas from './routes/site.js';
@@ -6,6 +7,7 @@ import { paginaNaoEncontrada, tratarErro } from './middlewares/erros.js';
 const aplicacao = express();
 aplicacao.disable('x-powered-by');
 aplicacao.set('view engine', 'ejs');
+aplicacao.use(express.urlencoded({extended: true}));
 aplicacao.set('views', fileURLToPath(new URL('./views/', import.meta.url)));
 aplicacao.use((req, res, next) => {
   res.set('X-Content-Type-Options', 'nosniff');

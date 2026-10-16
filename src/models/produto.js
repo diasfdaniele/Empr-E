@@ -1,174 +1,174 @@
-import { buscarEmpresa } from './empresa.js';
-import { identificador, valorMonetario } from '../utils/validacao.js';
+import {supabase} from '../../config/db.js';
 
-export class Categoria {
-  constructor({ id, nome }) {
-    this.id = identificador(id, 'Categoria');
-    this.nome = identificador(nome, 'Nome da categoria');
-    Object.freeze(this);
-  }
+function adaptarProduto(registro) {
+    if (!registro) {
+        return null;
+    }
+
+    return {
+        id: registro.id_produto,
+        nome: registro.nome_produto,
+        descricao: registro.descricao,
+        preco: Number(registro.preco_unitario),
+
+        empresaId: registro.fk_vendedor,
+        categoriaId: registro.fk_categoria,
+
+        empresa: {
+            id: registro.empresas?.id_empresa,
+            nome: registro.empresas?.nome_fantasia
+        },
+
+        categoria: {
+            id: registro.categorias?.id_categoria,
+            nome: registro.categorias?.nome_categoria
+        },
+
+        unidade: 'unidade',
+
+        modalidade: registro.tipo_compra,
+
+        get nomeModalidade() {
+            if (this.modalidade === 'compra') {
+                return 'Compra imediata';
+            }
+
+            if (this.modalidade === 'projeto') {
+                return 'Projeto personalizado';
+            }
+
+            return this.modalidade || 'Não informada';
+        },
+
+        // Temporário: a tabela ainda não armazena esses dados.
+        imagens: ['/imagens/produto-padrao.png'],
+        variacoes: ['Padrão']
+    };
 }
-
-const categorias = Object.freeze(
-  [
-    { id: 'mobilidade', nome: 'Mobilidade' },
-    { id: 'visual', nome: 'Deficiência Visual' },
-    { id: 'digital', nome: 'Acessibilidade Digital' },
-    { id: 'auditiva', nome: 'Deficiência Auditiva' },
-    { id: 'predial', nome: 'Acessibilidade Predial' },
-  ].map((categoria) => new Categoria(categoria)),
-);
-
-export function listarCategorias() {
-  return [...categorias];
-}
-
-export function buscarCategoria(id) {
-  return categorias.find((categoria) => categoria.id === id);
-}
-
-export class Produto {
-  constructor({
-    id,
-    nome,
-    empresaId,
-    categoriaId,
-    descricao,
-    preco,
-    modalidade,
-    unidade,
-    imagens,
-    variacoes,
-  }) {
-    this.id = identificador(id, 'Produto');
-    this.nome = identificador(nome, 'Nome do produto');
-    if (!buscarEmpresa(empresaId) || !buscarCategoria(categoriaId))
-      throw new TypeError('Empresa ou categoria inexistente no catálogo demonstrativo.');
-    if (!['compra', 'projeto'].includes(modalidade))
-      throw new TypeError('Modalidade de compra inválida.');
-    if (
-      !Array.isArray(imagens) ||
-      !imagens.length ||
-      imagens.some((imagem) => typeof imagem !== 'string' || !imagem)
-    )
-      throw new TypeError('Produto exige imagens válidas.');
-    if (
-      !Array.isArray(variacoes) ||
-      variacoes.length !== imagens.length ||
-      variacoes.some((variacao) => typeof variacao !== 'string' || !variacao)
-    )
-      throw new TypeError('As variações devem corresponder às imagens.');
-    this.empresaId = empresaId;
-    this.categoriaId = categoriaId;
-    this.descricao = identificador(descricao, 'Descrição');
-    this.preco = valorMonetario(preco);
-    this.modalidade = modalidade;
-    this.unidade = identificador(unidade, 'Unidade');
-    this.imagens = Object.freeze([...imagens]);
-    this.variacoes = Object.freeze([...variacoes]);
-    Object.freeze(this);
-  }
-
-  get empresa() {
-    return buscarEmpresa(this.empresaId);
-  }
-
-  get categoria() {
-    return buscarCategoria(this.categoriaId);
-  }
-
-  get nomeModalidade() {
-    return this.modalidade === 'compra' ? 'Compra imediata' : 'Projeto personalizado';
-  }
-}
-
-const produtos = Object.freeze(
-  [
-    {
-      id: 'piso-tatil-alerta',
-      nome: 'Piso Tátil de Alerta',
-      empresaId: 'klinker',
-      categoriaId: 'visual',
-      preco: 25,
-      modalidade: 'compra',
-      unidade: 'peça',
-      descricao:
-        'Piso tátil de alerta para orientação de pessoas com deficiência visual. Indica obstáculos, desníveis, mudanças de direção e acessos a escadas e rampas.',
-      imagens: ['alerta-1.jpg', 'alerta-2.jpg', 'alerta-3.jpg', 'alerta-4.jpg', 'alerta-5.jpg'],
-      variacoes: ['Azul', 'Amarelo', 'Preto', 'Quartzo', 'Aleatório'],
-    },
-    {
-      id: 'piso-tatil-direcional',
-      nome: 'Piso Tátil Direcional',
-      empresaId: 'klinker',
-      categoriaId: 'visual',
-      preco: 25,
-      modalidade: 'compra',
-      unidade: 'peça',
-      descricao:
-        'Piso tátil direcional para orientar uma rota acessível e indicar o sentido de deslocamento.',
-      imagens: [
-        'direcional-1.jpg',
-        'direcional-2.jpg',
-        'direcional-3.jpg',
-        'direcional-4.jpg',
-        'direcional-5.jpg',
-      ],
-      variacoes: ['Amarelo', 'Azul', 'Preto', 'Quartzo', 'Aleatório'],
-    },
-    {
-      id: 'solucoes-software',
-      nome: 'Soluções de Software Acessível',
-      empresaId: 'acessify',
-      categoriaId: 'digital',
-      preco: 1000,
-      modalidade: 'projeto',
-      unidade: 'mês',
-      descricao:
-        'Auditoria, monitoramento e ajustes de acessibilidade para sistemas web de pessoas e empresas.',
-      imagens: ['acessify-logo.png'],
-      variacoes: ['Plano demonstrativo'],
-    },
-  ].map(
-    (produto) =>
-      new Produto({
-        ...produto,
-        imagens: produto.imagens.map((imagem) => `/assets/img/${imagem}`),
-      }),
-  ),
-);
 
 export const faixasPreco = Object.freeze({
-  'ate-100': Object.freeze([0, 100]),
-  '100-500': Object.freeze([100, 500]),
-  '500-1000': Object.freeze([500, 1000]),
-  '1000-5000': Object.freeze([1000, 5000]),
-  '5000-plus': Object.freeze([5000, Infinity]),
+    'ate-100': [0, 100],
+    '100-500': [100, 500],
+    '500-1000': [500, 1000],
+    '1000-5000': [1000, 5000],
+    '5000-plus': [5000, Infinity]
 });
 
-const normalizar = (valor) =>
-  valor
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
+export async function listarCategorias() {
+    const { data, error } = await supabase
+        .from('categorias')
+        .select('id_categoria, nome_categoria')
+        .order('nome_categoria');
 
-export function listarProdutos(filtros = {}) {
-  const termo = normalizar(filtros.busca || '');
-  const faixa = faixasPreco[filtros.preco];
-  return produtos.filter((produto) => {
-    const empresa = buscarEmpresa(produto.empresaId);
-    return (
-      (!termo ||
-        normalizar(`${produto.nome} ${empresa.nome} ${produto.descricao}`).includes(termo)) &&
-      (!filtros.categoria || produto.categoriaId === filtros.categoria) &&
-      (!filtros.empresa || empresa.nome === filtros.empresa) &&
-      (!faixa ||
-        ((filtros.preco === 'ate-100' ? produto.preco >= faixa[0] : produto.preco > faixa[0]) &&
-          produto.preco <= faixa[1]))
-    );
-  });
+    if (error) {
+        throw error;
+    }
+
+    return data;
 }
 
-export function buscarProduto(id) {
-  return produtos.find((produto) => produto.id === id);
+export async function listarProdutos(filtros = {}) {
+    let consulta = supabase
+        .from('produtos')
+        .select(`
+            id_produto,
+            fk_vendedor,
+            fk_categoria,
+            nome_produto,
+            descricao,
+            preco_unitario,
+            estoque_minimo,
+            estoque_atual,
+            ativo,
+            tipo_compra,
+            categorias (
+                id_categoria,
+                nome_categoria
+            ),
+            empresas!produtos_fk_vendedor_fkey (
+                id_empresa,
+                nome_fantasia
+            )
+        `)
+        .eq('ativo', true)
+        .order('nome_produto');
+
+    if (filtros.busca) {
+        consulta = consulta.ilike(
+            'nome_produto',
+            `%${filtros.busca}%`
+        );
+    }
+
+    if (filtros.categoria) {
+        consulta = consulta.eq(
+            'fk_categoria',
+            Number(filtros.categoria)
+        );
+    }
+
+    const faixa = faixasPreco[filtros.preco];
+
+    if (faixa) {
+        if (filtros.preco === 'ate-100') {
+            consulta = consulta
+                .gt('preco_unitario', 0)
+                .lte('preco_unitario', 100);
+        } else {
+            consulta = consulta
+                .gt('preco_unitario', faixa[0])
+                .lte('preco_unitario', faixa[1]);
+        }
+    }
+
+    const { data, error } = await consulta;
+
+    if (error) {
+        throw error;
+    }
+
+    return data.map(adaptarProduto);
+}
+
+export async function buscarProduto(id) {
+    const identificador = Number(id);
+
+    if (
+        !Number.isSafeInteger(identificador) ||
+        identificador <= 0
+    ) {
+        return null;
+    }
+
+    const { data, error } = await supabase
+        .from('produtos')
+        .select(`
+            id_produto,
+            fk_vendedor,
+            fk_categoria,
+            nome_produto,
+            descricao,
+            preco_unitario,
+            estoque_minimo,
+            estoque_atual,
+            ativo,
+            tipo_compra,
+            categorias (
+                id_categoria,
+                nome_categoria
+            ),
+            empresas!produtos_fk_vendedor_fkey (
+                id_empresa,
+                nome_fantasia
+            )
+        `)
+        .eq('id_produto', identificador)
+        .eq('ativo', true)
+        .maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    return adaptarProduto(data);
 }

@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/diasfdaniele/Empr-E#readme",
   "dependencies": {
-    "@supabase/supabase-js": "^2.117.3",
+    "@supabase/server": "^1.9.2",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
     "bootstrap": "^5.3.3",
     "dotenv": "^18.0.8",
     "ejs": "^7.0.1",
