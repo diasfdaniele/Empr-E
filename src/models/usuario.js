@@ -1,25 +1,66 @@
+//Model usuario
 import { identificador } from '../utils/validacao.js';
 
 export const tiposPessoa = Object.freeze(['pf', 'pj']);
 export const papeisUsuario = Object.freeze(['comprador', 'vendedor', 'administrador']);
 
 export class Usuario {
-  constructor({ id, tipoPessoa, papel, empresaId = null }) {
-    this.id = identificador(id, 'Usuário');
-    if (!tiposPessoa.includes(tipoPessoa) || !papeisUsuario.includes(papel))
-      throw new TypeError('Tipo de pessoa ou papel inválido.');
-    if (papel === 'vendedor' && (tipoPessoa !== 'pj' || !empresaId))
-      throw new TypeError('Vendedor deve ser pessoa jurídica vinculada a uma empresa.');
-    if (tipoPessoa === 'pf' && empresaId !== null)
-      throw new TypeError('Pessoa física não possui vínculo de empresa neste perfil.');
+  constructor({
+    id,
+    idAuth,
+    tipoPessoa,
+    login,
+    nomeCompleto,
+    cpfPessoa,
+    criadoEm = null,
+    empresa = null,
+  }) {
+    const idNumerico = Number(id);
+
+    if (!Number.isSafeInteger(idNumerico) || idNumerico < 1) {
+      throw new TypeError('ID do usuário inválido.');
+    }
+
+    if (!tiposPessoa.includes(tipoPessoa)) {
+      throw new TypeError('Tipo de pessoa inválido.');
+    }
+
+    if (!idAuth || typeof idAuth !== 'string') {
+      throw new TypeError('Identificador do Supabase Auth inválido.');
+    }
+
+    if (!login || !nomeCompleto || !cpfPessoa) {
+      throw new TypeError('Os dados pessoais obrigatórios estão ausentes.');
+    }
+
+    if (tipoPessoa === 'pf' && empresa !== null) {
+      throw new TypeError(
+        'Pessoa física não pode possuir vínculo empresarial neste perfil.'
+      );
+    }
+
+    this.id = idNumerico;
+    this.idAuth = idAuth;
     this.tipoPessoa = tipoPessoa;
-    this.papel = papel;
-    this.empresaId = empresaId === null ? null : identificador(empresaId, 'Empresa');
+    this.login = login;
+    this.nomeCompleto = nomeCompleto;
+    this.cpfPessoa = cpfPessoa;
+    this.criadoEm = criadoEm;
+    this.empresa = empresa;
+
     Object.freeze(this);
   }
 
+  get podeComprar() {
+    return true;
+  }
+
   get podeVender() {
-    return this.tipoPessoa === 'pj' && this.papel === 'vendedor';
+    return (
+      this.tipoPessoa === 'pj' &&
+      this.empresa !== null &&
+      this.empresa.statusConta === 'Ativo'
+    );
   }
 }
 

@@ -1,3 +1,4 @@
+//Middleware erros
 import { exibirIndisponibilidade, renderizarPagina } from '../utils/apresentacao.js';
 
 export function paginaNaoEncontrada(req, res) {

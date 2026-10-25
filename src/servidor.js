@@ -1,3 +1,4 @@
+//servidor.js
 import aplicacao from './aplicacao.js';
 
 const porta = Number(process.env.PORT) || 3000;

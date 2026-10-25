@@ -22,22 +22,12 @@
       <div class="produto-cartao__acoes">
         <button
           type="button"
-          class="produto-cartao__favorito-icone"
-          aria-pressed="false"
-          aria-label="Favoritar <%= produto.nome %> na simulação"
-          title="Favoritar na simulação"
-          data-favorito="<%= produto.id %>"
-        >
-          <img src="/icones/heart.svg" width="20" height="20" alt="" />
-        </button>
-        <button
-          type="button"
           class="btn botao--principal botao--sm"
           title="Adicionar somente nesta página"
           data-adicionar-carrinho="<%= produto.id %>"
           data-variacao="<%= produto.variacoes[0] %>"
         >
-          Simular adição
+          Adicionar ao carrinho
         </button>
       </div>
     </div>

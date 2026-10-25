@@ -127,18 +127,21 @@
             Bem-vindo de volta
           </h2>
           <p class="entrada-formulario-subtitulo">
-            Login indisponível nesta versão demonstrativa. Não informe dados pessoais.
+            Utilize seus dados para entrar no Empr-E
           </p>
         </div>
 
         <form
           id="formulario-entrada"
           class="entrada-formulario"
-          novalidate=""
+          action="/login"
+          method="POST"
           aria-label="Formulário de acesso à conta"
           autocomplete="on"
-          data-formulario-desabilitado=""
         >
+        <% if (erro) { %>
+          <p class="campo-erro" role="alert"><%= erro %></p>
+        <% } %>
           <div class="campo-grupo" id="grupo-email">
             <label for="campo-email" class="campo-rotulo">
               E-mail
@@ -167,13 +170,14 @@
                 id="campo-email"
                 class="campo-entrada"
                 placeholder="empresa@exemplo.com.br"
-                autocomplete="off"
                 autocapitalize="none"
                 spellcheck="false"
                 aria-required="true"
                 aria-describedby="email-dica email-erro"
                 aria-invalid="false"
-                disabled=""
+                name="email"
+                required
+                autocomplete="email"
               />
             </div>
             <span id="email-dica" class="somente-leitor"
@@ -214,12 +218,13 @@
                 id="campo-senha"
                 class="campo-entrada campo-entrada--com-acao"
                 placeholder="Sua senha de acesso"
-                autocomplete="off"
                 aria-required="true"
                 aria-describedby="senha-erro"
                 aria-invalid="false"
                 minlength="8"
-                disabled=""
+                name="senha"
+                required
+                autocomplete="current-password"
               />
               <button
                 type="button"
@@ -228,7 +233,6 @@
                 aria-label="Mostrar senha"
                 aria-pressed="false"
                 title="Mostrar ou ocultar senha"
-                disabled=""
               >
                 <svg
                   id="icone-senha-oculta"
@@ -279,13 +283,12 @@
           </div>
 
           <button
-            type="button"
+            type="submit"
             id="botao-entrar"
             class="btn botao--principal botao--lg botao-entrada-enviar"
             aria-describedby="botao-entrar-estado"
-            disabled=""
           >
-            <span class="botao-entrada-enviar__texto">Login indisponível</span>
+            <span class="botao-entrada-enviar__texto">Entrar</span>
             <span class="botao-entrada-enviar__carregando" hidden="" aria-hidden="true">
               <svg
                 class="carregando-indicador"

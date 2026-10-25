@@ -1,3 +1,4 @@
+//Model empresa
 import { identificador } from '../utils/validacao.js';
 
 export class Empresa {

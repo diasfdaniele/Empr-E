@@ -1,3 +1,4 @@
+//Model Produto
 import {supabase} from '../../config/db.js';
 
 function adaptarProduto(registro) {
@@ -67,6 +68,47 @@ export async function listarCategorias() {
     return data;
 }
 
+async function associarImagens(produtos) {
+    if (produtos.length === 0) {
+        return produtos;
+    }
+
+    const idsProdutos = produtos.map(
+        produto => produto.id
+    );
+
+    const { data: imagens, error } = await supabase
+        .from('produtosImagens')
+        .select('*')
+        .in('idProduto', idsProdutos)
+        .order('idImagem');
+
+    if (error) {
+        throw error;
+    }
+
+    const imagensPorProduto = new Map();
+
+    for (const imagem of imagens) {
+        const idProduto = imagem.idProduto;
+
+        if (!imagensPorProduto.has(idProduto)) {
+            imagensPorProduto.set(idProduto, []);
+        }
+
+        imagensPorProduto.get(idProduto).push(
+            imagem.caminho_arquivo
+        );
+    }
+
+    return produtos.map(produto => ({
+        ...produto,
+        imagens: imagensPorProduto.get(produto.id) ?? [
+            '/imagens/produto-padrao.png'
+        ]
+    }));
+}
+
 export async function listarProdutos(filtros = {}) {
     let consulta = supabase
         .from('produtos')
@@ -127,7 +169,8 @@ export async function listarProdutos(filtros = {}) {
         throw error;
     }
 
-    return data.map(adaptarProduto);
+    const produtos = data.map(adaptarProduto);
+    return associarImagens(produtos);
 }
 
 export async function buscarProduto(id) {
@@ -170,5 +213,13 @@ export async function buscarProduto(id) {
         throw error;
     }
 
-    return adaptarProduto(data);
+    if (!data) {
+        return null;
+    }
+
+    const [produto] = await associarImagens([
+        adaptarProduto(data)
+    ]);
+
+    return produto;
 }

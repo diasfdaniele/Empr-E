@@ -1,13 +1,34 @@
+//aplicacao.js
 import 'dotenv/config';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import rotas from './routes/site.js';
+import session from 'express-session';
 import { paginaNaoEncontrada, tratarErro } from './middlewares/erros.js';
 
 const aplicacao = express();
 aplicacao.disable('x-powered-by');
 aplicacao.set('view engine', 'ejs');
 aplicacao.use(express.urlencoded({extended: true}));
+aplicacao.use(
+  session({
+    name: 'empre.sid',
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 8,
+    },
+  })
+);
+aplicacao.use((req, res, next) => {
+  res.locals.erro = null;
+  res.locals.usuarioSessao = req.session.usuario ?? null;
+  next();
+});
 aplicacao.set('views', fileURLToPath(new URL('./views/', import.meta.url)));
 aplicacao.use((req, res, next) => {
   res.set('X-Content-Type-Options', 'nosniff');
