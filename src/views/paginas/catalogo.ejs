@@ -37,7 +37,12 @@
                 <select id="filtro-categoria" name="categoria" class="form-select">
                   <option value="">Todas as categorias</option>
                   <% for (const categoria of categorias) { %>
-                  <option value="<%= categoria.id %>" <%= filtros.categoria === categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
+                  <option
+                    value="<%= categoria.id %>"
+                    <%= String(filtros.categoria || '') === String(categoria.id) ? 'selected' : '' %>
+                  >
+                    <%= categoria.nome %>
+                  </option>
                   <% } %>
                 </select>
               </div>
@@ -51,12 +56,18 @@
               </div>
               <div class="filtro-grupo">
                 <label for="filtro-empresa" class="filtro-rotulo">Empresa</label>
-                <select id="filtro-empresa" name="empresa" class="form-select">
-                  <option value="">Todas as empresas</option>
-                  <% for (const empresa of empresas) { %>
-                  <option value="<%= empresa %>" <%= filtros.empresa === empresa ? 'selected' : '' %>><%= empresa %></option>
-                  <% } %>
-                </select>
+                <div class="filtro-grupo">
+
+                  <input
+                    id="filtro-empresa"
+                    name="empresa"
+                    class="form-control"
+                    type="search"
+                    maxlength="160"
+                    value="<%= filtros.empresa || '' %>"
+                    placeholder="Digite o nome da empresa"
+                  />
+                </div>
               </div>
               <button type="submit" class="btn botao--principal">Filtrar</button>
               <a href="/catalogo" class="btn botao--discreto">Limpar</a>

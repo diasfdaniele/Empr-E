@@ -1,3 +1,4 @@
+//Controller usuario
 import {
   renderizarPagina,
   exibirIndisponibilidade,
@@ -17,6 +18,7 @@ export function exibirLogin(req, res) {
 }
 
 export async function processarCadastro(req, res) {
+  console.log('Campos recebidos pelo controller:', Object.keys(req.body ?? {}));
   try {
     const resultado = await cadastrarUsuario(req.body);
 

@@ -31,7 +31,8 @@ export async function exibirCatalogo(req, res, next) {
         for (const chave of [
             'busca',
             'categoria',
-            'preco'
+            'preco',
+            'empresa'
         ]) {
             const valor = req.query[chave];
 
@@ -73,10 +74,15 @@ export async function exibirCatalogo(req, res, next) {
             );
         }
 
-        const [categorias, produtos] = await Promise.all([
+        const [categoriasBanco, produtos] = await Promise.all([
             listarCategorias(),
             listarProdutos(filtros)
         ]);
+
+        const categorias = categoriasBanco.map(categoria => ({
+            id: categoria.id_categoria,
+            nome: categoria.nome_categoria
+        }));
 
         renderizarPagina(
             res,

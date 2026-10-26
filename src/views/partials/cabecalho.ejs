@@ -51,9 +51,23 @@
     <%- include("navegacao", { movel: false }) %>
 
     <div class="cabecalho__acoes d-flex align-items-center gap-3">
-      <a href="/carrinho" class="btn botao--discreto">Carrinho</a
-      ><a href="/login" class="btn botao--contorno botao-cabecalho-acesso">Entrar</a
-      ><a href="/cadastro" class="btn botao--principal botao-cabecalho-acesso">Criar conta</a>
+      <% if (usuarioLogado) { %>
+          <a href="/carrinho" class="btn botao--discreto">Carrinho</a>
+
+          <form action="/logout" method="post">
+              <button type="submit" class="btn botao--principal">
+                  Sair
+              </button>
+          </form>
+      <% } else { %>
+          <a href="/login" class="btn botao--principal">
+              Entrar
+          </a>
+
+          <a href="/cadastro" class="btn botao--principal">
+              Criar conta
+          </a>
+      <% } %>
     </div>
 
     <button

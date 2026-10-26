@@ -7,6 +7,7 @@ import session from 'express-session';
 import { paginaNaoEncontrada, tratarErro } from './middlewares/erros.js';
 
 const aplicacao = express();
+aplicacao.use(express.static('public'));
 aplicacao.disable('x-powered-by');
 aplicacao.set('view engine', 'ejs');
 aplicacao.use(express.urlencoded({extended: true}));
@@ -47,6 +48,15 @@ aplicacao.use(
   '/icones',
   express.static(fileURLToPath(new URL('../node_modules/lucide-static/icons/', import.meta.url))),
 );
+aplicacao.use((req, res, next) => {
+    res.locals.usuarioLogado = Boolean(
+        req.session?.usuario &&
+        req.session?.tokens?.accessToken
+    );
+
+    next();
+});
+
 aplicacao.use(rotas);
 aplicacao.use(paginaNaoEncontrada);
 aplicacao.use(tratarErro);

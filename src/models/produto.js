@@ -1,10 +1,18 @@
-//Model Produto
-import {supabase} from '../../config/db.js';
+//Model produto
+import { supabase } from '../../config/db.js';
+
+const IMAGEM_PADRAO = '/assets/img/produto-padrao.png';
+
+function normalizarTexto(valor) {
+    return String(valor ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '');
+}
 
 function adaptarProduto(registro) {
-    if (!registro) {
-        return null;
-    }
+    if (!registro) return null;
 
     return {
         id: registro.id_produto,
@@ -26,24 +34,32 @@ function adaptarProduto(registro) {
         },
 
         unidade: 'unidade',
-
         modalidade: registro.tipo_compra,
 
         get nomeModalidade() {
-            if (this.modalidade === 'compra') {
+            const modalidade = String(this.modalidade ?? '')
+                .trim()
+                .toLowerCase();
+
+            if (modalidade === 'compra' ||
+                modalidade === 'compra imediata') {
                 return 'Compra imediata';
             }
 
-            if (this.modalidade === 'projeto') {
+            if (modalidade === 'projeto' ||
+                modalidade === 'projeto personalizado') {
                 return 'Projeto personalizado';
             }
 
             return this.modalidade || 'Não informada';
         },
 
-        // Temporário: a tabela ainda não armazena esses dados.
-        imagens: ['/imagens/produto-padrao.png'],
-        variacoes: ['Padrão']
+        imagens: [IMAGEM_PADRAO],
+        variacoes: ['Padrão'],
+        variantes: [{
+            variacao: 'Padrão',
+            imagem: IMAGEM_PADRAO
+        }]
     };
 }
 
@@ -61,52 +77,81 @@ export async function listarCategorias() {
         .select('id_categoria, nome_categoria')
         .order('nome_categoria');
 
-    if (error) {
-        throw error;
-    }
+    if (error) throw error;
 
-    return data;
+    return data ?? [];
 }
 
+// Associa cada imagem e seu nome de variação ao produto.
+// Mantém "imagens" como array de URLs para compatibilidade
+// com as telas que já usam produto.imagens.
 async function associarImagens(produtos) {
-    if (produtos.length === 0) {
-        return produtos;
-    }
+    if (!produtos.length) return produtos;
 
-    const idsProdutos = produtos.map(
-        produto => produto.id
-    );
+    const idsProdutos = produtos.map(produto => produto.id);
 
     const { data: imagens, error } = await supabase
         .from('produtosImagens')
-        .select('*')
+        .select('idImagem, idProduto, caminho_arquivo, nome_variacao')
         .in('idProduto', idsProdutos)
-        .order('idImagem');
+        .order('idImagem', { ascending: true });
 
     if (error) {
-        throw error;
+        throw new Error(
+            `Não foi possível carregar as imagens dos produtos: ${error.message}`
+        );
     }
 
     const imagensPorProduto = new Map();
 
-    for (const imagem of imagens) {
-        const idProduto = imagem.idProduto;
+    for (const registro of imagens ?? []) {
+        const idProduto = Number(registro.idProduto);
+        const caminho = registro.caminho_arquivo;
+        const nomeVariacao = String(
+            registro.nome_variacao ?? ''
+        ).trim();
+
+        if (!caminho) continue;
 
         if (!imagensPorProduto.has(idProduto)) {
             imagensPorProduto.set(idProduto, []);
         }
 
-        imagensPorProduto.get(idProduto).push(
-            imagem.caminho_arquivo
-        );
+        imagensPorProduto.get(idProduto).push({
+            imagem: caminho,
+            variacao: nomeVariacao || 'Padrão'
+        });
     }
 
-    return produtos.map(produto => ({
-        ...produto,
-        imagens: imagensPorProduto.get(produto.id) ?? [
-            '/imagens/produto-padrao.png'
-        ]
-    }));
+    return produtos.map(produto => {
+        const variantes =
+            imagensPorProduto.get(Number(produto.id)) ?? [];
+
+        if (!variantes.length) {
+            return {
+                ...produto,
+                imagens: [IMAGEM_PADRAO],
+                variacoes: ['Padrão'],
+                variantes: [{
+                    variacao: 'Padrão',
+                    imagem: IMAGEM_PADRAO
+                }]
+            };
+        }
+
+        return {
+            ...produto,
+
+            // Array de URLs, para manter compatibilidade com o catálogo.
+            imagens: variantes.map(item => item.imagem),
+
+            // Array de nomes, alinhado com o array de imagens.
+            variacoes: variantes.map(item => item.variacao),
+
+            // Estrutura completa usada na página de detalhes e no carrinho.
+            variantes
+        };
+    });
 }
 
 export async function listarProdutos(filtros = {}) {
@@ -165,11 +210,23 @@ export async function listarProdutos(filtros = {}) {
 
     const { data, error } = await consulta;
 
-    if (error) {
-        throw error;
+    if (error) throw error;
+
+    let produtos = (data ?? []).map(adaptarProduto);
+
+    // Filtro de empresa por nome parcial, ignorando acentos,
+    // espaços, pontuação e diferenças entre maiúsculas/minúsculas.
+    if (filtros.empresa) {
+        const termoEmpresa = normalizarTexto(filtros.empresa);
+
+        if (termoEmpresa) {
+            produtos = produtos.filter(produto =>
+                normalizarTexto(produto.empresa?.nome)
+                    .includes(termoEmpresa)
+            );
+        }
     }
 
-    const produtos = data.map(adaptarProduto);
     return associarImagens(produtos);
 }
 
@@ -209,13 +266,8 @@ export async function buscarProduto(id) {
         .eq('ativo', true)
         .maybeSingle();
 
-    if (error) {
-        throw error;
-    }
-
-    if (!data) {
-        return null;
-    }
+    if (error) throw error;
+    if (!data) return null;
 
     const [produto] = await associarImagens([
         adaptarProduto(data)

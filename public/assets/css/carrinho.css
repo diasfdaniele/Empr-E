@@ -261,3 +261,48 @@
     text-align: left;
   }
 }
+
+.produto-detalhe__formulario {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem;
+}
+
+.produto-detalhe__campo-quantidade {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.produto-detalhe__campo-quantidade input {
+  width: 100px;
+  min-height: 44px;
+  padding: 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+}
+
+.carrinho-item__form-quantidade {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.carrinho-item__form-quantidade input {
+  width: 76px;
+  min-height: 40px;
+  padding: 0.4rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+}
+
+.carrinho-item__form-quantidade button {
+  min-height: 40px;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  background: #fff;
+  cursor: pointer;
+  width: 75%;
+}

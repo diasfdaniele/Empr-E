@@ -1,117 +1,260 @@
+
 <main id="conteudo-principal" tabindex="-1">
   <section class="carrinho-destaque">
     <div class="container">
       <div class="carrinho-destaque__conteudo">
-        <span class="secao-selo">///Precisamos desenvolver quando tiver banco</span>
+        <span class="secao-selo">Marketplace de acessibilidade</span>
         <h1 class="carrinho-destaque__titulo">Seu carrinho</h1>
         <p class="carrinho-destaque__texto">
-          ///Precisamos desenvolver quando tiver banco - dados aqui só para exemplo
+          Seus produtos ficam associados à sua conta quando você está conectado.
         </p>
       </div>
     </div>
   </section>
+
   <section class="carrinho-secao" aria-labelledby="lista-carrinho-titulo">
     <div class="container">
       <div class="row g-4 align-items-start">
         <div class="col-lg-8">
           <div class="carrinho-painel">
             <div class="carrinho-painel__cabecalho">
-              <h2 id="lista-carrinho-titulo" class="carrinho-painel__titulo">Itens</h2>
-              <a href="/catalogo" class="btn botao--discreto">Continuar explorando</a>
+              <h2 id="lista-carrinho-titulo" class="carrinho-painel__titulo">
+                Itens
+              </h2>
+              <a href="/catalogo" class="btn botao--discreto">
+                Continuar explorando
+              </a>
             </div>
+
             <div id="lista-carrinho" class="carrinho-lista">
-              <% for (const { produto, quantidade: quantidadeItem, variacao } of itens) { %>
-              <article
-                class="carrinho-item"
-                data-linha-carrinho=""
-                data-preco="<%= produto.preco %>"
-                data-compra="<%= produto.modalidade === "compra" %>"
-              >
-                <div class="carrinho-item__midia">
-                  <img src="<%= produto.imagens[0] %>" alt="<%= produto.nome %>" width="90" height="90" />
+              <% if (itens.length === 0) { %>
+                <div class="carrinho-vazio">
+                  <h3>Seu carrinho está vazio</h3>
+                  <p>
+                    Explore o catálogo e adicione os produtos de que precisa.
+                  </p>
+                  <a href="/catalogo" class="btn botao--principal">
+                    Explorar catálogo
+                  </a>
                 </div>
-                <div>
-                  <div class="carrinho-item__cabecalho">
-                    <h3><a href="/produto/<%= produto.id %>"><%= produto.nome %></a></h3>
-                    <p class="carrinho-item__empresa"><%= produto.empresa.nome %></p>
-                  </div>
-                  <span class="carrinho-item__categoria"><%= produto.categoria.nome %></span>
-                  <p class="carrinho-item__descricao"><%= produto.descricao %></p>
-                  <p class="carrinho-item__meta"><%= variacao %> · <%= produto.nomeModalidade %></p>
-                  <div class="carrinho-item__controles">
-                    <div class="carrinho-item__quantidade" aria-label="Quantidade de <%= produto.nome %>">
-                      <button
-                        type="button"
-                        aria-label="Diminuir quantidade de <%= produto.nome %>"
-                        title="Diminuir quantidade"
-                        data-quantidade="diminuir"
-                      >
-                        <img src="/icones/minus.svg" width="18" height="18" alt="" /></button
-                      ><span aria-live="polite" data-quantidade-item=""><%= quantidadeItem %></span
-                      ><button
-                        type="button"
-                        aria-label="Aumentar quantidade de <%= produto.nome %>"
-                        title="Aumentar quantidade"
-                        data-quantidade="aumentar"
-                      >
-                        <img src="/icones/plus.svg" width="18" height="18" alt="" />
-                      </button>
+              <% } else { %>
+                <% for (const item of itens) {
+                  const produto = item.produto;
+                  const quantidadeItem = item.quantidade;
+                  const variacao = item.variacao;
+                  const compraImediata = [
+                    'compra',
+                    'compra imediata'
+                  ].includes(String(produto.modalidade).toLowerCase());
+                %>
+                  <article
+                    class="carrinho-item"
+                    data-linha-carrinho
+                    data-preco="<%= produto.preco %>"
+                    data-compra="<%= compraImediata %>"
+                  >
+                    <div class="carrinho-item__midia">
+                      <img
+                        src="<%= item.imagem %>"
+                        alt="<%= produto.nome %> — <%= variacao %>"
+                        width="90"
+                        height="90"
+                      />
                     </div>
-                    <button
-                      type="button"
-                      class="carrinho-item__remover"
-                      aria-label="Remover <%= produto.nome %>"
-                      title="Remover item"
-                      data-remover=""
-                    >
-                      <img src="/icones/trash-2.svg" width="20" height="20" alt="" />
-                    </button>
-                  </div>
-                </div>
-                <div class="carrinho-item__lateral">
-                  <span class="carrinho-item__preco"><%= formatarMoeda(produto.preco) %>/<%= produto.unidade %></span
-                  ><span class="carrinho-item__meta"><%= produto.modalidade === "compra" ? "Compra ilustrativa" : "Orçamento indisponível" %></span>
-                </div>
-              </article>
+
+                    <div>
+                      <div class="carrinho-item__cabecalho">
+                        <h3>
+                          <a href="/produto/<%= produto.id %>">
+                            <%= produto.nome %>
+                          </a>
+                        </h3>
+                        <p class="carrinho-item__empresa">
+                          <%= produto.empresa?.nome || 'Fornecedor' %>
+                        </p>
+                      </div>
+
+                      <span class="carrinho-item__categoria">
+                        <%= produto.categoria?.nome || 'Categoria' %>
+                      </span>
+
+                      <p class="carrinho-item__descricao">
+                        <%= produto.descricao || '' %>
+                      </p>
+
+                      <p class="carrinho-item__meta">
+                        Variação: <%= variacao %> · <%= produto.nomeModalidade %>
+                      </p>
+
+                      <div class="carrinho-item__controles">
+                        <div
+                          class="carrinho-item__quantidade"
+                          aria-label="Quantidade de <%= produto.nome %>, variação <%= variacao %>"
+                        >
+                          <form
+                            action="/carrinho/itens/<%= produto.id %>/quantidade"
+                            method="post"
+                          >
+                            <input
+                              type="hidden"
+                              name="variacao"
+                              value="<%= variacao %>"
+                            />
+                            <input
+                              type="hidden"
+                              name="quantidadeAtual"
+                              value="<%= quantidadeItem %>"
+                            />
+                            <button
+                              type="submit"
+                              name="acao"
+                              value="diminuir"
+                              aria-label="Diminuir quantidade de <%= variacao %>"
+                              <%= quantidadeItem <= 1 ? 'disabled' : '' %>
+                            >
+                              <img src="/icones/minus.svg" width="18" height="18" alt="" />
+                            </button>
+                          </form>
+
+                          <form
+                            action="/carrinho/itens/<%= produto.id %>/quantidade"
+                            method="post"
+                            class="carrinho-item__form-quantidade"
+                          >
+                            <input
+                              type="hidden"
+                              name="variacao"
+                              value="<%= variacao %>"
+                            />
+                            <label
+                              class="visually-hidden"
+                              for="quantidade-<%= produto.id %>-<%= encodeURIComponent(variacao) %>"
+                            >
+                              Quantidade de <%= produto.nome %>, variação <%= variacao %>
+                            </label>
+                            <input
+                              type="number"
+                              id="quantidade-<%= produto.id %>-<%= encodeURIComponent(variacao) %>"
+                              name="quantidade"
+                              value="<%= quantidadeItem %>"
+                              data-quantidade-carrinho
+                              data-quantidade-original="<%= quantidadeItem %>"
+                              min="1"
+                              max="999"
+                              step="1"
+                              required
+                              aria-label="Quantidade de <%= produto.nome %>, variação <%= variacao %>"
+                            />
+                          </form>
+
+                          <form
+                            action="/carrinho/itens/<%= produto.id %>/quantidade"
+                            method="post"
+                          >
+                            <input
+                              type="hidden"
+                              name="variacao"
+                              value="<%= variacao %>"
+                            />
+                            <input
+                              type="hidden"
+                              name="quantidadeAtual"
+                              value="<%= quantidadeItem %>"
+                            />
+                            <button
+                              type="submit"
+                              name="acao"
+                              value="aumentar"
+                              aria-label="Aumentar quantidade de <%= variacao %>"
+                              <%= quantidadeItem >= 99 ? 'disabled' : '' %>
+                            >
+                              <img src="/icones/plus.svg" width="18" height="18" alt="" />
+                            </button>
+                          </form>
+                        </div>
+
+                        <form
+                          action="/carrinho/itens/<%= produto.id %>/remover"
+                          method="post"
+                        >
+                          <input
+                            type="hidden"
+                            name="variacao"
+                            value="<%= variacao %>"
+                          />
+                          <button
+                            type="submit"
+                            class="carrinho-item__remover"
+                            aria-label="Remover <%= produto.nome %>, variação <%= variacao %>"
+                            title="Remover item"
+                          >
+                            <img src="/icones/trash-2.svg" width="20" height="20" alt="" />
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="carrinho-item__lateral">
+                      <span class="carrinho-item__preco">
+                        <%= formatarMoeda(produto.preco) %>/<%= produto.unidade %>
+                      </span>
+                      <span class="carrinho-item__meta">
+                        <%= produto.nomeModalidade %>
+                      </span>
+                    </div>
+                  </article>
+                <% } %>
               <% } %>
             </div>
-            <section class="orcamento-demo" aria-labelledby="orcamento-titulo">
-              <h2 id="orcamento-titulo" class="carrinho-painel__titulo">
-                Projeto personalizado e orçamento
-              </h2>
-              <p>///Precisamos desenvolver quando tiver banco</p>
-              <button type="button" class="btn botao--contorno" disabled="">
-                Solicitar orçamento - precisamos verificar se vamos manter essa funcionalidade
-              </button>
-            </section>
           </div>
         </div>
+
         <div class="col-lg-4">
-          <aside class="carrinho-resumo" aria-label="Resumo demonstrativo">
+          <aside class="carrinho-resumo" aria-label="Resumo do carrinho">
             <span class="carrinho-resumo__rotulo">Resumo</span>
             <h2 class="carrinho-resumo__titulo">Seu resumo</h2>
             <p class="carrinho-resumo__texto">
               Revise seus itens antes de continuar.
             </p>
+
             <dl class="carrinho-metricas">
               <div class="carrinho-metrica">
-                <dt>Quantidade</dt>
-                <dd id="resumo-quantidade"><%= quantidade %></dd>
+                <dt>Quantidade de unidades</dt>
+                <dd><%= quantidade %></dd>
               </div>
               <div class="carrinho-metrica">
-                <dt>Total ilustrativo</dt>
-                <dd id="resumo-valor"><%= formatarMoeda(total) %></dd>
+                <dt>Subtotal de compra imediata</dt>
+                <dd><%= formatarMoeda(total) %></dd>
               </div>
             </dl>
+
             <div class="carrinho-resumo__acoes">
-              <a href="/pagamento" class="btn botao--principal w-100">Finalizar compra</a
-              ><button type="button" id="botao-limpar-carrinho" class="btn botao--contorno w-100">
-                <img src="/icones/trash-2.svg" width="18" height="18" alt="" />Limpar carrinho
-              </button>
+              <% if (itens.length > 0) { %>
+                <a href="/pagamento" class="btn botao--principal w-100">
+                  Finalizar compra
+                </a>
+
+                <form action="/carrinho/limpar" method="post">
+                  <button type="submit" class="btn botao--contorno w-100">
+                    <img src="/icones/trash-2.svg" width="18" height="18" alt="" />
+                    Limpar carrinho
+                  </button>
+                </form>
+              <% } else { %>
+                <a href="/catalogo" class="btn botao--principal w-100">
+                  Ir ao catálogo
+                </a>
+              <% } %>
             </div>
+
+            <p class="carrinho-resumo__texto">
+              O subtotal considera apenas produtos de compra imediata.
+              Projetos personalizados podem exigir orçamento.
+            </p>
           </aside>
         </div>
       </div>
     </div>
   </section>
 </main>
+<script src="/assets/js/quantidade-carrinho.js" defer></script>

@@ -1,3 +1,4 @@
+
 <article class="produto-cartao" aria-label="<%= produto.nome %>">
   <a href="/produto/<%= produto.id %>" class="produto-cartao__link">
     <div class="produto-cartao__midia">
@@ -9,26 +10,44 @@
         width="320"
         height="220"
       />
-      <span class="produto-cartao__empresa"><%= produto.empresa.nome %></span>
+      <span class="produto-cartao__empresa">
+        <%= produto.empresa.nome %>
+      </span>
     </div>
   </a>
+
   <div class="produto-cartao__conteudo">
-    <span class="produto-cartao__categoria"><%= produto.categoria.nome %></span>
-    <h3 class="produto-cartao__titulo"><a href="/produto/<%= produto.id %>"><%= produto.nome %></a></h3>
-    <p class="produto-cartao__descricao"><%= produto.descricao %></p>
-    <span class="produto-cartao__modalidade"><%= produto.nomeModalidade %></span>
+    <span class="produto-cartao__categoria">
+      <%= produto.categoria.nome %>
+    </span>
+
+    <h3 class="produto-cartao__titulo">
+      <a href="/produto/<%= produto.id %>">
+        <%= produto.nome %>
+      </a>
+    </h3>
+
+    <p class="produto-cartao__descricao">
+      <%= produto.descricao %>
+    </p>
+
+    <span class="produto-cartao__modalidade">
+      <%= produto.nomeModalidade %>
+    </span>
+
     <div class="produto-cartao__rodape">
-      <span class="produto-cartao__preco"><%= formatarMoeda(produto.preco) %>/<%= produto.unidade %></span>
+      <span class="produto-cartao__preco">
+        <%= formatarMoeda(produto.preco) %>/<%= produto.unidade %>
+      </span>
+
       <div class="produto-cartao__acoes">
-        <button
-          type="button"
+        <a
+          href="/produto/<%= produto.id %>"
           class="btn botao--principal botao--sm"
-          title="Adicionar somente nesta página"
-          data-adicionar-carrinho="<%= produto.id %>"
-          data-variacao="<%= produto.variacoes[0] %>"
+          aria-label="Ver <%= produto.nome %> e escolher uma variação"
         >
-          Adicionar ao carrinho
-        </button>
+          Visualizar produto
+        </a>
       </div>
     </div>
   </div>
