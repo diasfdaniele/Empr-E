@@ -15,7 +15,9 @@ export class Pagamento {
 }
 
 export function obterPagamentoExemplo() {
-  const produto = buscarProduto('piso-tatil-alerta');
-  const quantidade = 2;
-  return Object.freeze({ produto, quantidade, total: calcularSubtotal(produto.preco, quantidade) });
+  return Object.freeze({
+    produto: { id: 1, nome: 'Piso Tátil Alerta', preco: 49.90 },
+    quantidade: 2,
+    total: 99.80
+  });
 }

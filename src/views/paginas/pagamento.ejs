@@ -2,10 +2,10 @@
   <section class="pagamento-destaque" aria-labelledby="pagamento-titulo">
     <div class="container">
       <div class="pagamento-destaque__conteudo">
-        <span class="secao-selo">Demonstração</span>
-        <h1 id="pagamento-titulo" class="pagamento-destaque__titulo">Pagamento ilustrativo</h1>
+        <span class="secao-selo">Checkout</span>
+        <h1 id="pagamento-titulo" class="pagamento-destaque__titulo">Finalizar pedido</h1>
         <p class="pagamento-destaque__texto">
-          Exemplo independente do carrinho. Nenhum pagamento ou pedido será realizado.
+          Confirme seus dados de entrega e selecione a forma de pagamento.
         </p>
       </div>
     </div>
@@ -27,26 +27,27 @@
 
             <form
               id="pagamento-formulario"
+              action="/pagamento/confirmar"
+              method="POST"
               class="pagamento-formulario"
-              novalidate=""
-              data-formulario-desabilitado=""
             >
               <div class="campo-grupo">
-                <label for="pessoa-tipo" class="campo-rotulo">Tipo de pessoa</label
-                ><select id="pessoa-tipo" class="campo-seletor">
+                <label for="pessoa-tipo" class="campo-rotulo">Tipo de pessoa</label>
+                <select id="pessoa-tipo" name="tipo_pessoa" class="campo-seletor">
                   <option value="pf">Pessoa física</option>
                   <option value="pj">Pessoa jurídica</option>
                 </select>
               </div>
+
               <div class="pagamento-formulario__grade">
                 <div class="campo-grupo" hidden="" data-campos-pj="">
                   <label for="empresa" class="campo-rotulo">Empresa</label>
                   <input
                     id="empresa"
+                    name="empresa"
                     class="campo-entrada"
                     type="text"
                     placeholder="Nome da empresa"
-                    disabled=""
                     autocomplete="off"
                   />
                 </div>
@@ -54,10 +55,10 @@
                   <label for="cnpj" class="campo-rotulo">CNPJ</label>
                   <input
                     id="cnpj"
+                    name="cnpj"
                     class="campo-entrada"
                     type="text"
                     placeholder="00.000.000/0001-00"
-                    disabled=""
                     autocomplete="off"
                   />
                 </div>
@@ -65,22 +66,26 @@
                   <label for="responsavel" class="campo-rotulo">Nome completo / responsável</label>
                   <input
                     id="responsavel"
+                    name="responsavel"
                     class="campo-entrada"
                     type="text"
                     placeholder="Nome do responsável"
-                    disabled=""
+                    value="<%= usuarioLogado?.nome_completo || '' %>"
                     autocomplete="off"
+                    required
                   />
                 </div>
                 <div class="campo-grupo">
                   <label for="email" class="campo-rotulo">E-mail</label>
                   <input
                     id="email"
+                    name="email"
                     class="campo-entrada"
                     type="email"
                     placeholder="empresa@exemplo.com.br"
-                    disabled=""
+                    value="<%= usuarioLogado?.login || '' %>"
                     autocomplete="off"
+                    required
                   />
                 </div>
               </div>
@@ -100,20 +105,20 @@
                     <label for="cep" class="campo-rotulo">CEP</label>
                     <input
                       id="cep"
+                      name="cep"
                       class="campo-entrada"
                       type="text"
                       inputmode="numeric"
                       placeholder="00000-000"
-                      disabled=""
+                      maxlength="9"
                       autocomplete="off"
-                      value="01001000"
-                      readonly=""
-                      aria-describedby="cep-estado"
-                    /><button type="button" id="botao-consultar-cep" class="btn botao--contorno">
-                      Consultar CEP de exemplo
+                      required
+                    />
+                    <button type="button" id="botao-consultar-cep" class="btn botao--contorno mt-2">
+                      Consultar CEP
                     </button>
                     <p id="cep-estado" role="status">
-                      Consulta opcional ao ViaCEP: apenas o CEP de exemplo será enviado.
+                      Preencha o CEP para preencher o endereço automaticamente.
                     </p>
                   </div>
                 </div>
@@ -123,32 +128,34 @@
                     <label for="logradouro" class="campo-rotulo">Logradouro</label>
                     <input
                       id="logradouro"
+                      name="logradouro"
                       class="campo-entrada"
                       type="text"
                       placeholder="Rua, avenida ou alameda"
-                      disabled=""
                       autocomplete="off"
+                      required
                     />
                   </div>
                   <div class="campo-grupo">
-                    <label for="numero" class="campo-rotulo">Numero</label>
+                    <label for="numero" class="campo-rotulo">Número</label>
                     <input
                       id="numero"
+                      name="numero"
                       class="campo-entrada"
                       type="text"
                       placeholder="123"
-                      disabled=""
                       autocomplete="off"
+                      required
                     />
                   </div>
                   <div class="campo-grupo">
                     <label for="complemento" class="campo-rotulo">Complemento</label>
                     <input
                       id="complemento"
+                      name="complemento"
                       class="campo-entrada"
                       type="text"
                       placeholder="Sala, bloco, andar"
-                      disabled=""
                       autocomplete="off"
                     />
                   </div>
@@ -156,34 +163,37 @@
                     <label for="bairro" class="campo-rotulo">Bairro</label>
                     <input
                       id="bairro"
+                      name="bairro"
                       class="campo-entrada"
                       type="text"
                       placeholder="Bairro"
-                      disabled=""
                       autocomplete="off"
+                      required
                     />
                   </div>
                   <div class="campo-grupo">
                     <label for="cidade" class="campo-rotulo">Cidade</label>
                     <input
                       id="cidade"
+                      name="cidade"
                       class="campo-entrada"
                       type="text"
                       placeholder="Cidade"
-                      disabled=""
                       autocomplete="off"
+                      required
                     />
                   </div>
                   <div class="campo-grupo">
                     <label for="estado" class="campo-rotulo">Estado</label>
                     <input
                       id="estado"
+                      name="estado"
                       class="campo-entrada"
                       type="text"
                       maxlength="2"
                       placeholder="UF"
-                      disabled=""
                       autocomplete="off"
+                      required
                     />
                   </div>
                 </div>
@@ -192,20 +202,20 @@
               <div class="pagamento-formulario__grade pagamento-formulario__grade--financeiro">
                 <div class="campo-grupo">
                   <label for="metodo" class="campo-rotulo">Método de pagamento</label>
-                  <select id="metodo" class="campo-seletor" disabled="" autocomplete="off">
+                  <select id="metodo" name="metodo" class="campo-seletor" required autocomplete="off">
                     <option value="">Selecione</option>
-                    <option value="cartao">Cartão</option>
+                    <option value="cartao">Cartão de Crédito</option>
                     <option value="boleto">Boleto</option>
                     <option value="pix">PIX</option>
                   </select>
                 </div>
                 <div class="campo-grupo">
                   <label for="parcelas" class="campo-rotulo">Parcelamento</label>
-                  <select id="parcelas" class="campo-seletor" disabled="" autocomplete="off">
-                    <option value="1x">1x</option>
-                    <option value="2x">2x</option>
-                    <option value="3x">3x</option>
-                    <option value="6x">6x</option>
+                  <select id="parcelas" name="parcelas" class="campo-seletor" autocomplete="off">
+                    <option value="1">1x à vista</option>
+                    <option value="2">2x</option>
+                    <option value="3">3x</option>
+                    <option value="6">6x</option>
                   </select>
                 </div>
               </div>
@@ -214,22 +224,17 @@
                 <label for="observacoes" class="campo-rotulo">Observações do pedido</label>
                 <textarea
                   id="observacoes"
+                  name="observacoes"
                   class="campo-texto"
                   rows="4"
-                  placeholder="Instruções de entrega, centro de custo ou observações para o financeiro."
-                  disabled=""
+                  placeholder="Instruções de entrega ou observações."
                   autocomplete="off"
                 ></textarea>
               </div>
 
               <div class="pagamento-formulario__acoes">
-                <button
-                  id="botao-confirmar-pagamento"
-                  type="submit"
-                  class="btn botao--principal botao--lg"
-                  disabled=""
-                >
-                  Pagamento indisponível
+                <button id="botao-confirmar-pagamento" type="submit" class="btn botao--principal botao--lg">
+                  Finalizar Pedido
                 </button>
                 <a href="/carrinho" class="btn botao--contorno botao--lg">Voltar para carrinho</a>
               </div>
@@ -241,12 +246,25 @@
           <aside class="pagamento-resumo" aria-label="Resumo do pagamento">
             <span class="pagamento-resumo__rotulo">Checkout</span>
             <h2 class="pagamento-resumo__titulo">Resumo do seu pedido</h2>
-            <p id="pagamento-resumo-texto" class="pagamento-resumo__texto">
-              Exemplo fictício: duas peças de piso tátil. Não representa uma compra.
-            </p>
 
-            <div id="pagamento-lista" class="pagamento-lista" aria-live="polite">
-              <%= produto.nome %> — <%= quantidade %> peças
+            <div id="pagamento-lista" class="pagamento-lista mb-3" aria-live="polite">
+              <% if (itens && itens.length > 0) { %>
+                <% for (const item of itens) { 
+                  const nomeProduto = item.produto?.nome || item.nome || 'Produto';
+                  const precoProduto = Number(item.produto?.preco || item.preco) || 0;
+                  const qtdItem = Number(item.quantidade) || 1;
+                %>
+                  <div class="carrinho-item-resumo mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                      <strong><%= nomeProduto %></strong>
+                      <small class="text-muted d-block">Qtd: <%= qtdItem %> <%= item.variacao ? '· ' + item.variacao : '' %></small>
+                    </div>
+                    <span><%= formatarMoeda(precoProduto * qtdItem) %></span>
+                  </div>
+                <% } %>
+              <% } else { %>
+                <p class="text-muted">Seu carrinho está vazio.</p>
+              <% } %>
             </div>
 
             <dl class="pagamento-metricas">
@@ -255,12 +273,8 @@
                 <dd id="pagamento-total-itens"><%= quantidade %></dd>
               </div>
               <div class="pagamento-metrica">
-                <dt>Pagamento imediato</dt>
-                <dd id="pagamento-itens-imediatos"><%= quantidade %></dd>
-              </div>
-              <div class="pagamento-metrica">
                 <dt>Total</dt>
-                <dd id="pagamento-total-valor"><%= formatarMoeda(total) %></dd>
+                <dd id="pagamento-total-valor"><%= formatarMoeda(Number(typeof total !== 'undefined' ? total : 0)) %></dd>
               </div>
             </dl>
           </aside>
@@ -269,3 +283,71 @@
     </div>
   </section>
 </main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const inputCep = document.getElementById('cep');
+    const btnConsultar = document.getElementById('botao-consultar-cep');
+    const statusCep = document.getElementById('cep-estado');
+    
+    const inputLogradouro = document.getElementById('logradouro');
+    const inputBairro = document.getElementById('bairro');
+    const inputCidade = document.getElementById('cidade');
+    const inputEstado = document.getElementById('estado');
+    const inputNumero = document.getElementById('numero');
+
+    async function buscarEnderecoPorCep() {
+      const cepLimpo = inputCep.value.replace(/\D/g, '');
+
+      if (cepLimpo.length !== 8) {
+        statusCep.textContent = 'Por favor, digite um CEP válido com 8 dígitos.';
+        statusCep.style.color = '#d9534f';
+        return;
+      }
+
+      statusCep.textContent = 'Buscando endereço...';
+      statusCep.style.color = '#0275d8';
+
+      try {
+        const resposta = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+        const dados = await resposta.json();
+
+        if (dados.erro) {
+          statusCep.textContent = 'CEP não encontrado. Preencha o endereço manualmente.';
+          statusCep.style.color = '#d9534f';
+          return;
+        }
+
+        inputLogradouro.value = dados.logradouro || '';
+        inputBairro.value = dados.bairro || '';
+        inputCidade.value = dados.localidade || '';
+        inputEstado.value = dados.uf || '';
+
+        statusCep.textContent = 'Endereço encontrado!';
+        statusCep.style.color = '#5cb85c';
+
+        if (inputNumero) {
+          inputNumero.focus();
+        }
+
+      } catch (erro) {
+        console.error('Erro ao consultar CEP:', erro);
+        statusCep.textContent = 'Erro ao buscar o CEP. Verifique sua conexão e tente novamente.';
+        statusCep.style.color = '#d9534f';
+      }
+    }
+
+    if (btnConsultar) {
+      btnConsultar.addEventListener('click', buscarEnderecoPorCep);
+    }
+
+    if (inputCep) {
+      inputCep.addEventListener('blur', () => {
+        const cepLimpo = inputCep.value.replace(/\D/g, '');
+        if (cepLimpo.length === 8) {
+          buscarEnderecoPorCep();
+        }
+      });
+    }
+  });
+</script>

@@ -23,7 +23,7 @@ import {
     limparCarrinho
 } from '../controllers/carrinho.js';
 
-import { exibirPagamento } from '../controllers/pagamento.js';
+import { exibirPagamento, processarPagamento } from '../controllers/pagamento.js';
 
 import {
     exibirCadastro,
@@ -68,6 +68,7 @@ rotas.post(
 rotas.post('/carrinho/limpar', limparCarrinho);
 
 rotas.get('/pagamento', exibirPagamento);
+rotas.post('/pagamento/confirmar', processarPagamento);
 
 rotas.get('/institucional', exibirInstitucional);
 rotas.get('/conta', exibirConta);
