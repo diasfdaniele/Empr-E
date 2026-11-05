@@ -32,7 +32,6 @@ import {
     processarLogin,
     encerrarSessao,
     exibirConta,
-    exibirFavoritos,
     exibirAdministracao
 } from '../controllers/usuario.js';
 
@@ -74,22 +73,6 @@ rotas.get('/institucional', exibirInstitucional);
 rotas.get('/conta', exibirConta);
 rotas.get('/conta/vendedor', exibirPainel);
 rotas.get('/conta/admin', exibirAdministracao);
-rotas.get('/conta/favoritos', exibirFavoritos);
 rotas.get('/conta/pedidos', exibirPedidos);
-rotas.post('/logout', (req, res) => {
-    if (!req.session) {
-        return res.redirect('/');
-    }
-
-    req.session.destroy((erro) => {
-        if (erro) {
-            console.error('Erro ao encerrar sessão:', erro);
-            return res.redirect('/');
-        }
-
-        res.clearCookie('connect.sid');
-        return res.redirect('/');
-    });
-});
 
 export default rotas;

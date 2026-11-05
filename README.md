@@ -39,8 +39,7 @@ A nova fase da Empr-E busca:
 O catálogo demonstrativo oferece busca, filtros por categoria, empresa e preço,
 além de páginas de detalhe com variações e imagens locais. O carrinho e o checkout
 exibem exemplos independentes: as interações são temporárias, não criam pedidos e
-não realizam cobranças. Cadastro, login, conta, administração, favoritos persistidos,
-histórico e painel do vendedor estão indisponíveis nesta fase.
+não realizam cobranças. Cadastro, login, conta, administração, histórico e painel do vendedor estão indisponíveis nesta fase.
 
 Pessoas físicas e jurídicas poderão comprar; somente pessoas jurídicas poderão
 vender. Essa regra está preparada na interface e nos contratos do model, mas ainda
@@ -63,7 +62,7 @@ Em desenvolvimento.
 
 ## Estrutura do Projeto
 
-O backend Express renderiza páginas EJS e segue MVC. Os seis módulos principais, são usuário, produto, empresa, pedido, pagamento e vendas Endereços, contatos e favoritos ficam com usuário; carrinho, itens e orçamento ficam com pedido. Views compartilhadas ficam em `src/views/partials`.
+O backend Express renderiza páginas EJS e segue MVC. Os seis módulos principais, são usuário, produto, empresa, pedido, pagamento, vendas, Endereços e contatos ficam com usuário; carrinho, itens e orçamento ficam com pedido. Views compartilhadas ficam em `src/views/partials`.
 
 O CSS, as imagens e as interações do navegador ficam em `public/assets/`. O HTML usa as classes Bootstrap necessárias para manter o layout existente. Os dados dos models são demonstrações em memória: não há persistência nem conexão ao banco por enquanto.
 

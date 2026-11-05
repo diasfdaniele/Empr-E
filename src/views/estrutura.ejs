@@ -26,6 +26,7 @@
   login: ['login'],
   cadastro: ['cadastro'],
   indisponivel: ['conta'],
+  'restritas/conta': ['conta'],
 }; %>
     <% for (const estilo of estilos[pagina] || []) { %>
     <link href="/assets/css/<%= estilo %>.css" rel="stylesheet" />
@@ -37,7 +38,14 @@
     <a href="#conteudo-principal" class="atalho-navegacao">Ir para o conteúdo principal</a>
     <a href="#navegacao-principal" class="atalho-navegacao">Ir para a navegação</a>
     <a href="#rodape" class="atalho-navegacao">Ir para o rodapé</a>
-    <%- include("partials/acessibilidade") %> <%- include("partials/cabecalho") %> <%- include("paginas/" + pagina) %>
+    <%- include("partials/acessibilidade") %>
+    <%- include("partials/cabecalho") %>
+
+    <% if (pagina.startsWith('restritas/')) { %>
+      <%- include(pagina) %>
+    <% } else { %>
+      <%- include("paginas/" + pagina) %>
+    <% } %>
     <div id="demo-estado" class="demo-estado" role="status" aria-live="polite" hidden=""></div>
     <%- include("partials/rodape") %>
     <div vw="" class="enabled">

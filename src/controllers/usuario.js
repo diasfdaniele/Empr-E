@@ -113,15 +113,17 @@ export function encerrarSessao(req, res) {
 }
 
 export function exibirConta(req, res) {
-  if (!req.session.usuario) {
+  if (!req.session?.usuario) {
     return res.redirect('/login');
   }
 
-  return exibirIndisponibilidade(req, res);
-}
+  res.locals.usuario = req.session.usuario;
 
-export function exibirFavoritos(req, res) {
-  exibirIndisponibilidade(req, res);
+  return renderizarPagina(
+    res,
+    'restritas/conta',
+    'Minha conta | Empr-E'
+  );
 }
 
 export function exibirAdministracao(req, res) {

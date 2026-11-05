@@ -245,7 +245,6 @@
   width: 100%;
 }
 
-.conta-favoritos-lista,
 .conta-interacoes-lista {
   display: flex;
   flex-direction: column;
