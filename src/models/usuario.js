@@ -108,11 +108,3 @@ export class Contato {
     Object.freeze(this);
   }
 }
-
-export class Favorito {
-  constructor({ usuarioId, produtoId }) {
-    this.usuarioId = identificador(usuarioId, 'Usuário');
-    this.produtoId = identificador(produtoId, 'Produto');
-    Object.freeze(this);
-  }
-}
