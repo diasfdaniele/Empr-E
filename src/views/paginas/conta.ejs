@@ -1,0 +1,98 @@
+<main id="conteudo-principal" tabindex="-1">
+  <!-- Banner escuro utilizando o CSS nativo de conta (.conta-destaque) -->
+  <section class="conta-destaque" aria-labelledby="conta-titulo">
+    <div class="container">
+      <div class="conta-destaque__conteudo">
+        <span class="secao-selo">ÁREA DO CLIENTE</span>
+        <h1 id="conta-titulo" class="conta-destaque__titulo">Minha Conta</h1>
+        <p class="conta-destaque__texto">
+          Bem-vindo(a), <strong><%= usuario?.nome || usuario?.nome_completo %></strong>! Gerencie os seus dados cadastrais e acompanhe os seus pedidos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="conta-secao">
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        
+        <div class="col-lg-7">
+          
+          <div class="conta-painel mb-4">
+            <div class="conta-painel__cabecalho d-flex justify-content-between align-items-center">
+              <div>
+                <h2 class="conta-painel__titulo">Informações Pessoais</h2>
+              </div>
+              <span class="badge bg-secondary text-uppercase">
+                <%= (usuario?.tipoPessoa || usuario?.tipo_pessoa) === 'pj' ? 'Pessoa Jurídica' : 'Pessoa Física' %>
+              </span>
+            </div>
+            <div class="p-4">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <strong>Nome completo / Responsável</strong>
+                  <p class="text-muted mb-0"><%= usuario?.nome_completo || usuario?.nome || 'Isabela Yumi' %></p>
+                </div>
+                <div class="col-md-6">
+                  <strong>E-mail de acesso</strong>
+                  <p class="text-muted mb-0"><%= usuario?.login || usuario?.email || 'Não informado' %></p>
+                </div>
+                <div class="col-md-6">
+                  <strong>CPF / CNPJ</strong>
+                  <p class="text-muted mb-0"><%= usuario?.cpf_pessoa || usuario?.cnpj || 'Não informado' %></p>
+                </div>
+                <div class="col-md-6">
+                  <strong>Membro desde</strong>
+                  <p>2026</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conta-painel mb-4">
+            <div class="conta-painel__cabecalho">
+              <h2 class="conta-painel__titulo">Endereço de Entrega</h2>
+            </div>
+            <div class="p-4">
+              <% if (endereco) { %>
+                <p class="mb-1"><strong><%= endereco.logradouro %>, <%= endereco.numero %></strong> <%= endereco.complemento ? '— ' + endereco.complemento : '' %></p>
+                <p class="mb-1 text-muted"><%= endereco.bairro %> — <%= endereco.cidade %> / <%= endereco.estado %></p>
+                <p class="mb-0 text-muted">CEP: <%= endereco.cep %></p>
+              <% } else { %>
+                <p class="text-muted mb-3">Nenhum endereço principal cadastrado no momento.</p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="conta-painel">
+            <div class="conta-painel__cabecalho">
+              <h2 class="conta-painel__titulo">Histórico de Pedidos</h2>
+            </div>
+            <div class="p-4">
+              <% if (pedidos && pedidos.length > 0) { %>
+                <div class="list-group list-group-flush">
+                  <% for (const pedido of pedidos) { %>
+                    <div class="list-group-item px-0 py-2 border-bottom">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <strong>Pedido #<%= pedido.id_pedido || pedido.id %></strong>
+                        <span class="badge bg-success text-capitalize"><%= pedido.status_pedido || 'Concluído' %></span>
+                      </div>
+                      <div class="d-flex justify-content-between text-muted small mt-1">
+                        <span><%= typeof formatarData === 'function' ? formatarData(pedido.data_emissao) : '-' %></span>
+                        <strong><%= typeof formatarMoeda === 'function' ? formatarMoeda(pedido.total_estimado || pedido.valor_total) : 'R$ 0,00' %></strong>
+                      </div>
+                    </div>
+                  <% } %>
+                </div>
+              <% } else { %>
+                <p class="text-muted mb-0">Você ainda não possui pedidos realizados.</p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

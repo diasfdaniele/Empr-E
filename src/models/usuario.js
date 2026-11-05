@@ -1,5 +1,5 @@
-//Model usuario
 import { identificador } from '../utils/validacao.js';
+import { supabase } from '../../config/db.js';
 
 export const tiposPessoa = Object.freeze(['pf', 'pj']);
 export const papeisUsuario = Object.freeze(['comprador', 'vendedor', 'administrador']);
@@ -106,5 +106,38 @@ export class Contato {
     this.tipo = tipo;
     this.valor = identificador(valor, 'Contato');
     Object.freeze(this);
+  }
+}
+
+// Consulta os dados cadastrais completos no Supabase
+export async function obterDadosCompletosConta(usuarioId) {
+  try {
+    const { data: usuario } = await supabase
+      .from('usuarios')
+      .select('*')
+      .eq('id_usuario', usuarioId)
+      .maybeSingle();
+
+    const { data: enderecos } = await supabase
+      .from('enderecos')
+      .select('*')
+      .eq('idUsuario', usuarioId)
+      .limit(1);
+
+    const { data: pedidos } = await supabase
+      .from('pedidos')
+      .select('*')
+      .eq('fk_comprador', usuarioId)
+      .order('data_emissao', { ascending: false })
+      .limit(5);
+
+    return {
+      usuario: usuario || null,
+      endereco: (enderecos && enderecos.length > 0) ? enderecos[0] : null,
+      pedidos: pedidos || []
+    };
+  } catch (erro) {
+    console.error('Erro ao buscar dados no banco:', erro);
+    return { usuario: null, endereco: null, pedidos: [] };
   }
 }

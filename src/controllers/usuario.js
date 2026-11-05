@@ -1,4 +1,3 @@
-//Controller usuario
 import {
   renderizarPagina,
   exibirIndisponibilidade,
@@ -8,6 +7,8 @@ import {
   cadastrarUsuario,
   autenticarUsuario,
 } from '../services/autenticacao.js';
+
+import { obterDadosCompletosConta } from '../models/usuario.js';
 
 export function exibirCadastro(req, res) {
   renderizarPagina(res, 'cadastro', 'Criar conta | Empr-E');
@@ -22,12 +23,13 @@ export async function processarCadastro(req, res) {
   try {
     const resultado = await cadastrarUsuario(req.body);
 
-    // Guarda a sessão no servidor antes de redirecionar.
     req.session.usuario = {
       id: resultado.usuario.id_usuario,
       idAuth: resultado.usuario.id_auth,
       tipoPessoa: resultado.usuario.tipo_pessoa,
       nome: resultado.usuario.nome_completo,
+      login: resultado.usuario.login,
+      cpf_pessoa: resultado.usuario.cpf_pessoa,
       empresaId: resultado.empresa?.id_empresa ?? null,
       statusEmpresa: resultado.empresa?.status_conta ?? null,
     };
@@ -60,7 +62,6 @@ export async function processarLogin(req, res) {
       req.body.senha
     );
 
-    // Evita reutilizar o identificador de sessão anterior.
     req.session.regenerate((erro) => {
       if (erro) {
         return res.status(500).send('Não foi possível iniciar a sessão.');
@@ -71,6 +72,8 @@ export async function processarLogin(req, res) {
         idAuth: resultado.usuario.id_auth,
         tipoPessoa: resultado.usuario.tipo_pessoa,
         nome: resultado.usuario.nome_completo,
+        login: resultado.usuario.login,
+        cpf_pessoa: resultado.usuario.cpf_pessoa,
         empresaId: resultado.empresa?.id_empresa ?? null,
         statusEmpresa: resultado.empresa?.status_conta ?? null,
       };
@@ -112,18 +115,44 @@ export function encerrarSessao(req, res) {
   });
 }
 
-export function exibirConta(req, res) {
+export async function exibirConta(req, res) {
   if (!req.session?.usuario) {
     return res.redirect('/login');
   }
 
-  res.locals.usuario = req.session.usuario;
+  try {
+    const usuarioSessao = req.session.usuario;
+    const usuarioId = usuarioSessao.id || usuarioSessao.id_usuario;
 
-  return renderizarPagina(
-    res,
-    'restritas/conta',
-    'Minha conta | Empr-E'
-  );
+    const dadosBanco = await obterDadosCompletosConta(usuarioId).catch(() => ({
+      usuario: null,
+      endereco: null,
+      pedidos: []
+    }));
+
+    res.locals.usuario = {
+      ...usuarioSessao,
+      ...(dadosBanco.usuario || {})
+    };
+
+    const formatarMoeda = (val) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(val) || 0);
+    const formatarData = (dataIso) => dataIso ? new Date(dataIso).toLocaleDateString('pt-BR') : '-';
+
+    return renderizarPagina(
+      res,
+      'conta', // Alterado de 'restritas/conta' para 'conta'
+      'Minha conta | Empr-E',
+      {
+        endereco: dadosBanco.endereco || null,
+        pedidos: dadosBanco.pedidos || [],
+        formatarMoeda,
+        formatarData
+      }
+    );
+  } catch (erro) {
+    console.error('Erro ao renderizar conta:', erro);
+    return renderizarPagina(res, 'conta', 'Minha conta | Empr-E');
+  }
 }
 
 export function exibirAdministracao(req, res) {
