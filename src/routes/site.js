@@ -1,19 +1,30 @@
 
-import { Router } from 'express';
+import { 
+    Router 
+} from 'express';
 
 import {
     exibirInicio,
     exibirInstitucional
 } from '../controllers/paginas.js';
 
-import { carregarOpcoes } from '../controllers/empresa.js';
+import { 
+    carregarOpcoes 
+} from '../controllers/empresa.js';
 
 import {
     exibirCatalogo,
     exibirDetalhes
 } from '../controllers/produto.js';
 
-import { exibirPedidos } from '../controllers/pedido.js';
+import {
+    exibirListaEmpresas,
+    exibirDetalhesEmpresa
+} from '../controllers/empresa.js';
+
+import { 
+    exibirPedidos 
+} from '../controllers/pedido.js';
 
 import {
     exibirCarrinho,
@@ -23,7 +34,10 @@ import {
     limparCarrinho
 } from '../controllers/carrinho.js';
 
-import { exibirPagamento, processarPagamento } from '../controllers/pagamento.js';
+import {
+    exibirPagamento, 
+    processarPagamento 
+} from '../controllers/pagamento.js';
 
 import {
     exibirCadastro,
@@ -35,7 +49,9 @@ import {
     exibirAdministracao
 } from '../controllers/usuario.js';
 
-import { exibirPainel } from '../controllers/vendas.js';
+import { 
+    exibirPainel 
+} from '../controllers/vendas.js';
 
 const rotas = Router();
 
@@ -50,6 +66,9 @@ rotas.post('/logout', encerrarSessao);
 
 rotas.get('/catalogo', carregarOpcoes, exibirCatalogo);
 rotas.get('/produto/:id', exibirDetalhes);
+
+rotas.get('/empresas', exibirListaEmpresas);
+rotas.get('/empresa/:id', exibirDetalhesEmpresa);
 
 rotas.get('/carrinho', exibirCarrinho);
 rotas.post('/carrinho/itens', adicionarItem);

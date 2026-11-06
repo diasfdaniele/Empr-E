@@ -1,0 +1,66 @@
+<main id="conteudo-principal" tabindex="-1">
+  <section class="catalogo-destaque">
+    <div class="container">
+      <div class="catalogo-destaque__conteudo">
+        <h1 class="catalogo-destaque__titulo">Empresas Parceiras</h1>
+        <p class="catalogo-destaque__texto">
+          Conheça as organizações que fazem a diferença no nosso marketplace.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalogo-produtos">
+    <div class="container">
+      <div class="catalogo__cabecalho mt-4">
+        <h2 class="catalogo__titulo">Catálogo de Parceiros</h2>
+        <span class="catalogo__resultado">
+          <%= empresas ? empresas.length : 0 %> <%= empresas && empresas.length === 1 ? 'empresa encontrada' : 'empresas encontradas' %>
+        </span>
+      </div>
+
+      <div class="catalogo__grade">
+        <% if (empresas && empresas.length > 0) { %>
+          <% for (const emp of empresas) { %>
+            
+            <article class="produto-cartao">
+              <div class="produto-cartao__midia">
+                <span class="produto-cartao__empresa">Parceiro Verificado</span>
+                <span class="produto-cartao__modalidade">
+                  ★ Demonstração
+                </span>
+              </div>
+              
+              <div class="produto-cartao__conteudo">
+                <span class="produto-cartao__categoria">
+                  <%= emp.categoriaEmpresa || (emp.nome === 'Klinker' ? 'Mobilidade e Sinalização' : 'Acessibilidade Digital') %>
+                </span>
+                
+                <h3 class="produto-cartao__titulo">
+                  <%= emp.nomeFantasia || emp.nome %>
+                </h3>
+                
+                <p class="produto-cartao__descricao">
+                  <%= emp.descricao || (emp.nome === 'Klinker' ? 'Especializada em pisos táteis e sinalização acessível para pessoas com deficiência visual.' : 'Empresa especializada em soluções de acessibilidade digital para empresas.') %>
+                </p>
+                
+                <div class="produto-cartao__rodape">
+                  <div class="produto-cartao__acoes w-100">
+                    <a href="/empresa/<%= emp.id %>" class="btn botao--contorno w-100">
+                      Ver detalhes da empresa &rarr;
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+            
+          <% } %>
+        <% } else { %>
+          <div class="col-12">
+            <p>Nenhuma empresa encontrada no momento.</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+</main>

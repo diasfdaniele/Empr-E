@@ -77,3 +77,45 @@ export function carregarOpcoes(req, res, next) {
   res.locals.empresas = listarEmpresas().map((empresa) => empresa.nome);
   next();
 }
+
+import { renderizarPagina } from '../utils/apresentacao.js';
+
+export async function exibirListaEmpresas(req, res) {
+  try {
+    const { listarEmpresas } = await import('../models/empresa.js');
+    const empresas = listarEmpresas();
+    
+    return renderizarPagina(
+      res, 
+      'empresas',
+      'Empresas parceiras | Empr-E', 
+      { empresas }
+    );
+  } catch (erro) {
+    console.error('Erro ao renderizar a lista de empresas:', erro);
+    return res.status(500).send('Não foi possível carregar as empresas.');
+  }
+}
+
+export async function exibirDetalhesEmpresa(req, res) {
+  try {
+    const empresaId = req.params.id;
+   
+    const { buscarEmpresa } = await import('../models/empresa.js');
+    const dadosEmpresa = buscarEmpresa(empresaId);
+
+    if (!dadosEmpresa) {
+      return res.status(404).redirect('/empresa');
+    }
+
+    return renderizarPagina(
+      res, 
+      'empresa',
+      `${dadosEmpresa.nome} | Empr-E`, 
+      { empresa: dadosEmpresa }
+    );
+  } catch (erro) {
+    console.error('Erro ao renderizar detalhes da empresa:', erro);
+    return res.status(500).send('Não foi possível carregar os detalhes da empresa.');
+  }
+}

@@ -1,0 +1,82 @@
+<main id="conteudo-principal" tabindex="-1">
+  <section class="produto-detalhe-destaque">
+    <div class="container">
+      <div class="produto-detalhe-destaque__conteudo">
+        <h1 class="produto-detalhe-destaque__titulo">
+          Detalhes da Empresa
+        </h1>
+        <p>
+          Conheça mais sobre a história e as soluções oferecidas por este parceiro.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="produto-detalhe-secao">
+    <div class="container">
+      <div class="produto-detalhe" id="produto-detalhe">
+        
+        <div class="produto-detalhe__galeria">
+          <div class="produto-detalhe__imagem-principal-wrap">
+            <img
+              id="produto-detalhe-imagem-principal"
+              src="<%= empresa.imagem || ('/assets/img/' + (empresa.id || 'empresa') + '.jpg') %>"
+              alt="Logo ou foto da empresa <%= empresa.nomeFantasia || empresa.nome %>"
+              class="produto-detalhe__imagem-principal"
+              width="600"
+              height="480"
+              onerror="this.src='/assets/img/placeholder-empresa.jpg'"
+            />
+          </div>
+        </div>
+
+        <div class="produto-detalhe__informacoes">
+          <a href="/empresas" class="btn botao--discreto botao--sm">
+            Voltar às empresas
+          </a>
+
+          <span class="produto-detalhe__categoria">
+            <%= empresa.categoriaEmpresa || 'Setor não informado' %>
+          </span>
+
+          <h2 class="produto-detalhe__titulo">
+            <%= empresa.nomeFantasia || empresa.nome || 'Empresa Parceira' %>
+          </h2>
+
+          <p class="produto-detalhe__descricao">
+            <%= empresa.descricao || 'Empresa parceira especializada em soluções de acessibilidade e inclusão.' %>
+          </p>
+
+          <div class="produto-detalhe__resumo">
+            <div class="produto-detalhe__painel">
+              <span class="produto-detalhe__painel-rotulo">Status da Conta</span>
+              <div class="produto-detalhe__texto-destaque">
+                <%= empresa.statusConta === 'Ativo' ? 'Vendedor Verificado' : 'Em análise' %>
+              </div>
+            </div>
+
+            <div class="produto-detalhe__painel">
+              <span class="produto-detalhe__painel-rotulo">Site / Contato</span>
+              <div class="produto-detalhe__texto-destaque">
+                <%= empresa.site ? empresa.site.replace('https://', '').replace('http://', '') : 'Contato via plataforma' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="produto-detalhe__acoes mt-4">
+            <a href="/catalogo?empresa=<%= empresa.id %>" class="btn botao--principal">
+              Ver produtos da empresa
+            </a>
+            
+            <% if (empresa.site) { %>
+              <a href="<%= empresa.site.startsWith('http') ? empresa.site : 'https://' + empresa.site %>" target="_blank" rel="noopener noreferrer" class="btn botao--contorno">
+                Acessar site oficial
+              </a>
+            <% } %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>

@@ -6,7 +6,11 @@
     ativo: ['catalogo', 'produto'].includes(pagina),
   },
   { endereco: '/#sobre', nome: 'Sobre' },
-  { endereco: '/#empresas', nome: 'Empresas' },
+  { 
+    endereco: '/empresas', 
+    nome: 'Empresas',
+    ativo: ['empresas', 'empresa'].includes(pagina) 
+  },
   { endereco: '/#contato', nome: 'Contato' },
 ]; %>
 <% if (movel) { %>
