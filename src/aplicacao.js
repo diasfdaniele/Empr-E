@@ -7,6 +7,7 @@ import session from 'express-session';
 import { paginaNaoEncontrada, tratarErro } from './middlewares/erros.js';
 
 const aplicacao = express();
+aplicacao.set('trust proxy', 1);
 aplicacao.use(express.static('public'));
 aplicacao.disable('x-powered-by');
 aplicacao.set('view engine', 'ejs');
