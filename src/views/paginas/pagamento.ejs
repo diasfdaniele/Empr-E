@@ -219,6 +219,63 @@
                   </select>
                 </div>
               </div>
+            
+              <div id="container-metodos-pagamento" class="mb-4">
+                
+                <section id="painel-cartao" class="pagamento-metodo" aria-labelledby="painel-cartao-titulo" hidden>
+                  <div class="pagamento-bloco__header mb-3">
+                    <h3 id="painel-cartao-titulo" class="pagamento-bloco__titulo">Pagamento por cartão de crédito</h3>
+                  </div>
+                  <div class="pagamento-form__grid pagamento-form__grid--cartao row g-3">
+                    <div class="campo-grupo pagamento-form__campo--cartao-numero col-md-12">
+                      <label for="cartao-numero" class="campo-rotulo">Número do cartão</label>
+                      <input id="cartao-numero" name="cartao-numero" class="campo-entrada" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" autocomplete="cc-number" />
+                    </div>
+                    <div class="campo-grupo col-md-6">
+                      <label for="cartao-nome" class="campo-rotulo">Nome impresso</label>
+                      <input id="cartao-nome" name="cartao-nome" class="campo-entrada" type="text" placeholder="Nome como no cartão" autocomplete="cc-name" />
+                    </div>
+                    <div class="campo-grupo col-md-3">
+                      <label for="cartao-validade" class="campo-rotulo">Validade</label>
+                      <input id="cartao-validade" name="cartao-validade" class="campo-entrada" type="text" inputmode="numeric" placeholder="MM/AA" autocomplete="cc-exp" />
+                    </div>
+                    <div class="campo-grupo col-md-3">
+                      <label for="cartao-cvv" class="campo-rotulo">CVV</label>
+                      <input id="cartao-cvv" name="cartao-cvv" class="campo-entrada" type="password" inputmode="numeric" placeholder="123" maxlength="4" autocomplete="cc-csc" />
+                    </div>
+                  </div>
+                </section>
+
+                <section id="painel-pix" class="pagamento-metodo" aria-labelledby="painel-pix-titulo" hidden>
+                  <div class="pagamento-bloco__header mb-3">
+                    <h3 id="painel-pix-titulo" class="pagamento-bloco__titulo">Pagamento via PIX</h3>
+                  </div>
+                  <div class="pagamento-pix d-flex flex-column align-items-center text-center p-3 border rounded bg-light">
+                    <div class="pagamento-pix__qr-wrap mb-3">
+                      <img id="pix-qr-image" class="pagamento-pix__qr img-fluid" src="" alt="QR code PIX simulado" title="QR code PIX simulado" style="max-width: 180px;" />
+                    </div>
+                    <div class="pagamento-pix__conteudo w-100">
+                      <label for="pix-code" class="campo-rotulo">Código PIX copia e cola</label>
+                      <textarea id="pix-code" class="campo-texto form-control mb-2" rows="3" readonly></textarea>
+                      <div class="pagamento-pix__acoes">
+                        <button id="btn-copiar-pix" type="button" class="btn botao--contorno">Copiar código PIX</button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section id="painel-boleto" class="pagamento-metodo" aria-labelledby="painel-boleto-titulo" hidden>
+                  <div class="pagamento-bloco__header mb-3">
+                    <h3 id="painel-boleto-titulo" class="pagamento-bloco__titulo">Boleto Bancário</h3>
+                  </div>
+                  <div class="pagamento-boleto p-3 border rounded bg-light">
+                    <strong>Linha digitável do boleto</strong>
+                    <input id="boleto-linha-digitavel" name="boleto_linha_digitavel" type="text" class="campo-entrada my-2" readonly />
+                    <p class="mb-0 text-muted small">O boleto será gerado após a validação comercial do pedido e enviado ao e-mail informado.</p>
+                  </div>
+                </section>
+
+              </div>
 
               <div class="campo-grupo">
                 <label for="observacoes" class="campo-rotulo">Observações do pedido</label>
@@ -284,70 +341,4 @@
   </section>
 </main>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const inputCep = document.getElementById('cep');
-    const btnConsultar = document.getElementById('botao-consultar-cep');
-    const statusCep = document.getElementById('cep-estado');
-    
-    const inputLogradouro = document.getElementById('logradouro');
-    const inputBairro = document.getElementById('bairro');
-    const inputCidade = document.getElementById('cidade');
-    const inputEstado = document.getElementById('estado');
-    const inputNumero = document.getElementById('numero');
-
-    async function buscarEnderecoPorCep() {
-      const cepLimpo = inputCep.value.replace(/\D/g, '');
-
-      if (cepLimpo.length !== 8) {
-        statusCep.textContent = 'Por favor, digite um CEP válido com 8 dígitos.';
-        statusCep.style.color = '#d9534f';
-        return;
-      }
-
-      statusCep.textContent = 'Buscando endereço...';
-      statusCep.style.color = '#0275d8';
-
-      try {
-        const resposta = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-        const dados = await resposta.json();
-
-        if (dados.erro) {
-          statusCep.textContent = 'CEP não encontrado. Preencha o endereço manualmente.';
-          statusCep.style.color = '#d9534f';
-          return;
-        }
-
-        inputLogradouro.value = dados.logradouro || '';
-        inputBairro.value = dados.bairro || '';
-        inputCidade.value = dados.localidade || '';
-        inputEstado.value = dados.uf || '';
-
-        statusCep.textContent = 'Endereço encontrado!';
-        statusCep.style.color = '#5cb85c';
-
-        if (inputNumero) {
-          inputNumero.focus();
-        }
-
-      } catch (erro) {
-        console.error('Erro ao consultar CEP:', erro);
-        statusCep.textContent = 'Erro ao buscar o CEP. Verifique sua conexão e tente novamente.';
-        statusCep.style.color = '#d9534f';
-      }
-    }
-
-    if (btnConsultar) {
-      btnConsultar.addEventListener('click', buscarEnderecoPorCep);
-    }
-
-    if (inputCep) {
-      inputCep.addEventListener('blur', () => {
-        const cepLimpo = inputCep.value.replace(/\D/g, '');
-        if (cepLimpo.length === 8) {
-          buscarEnderecoPorCep();
-        }
-      });
-    }
-  });
-</script>
+<script src="/assets/js/checkout.js"></script>
