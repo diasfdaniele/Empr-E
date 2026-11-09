@@ -23,10 +23,8 @@ export async function exibirPagamento(req, res) {
     if (!usuario) return;
 
     try {
-        // Busca os itens do banco Supabase
         const carrinho = await listarItensCarrinho(usuario.id, req);
 
-        // Trata os valores para garantir números válidos com 2 casas decimais
         const quantidade = Number(carrinho?.quantidade) || 0;
         const valorNumerico = Number(carrinho?.total) || 0;
         const total = Number(Math.max(0, valorNumerico).toFixed(2));
@@ -59,7 +57,6 @@ export async function exibirPagamento(req, res) {
     }
 }
 
-// POST /pagamento/confirmar
 export async function processarPagamento(req, res) {
     const usuario = obterUsuarioAutenticado(req, res);
     if (!usuario) return;

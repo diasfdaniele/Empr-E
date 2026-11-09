@@ -45,8 +45,8 @@ export async function processarCadastro(req, res) {
       return res.redirect('/conta');
     });
   } catch (erro) {
-    res.locals.erro = erro.message;
-    res.status(400);
+      res.locals.erro = erro.message;
+      res.status(400);
     return renderizarPagina(
       res,
       'cadastro',
@@ -140,7 +140,7 @@ export async function exibirConta(req, res) {
 
     return renderizarPagina(
       res,
-      'conta', // Alterado de 'restritas/conta' para 'conta'
+      'conta',
       'Minha conta | Empr-E',
       {
         endereco: dadosBanco.endereco || null,

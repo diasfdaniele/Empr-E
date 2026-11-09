@@ -142,7 +142,6 @@ console.log('Confirmação recebida:', Boolean(dados.confirmarSenha));
       .single();
 
     if (empresaError) {
-      // Tenta desfazer o perfil criado. Não remove a credencial do Auth.
       await cliente
         .from('usuarios')
         .delete()
@@ -178,7 +177,7 @@ export async function autenticarUsuario(emailInformado, senha) {
 
   const { data: usuario, error: perfilError } = await cliente
     .from('usuarios')
-    .select('id_usuario, id_auth, tipo_pessoa, nome_completo, login')
+    .select('id_usuario, id_auth, tipo_pessoa, nome_completo, login, cpf_pessoa')
     .eq('id_auth', data.user.id)
     .single();
 

@@ -116,8 +116,6 @@ function normalizarVariacao(produto, valor) {
     );
 
     if (variante) return variante.variacao;
-
-    // Compatibilidade com produtos sem imagens cadastradas.
     if (
         solicitada === 'Padrão' &&
         produto.variantes?.length === 1 &&

@@ -1,12 +1,12 @@
 <main id="conteudo-principal" tabindex="-1">
-  <!-- Banner escuro utilizando o CSS nativo de conta (.conta-destaque) -->
+
   <section class="conta-destaque" aria-labelledby="conta-titulo">
     <div class="container">
       <div class="conta-destaque__conteudo">
         <span class="secao-selo">ÁREA DO CLIENTE</span>
         <h1 id="conta-titulo" class="conta-destaque__titulo">Minha Conta</h1>
         <p class="conta-destaque__texto">
-          Bem-vindo(a), <strong><%= usuario?.nome || usuario?.nome_completo %></strong>! Gerencie os seus dados cadastrais e acompanhe os seus pedidos.
+          Bem-vindo(a), <strong><%= usuario?.nome_completo || usuario?.nome %></strong>! Gerencie os seus dados cadastrais e acompanhe os seus pedidos.
         </p>
       </div>
     </div>
@@ -30,8 +30,8 @@
             <div class="p-4">
               <div class="row g-3">
                 <div class="col-md-6">
-                  <strong>Nome completo / Responsável</strong>
-                  <p class="text-muted mb-0"><%= usuario?.nome_completo || usuario?.nome || 'Isabela Yumi' %></p>
+                  <strong>Nome completo</strong>
+                  <p class="text-muted mb-0"><%= usuario?.nome_completo || usuario?.nome %></p>
                 </div>
                 <div class="col-md-6">
                   <strong>E-mail de acesso</strong>
@@ -39,11 +39,11 @@
                 </div>
                 <div class="col-md-6">
                   <strong>CPF / CNPJ</strong>
-                  <p class="text-muted mb-0"><%= usuario?.cpf_pessoa || usuario?.cnpj || 'Não informado' %></p>
+                  <p class="text-muted mb-0"><%= usuario?.cpf_pessoa || usuario?.cnpj || usuario?.cpf || 'Não informado' %></p>
                 </div>
                 <div class="col-md-6">
                   <strong>Membro desde</strong>
-                  <p>2026</p>
+                  <p class="mb-0"><%= usuario?.criado_em || usuario?.created_at ? new Date(usuario.criado_em || usuario.created_at).getFullYear() : '2026' %></p>
                 </div>
               </div>
             </div>

@@ -82,9 +82,6 @@ export async function listarCategorias() {
     return data ?? [];
 }
 
-// Associa cada imagem e seu nome de variação ao produto.
-// Mantém "imagens" como array de URLs para compatibilidade
-// com as telas que já usam produto.imagens.
 async function associarImagens(produtos) {
     if (!produtos.length) return produtos;
 
@@ -142,13 +139,8 @@ async function associarImagens(produtos) {
         return {
             ...produto,
 
-            // Array de URLs, para manter compatibilidade com o catálogo.
             imagens: variantes.map(item => item.imagem),
-
-            // Array de nomes, alinhado com o array de imagens.
-            variacoes: variantes.map(item => item.variacao),
-
-            // Estrutura completa usada na página de detalhes e no carrinho.
+            variacoes: variantes.map(item => item.variacao), 
             variantes
         };
     });
@@ -214,8 +206,6 @@ export async function listarProdutos(filtros = {}) {
 
     let produtos = (data ?? []).map(adaptarProduto);
 
-    // Filtro de empresa por nome parcial, ignorando acentos,
-    // espaços, pontuação e diferenças entre maiúsculas/minúsculas.
     if (filtros.empresa) {
         const termoEmpresa = normalizarTexto(filtros.empresa);
 

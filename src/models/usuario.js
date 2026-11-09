@@ -109,11 +109,16 @@ export class Contato {
   }
 }
 
-// Consulta os dados cadastrais completos no Supabase
 export async function obterDadosCompletosConta(usuarioId) {
   try {
     const { data: usuario } = await supabase
       .from('usuarios')
+      .select('*')
+      .eq('id_usuario', usuarioId)
+      .maybeSingle();
+
+    const { data: empresa } = await supabase
+      .from('empresas')
       .select('*')
       .eq('id_usuario', usuarioId)
       .maybeSingle();
@@ -131,8 +136,15 @@ export async function obterDadosCompletosConta(usuarioId) {
       .order('data_emissao', { ascending: false })
       .limit(5);
 
+    const usuarioCompleto = usuario ? {
+      ...usuario,
+      cnpj: empresa?.cnpj || usuario.cnpj || null,
+      nome_fantasia: empresa?.nome_fantasia || null,
+      razao_social: empresa?.razao_social || null
+    } : null;
+
     return {
-      usuario: usuario || null,
+      usuario: usuarioCompleto,
       endereco: (enderecos && enderecos.length > 0) ? enderecos[0] : null,
       pedidos: pedidos || []
     };
