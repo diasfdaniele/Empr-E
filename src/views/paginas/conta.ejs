@@ -8,6 +8,11 @@
         <p class="conta-destaque__texto">
           Bem-vindo(a), <strong><%= usuario?.nome_completo || usuario?.nome %></strong>! Gerencie os seus dados cadastrais e acompanhe os seus pedidos.
         </p>
+        <% if (usuarioSessao?.tipoPessoa === 'pj' && usuarioSessao?.empresaId) { %>
+          <a href="/conta/vendedor" class="btn botao--principal">
+            <img src="/icones/package.svg" width="18" height="18" alt="" /> Gerenciar produtos
+          </a>
+        <% } %>
       </div>
     </div>
   </section>

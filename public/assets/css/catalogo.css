@@ -80,7 +80,7 @@
 
 .catalogo__grade {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: 1.25rem;
 }
 
@@ -89,7 +89,7 @@
   flex-direction: column;
   min-height: 100%;
   background: var(--branco);
-  border: 1.5px solid var(--cor-borda);
+  border: 0;
   border-radius: var(--raio-xl);
   overflow: hidden;
   box-shadow: var(--sombra-sm);
@@ -114,23 +114,22 @@
 }
 
 .produto-cartao__midia {
-  min-height: 128px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1rem;
-  background: linear-gradient(135deg, rgba(11, 24, 59, 0.98) 0%, rgba(249, 115, 22, 0.88) 100%);
-  color: var(--branco);
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  background: var(--branco);
 }
 
 .produto-cartao__empresa {
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--cor-texto-suave);
+  overflow-wrap: anywhere;
 }
 
 .produto-cartao__conteudo {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: 0.8rem;
   padding: 1.15rem;
   flex: 1;

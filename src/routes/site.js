@@ -49,8 +49,12 @@ import {
 } from '../controllers/usuario.js';
 
 import { 
-    exibirPainel 
+    exibirPainel,
+    autorizarVendedor,
+    salvarProduto,
+    excluirProduto
 } from '../controllers/vendas.js';
+import { uploadProduto } from '../middlewares/upload-produto.js';
 
 const rotas = Router();
 
@@ -89,7 +93,11 @@ rotas.post('/pagamento/confirmar', processarPagamento);
 
 rotas.get('/institucional', exibirInstitucional);
 rotas.get('/conta', exibirConta);
-rotas.get('/conta/vendedor', exibirPainel);
+rotas.get('/conta/vendedor', autorizarVendedor, exibirPainel);
+rotas.get('/conta/vendedor/produtos/:id/editar', autorizarVendedor, exibirPainel);
+rotas.post('/conta/vendedor/produtos', autorizarVendedor, uploadProduto, salvarProduto);
+rotas.post('/conta/vendedor/produtos/:id', autorizarVendedor, uploadProduto, salvarProduto);
+rotas.post('/conta/vendedor/produtos/:id/excluir', autorizarVendedor, excluirProduto);
 rotas.get('/conta/admin', exibirAdministracao);
 rotas.get('/conta/pedidos', exibirPedidos);
 

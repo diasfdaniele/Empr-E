@@ -50,6 +50,18 @@ function tratarSessaoExpirada(req, res, erro) {
 
 // GET /carrinho
 export async function exibirCarrinho(req, res) {
+    if (
+        !req.session?.usuario ||
+        !req.session?.tokens?.accessToken
+    ) {
+        return renderizarPagina(
+            res,
+            'carrinho',
+            'Seu carrinho | Empr-E',
+            { itens: [], quantidade: 0, total: 0 }
+        );
+    }
+
     const usuario = obterUsuarioAutenticado(req, res);
     if (!usuario) return;
 

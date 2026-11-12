@@ -64,11 +64,11 @@ Em desenvolvimento.
 
 O backend Express renderiza páginas EJS e segue MVC. Os seis módulos principais, são usuário, produto, empresa, pedido, pagamento, vendas, Endereços e contatos ficam com usuário; carrinho, itens e orçamento ficam com pedido. Views compartilhadas ficam em `src/views/partials`.
 
-O CSS, as imagens e as interações do navegador ficam em `public/assets/`. O HTML usa as classes Bootstrap necessárias para manter o layout existente. Os dados dos models são demonstrações em memória: não há persistência nem conexão ao banco por enquanto.
+O CSS, as imagens e as interações do navegador ficam em `public/assets/`. O HTML usa as classes Bootstrap necessárias para manter o layout existente. Produtos, usuários e carrinhos utilizam o Supabase; alguns módulos ainda contêm dados demonstrativos.
 
 ## Banco de Dados
 
-Em desenvolvimento.
+O projeto utiliza Supabase Auth, PostgreSQL com RLS e Storage.
 
 ## Como Executar o Projeto
 
@@ -85,7 +85,13 @@ O endereço padrão é http://localhost:3000. Para desenvolvimento com reinício
 npm run dev
 ```
 
-Para usar outra porta, defina `PORT` no ambiente antes de iniciar. Não é necessário criar um arquivo `.env` nem configurar banco para executar a demonstração.
+Para usar outra porta, defina `PORT` no ambiente antes de iniciar. 
+
+Para executar os testes de autorização, upload e transações SQL sem alterar o Supabase:
+
+```bash
+npm test
+```
 
 Para executar no VSCode, no terminal de comando use: 
 ```bash

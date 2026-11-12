@@ -1,77 +1,152 @@
-<section
-  id="conta-vendedor-painel"
-  class="conta-painel conta-painel--secundario"
-  aria-labelledby="conta-vendedor-titulo"
-  hidden=""
->
-  <div class="conta-painel__cabecalho">
-    <div>
-      <h2 id="conta-vendedor-titulo" class="conta-painel__titulo">Painel gerencial de produtos</h2>
-      <p id="conta-vendedor-texto" class="conta-painel__subtitulo">
-        Cadastre aqui seus produtos para venda.
-      </p>
+<main id="conteudo-principal" tabindex="-1" class="vendedor">
+  <div class="container">
+    <nav class="vendedor__caminho" aria-label="Localização">
+      <a href="/conta">Minha conta</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Produtos</span>
+    </nav>
+    <header class="vendedor__cabecalho">
+      <div>
+        <p class="vendedor__empresa"><%= empresa.nome_fantasia %></p>
+        <h1>Produtos da empresa</h1>
+      </div>
+      <a href="#produtos-lista-titulo" class="btn botao--contorno vendedor__atalho">
+        <img src="/icones/package.svg" width="18" height="18" alt="" /> Seus produtos (<%= produtos.length %>)
+      </a>
+    </header>
+
+    <% if (aviso) { %>
+      <div class="alert alert-<%= aviso.tipo %>" role="status"><%= aviso.mensagem %></div>
+    <% } %>
+    <% if (erroFormulario) { %>
+      <div id="produto-erro-servidor" class="alert alert-danger" role="alert" tabindex="-1"><%= erroFormulario %></div>
+    <% } %>
+
+    <div class="vendedor__grade">
+      <section aria-labelledby="produto-formulario-titulo" class="vendedor-editor">
+        <div class="vendedor-editor__cabecalho">
+          <h2 id="produto-formulario-titulo"><%= produto ? 'Editar produto' : 'Novo produto' %></h2>
+          <% if (produto) { %>
+            <a href="/conta/vendedor" class="vendedor-editor__novo"><img src="/icones/plus.svg" width="18" height="18" alt="" /> Novo produto</a>
+          <% } %>
+        </div>
+        <form id="produto-formulario" class="vendedor-formulario"
+          action="/conta/vendedor/produtos<%= produto ? '/' + produto.id_produto : '' %>"
+          method="post" enctype="multipart/form-data">
+          <input type="hidden" name="_csrf" value="<%= csrf %>" />
+          <fieldset class="vendedor-formulario__grupo">
+          <legend><img src="/icones/package.svg" width="20" height="20" alt="" /> Informações do produto</legend>
+          <label for="produto-nome">Nome do produto</label>
+          <input id="produto-nome" name="nome" class="campo-entrada" required maxlength="160" value="<%= formulario.nome ?? '' %>" />
+
+          <label for="produto-descricao">Descrição</label>
+          <textarea id="produto-descricao" name="descricao" class="campo-entrada" rows="4" required maxlength="5000"><%= formulario.descricao ?? '' %></textarea>
+
+          <label for="produto-categoria">Categoria</label>
+          <select id="produto-categoria" name="categoria" class="campo-entrada" required>
+            <option value="">Selecione</option>
+            <% for (const categoria of categorias) { %>
+              <option value="<%= categoria.id_categoria %>" <%= String(formulario.categoria) === String(categoria.id_categoria) ? 'selected' : '' %>><%= categoria.nome_categoria %></option>
+            <% } %>
+          </select>
+          </fieldset>
+
+          <fieldset class="vendedor-formulario__grupo">
+          <legend><img src="/icones/tag.svg" width="20" height="20" alt="" /> Preço e estoque</legend>
+          <div class="vendedor-formulario__dupla">
+            <div>
+              <label for="produto-modalidade">Modalidade</label>
+              <select id="produto-modalidade" name="modalidade" class="campo-entrada" required>
+                <% for (const modalidade of modalidades) { %>
+                  <option value="<%= modalidade %>" <%= formulario.modalidade === modalidade ? 'selected' : '' %>><%= modalidade %></option>
+                <% } %>
+              </select>
+            </div>
+            <div>
+              <label for="produto-preco">Preço (R$)</label>
+              <input id="produto-preco" name="preco" class="campo-entrada" type="number" min="0" max="99999999.99" step="0.01" required value="<%= formulario.preco ?? '' %>" />
+            </div>
+            <div>
+              <label for="produto-estoque">Estoque atual</label>
+              <input id="produto-estoque" name="estoque" class="campo-entrada" type="number" min="0" max="2147483647" step="1" required value="<%= formulario.estoque ?? '' %>" />
+            </div>
+            <div>
+              <label for="produto-minimo">Estoque mínimo</label>
+              <input id="produto-minimo" name="estoqueMinimo" class="campo-entrada" type="number" min="0" max="2147483647" step="1" required value="<%= formulario.estoqueMinimo ?? '' %>" />
+            </div>
+          </div>
+
+          <label class="vendedor-formulario__checkbox">
+            <input name="ativo" type="checkbox" <%= formulario.ativo === 'on' ? 'checked' : '' %> /> Disponível no catálogo
+          </label>
+          </fieldset>
+
+          <fieldset class="vendedor-fotos vendedor-formulario__grupo">
+            <legend><img src="/icones/image.svg" width="20" height="20" alt="" /> Fotos e variações</legend>
+            <% if (produto?.imagens.length) { %>
+              <div class="vendedor-fotos__grade" id="fotos-existentes">
+                <% for (const imagem of produto.imagens) { %>
+                  <div class="vendedor-foto">
+                    <img src="<%= imagem.caminho_arquivo %>" alt="Foto do produto: <%= imagem.nome_variacao || 'Padrão' %>" width="160" height="120" />
+                    <span><%= imagem.nome_variacao || 'Padrão' %></span>
+                    <label class="vendedor-formulario__checkbox">
+                      <input type="checkbox" name="removerImagens" value="<%= imagem.idImagem %>" aria-label="Remover foto da variação <%= imagem.nome_variacao || 'Padrão' %>" /> Remover
+                    </label>
+                  </div>
+                <% } %>
+              </div>
+            <% } %>
+            <div class="vendedor-upload">
+              <label for="produto-imagens"><img src="/icones/upload.svg" width="20" height="20" alt="" /> Adicionar fotos</label>
+              <p id="fotos-formatos">JPEG, PNG ou WebP · Até 6 fotos · 5 MB por foto</p>
+              <input id="produto-imagens" name="imagens" class="campo-entrada" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="fotos-formatos fotos-erro" multiple <%= produto?.imagens.length ? '' : 'required' %> />
+            </div>
+            <p id="fotos-estado" class="vendedor-fotos__estado" role="status" aria-live="polite" aria-atomic="true"></p>
+            <div id="fotos-selecionadas" class="vendedor-fotos__grade"></div>
+            <p id="fotos-erro" class="vendedor-formulario__erro" role="alert" hidden></p>
+          </fieldset>
+
+          <div class="vendedor-formulario__acoes">
+            <button type="submit" class="btn botao--principal" id="produto-salvar">
+              <img src="/icones/save.svg" width="18" height="18" alt="" /> <%= produto ? 'Salvar alterações' : 'Cadastrar produto' %>
+            </button>
+            <a href="<%= produto ? '/conta/vendedor' : '/conta' %>" class="btn botao--discreto">Cancelar</a>
+            <span id="produto-envio-estado" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <section aria-labelledby="produtos-lista-titulo" class="vendedor-lista">
+        <div class="vendedor-lista__cabecalho">
+          <h2 id="produtos-lista-titulo" tabindex="-1">Seus produtos</h2>
+          <span class="vendedor-lista__contador"><%= produtos.length %></span>
+        </div>
+        <% if (!produtos.length) { %>
+          <div class="vendedor-lista__vazio">
+            <img src="/icones/package.svg" width="36" height="36" alt="" />
+            <p>Nenhum produto cadastrado.</p>
+          </div>
+        <% } %>
+        <% for (const item of produtos) { %>
+          <article class="vendedor-lista__item<%= produto?.id_produto === item.id_produto ? ' vendedor-lista__item--editando' : '' %>">
+            <div class="vendedor-lista__dados">
+              <h3><%= item.nome_produto %></h3>
+              <p><%= formatarMoeda(Number(item.preco_unitario)) %> · <%= item.estoque_atual %> em estoque</p>
+              <span class="vendedor-lista__status<%= item.ativo ? ' vendedor-lista__status--ativo' : '' %>"><%= item.ativo ? 'Ativo' : 'Inativo' %></span>
+            </div>
+            <div class="vendedor-lista__acoes">
+              <% if (item.ativo) { %>
+                <a href="/produto/<%= item.id_produto %>" class="vendedor-icone" title="Visualizar produto" aria-label="Visualizar <%= item.nome_produto %>"><img src="/icones/eye.svg" width="20" height="20" alt="" /></a>
+              <% } %>
+              <a href="/conta/vendedor/produtos/<%= item.id_produto %>/editar" class="vendedor-icone" title="Editar produto" aria-label="Editar <%= item.nome_produto %>"><img src="/icones/pencil.svg" width="20" height="20" alt="" /></a>
+              <form action="/conta/vendedor/produtos/<%= item.id_produto %>/excluir" method="post" data-excluir-produto="<%= item.nome_produto %>">
+                <input type="hidden" name="_csrf" value="<%= csrf %>" />
+                <button type="submit" class="vendedor-icone vendedor-icone--perigo" title="Excluir produto" aria-label="Excluir <%= item.nome_produto %>"><img src="/icones/trash-2.svg" width="20" height="20" alt="" /></button>
+              </form>
+            </div>
+          </article>
+        <% } %>
+      </section>
     </div>
   </div>
-
-  <div class="row g-4 align-items-start">
-    <div class="col-lg-5">
-      <form id="produto-formulario" class="conta-produto-formulario" novalidate="">
-        <div class="mb-3">
-          <label for="produto-nome" class="campo-rotulo">Nome do produto</label>
-          <input
-            id="produto-nome"
-            class="campo-entrada"
-            type="text"
-            placeholder="Ex: Plataforma elevatoria compacta"
-            required=""
-          />
-        </div>
-        <div class="mb-3">
-          <label for="produto-categoria" class="campo-rotulo">Categoria</label>
-          <select id="produto-categoria" class="campo-entrada campo-seletor" required="">
-            <option value="">Selecione</option>
-            <option value="mobilidade">Mobilidade</option>
-            <option value="visual">Deficiencia visual</option>
-            <option value="digital">Acessibilidade digital</option>
-            <option value="auditiva">Deficiencia auditiva</option>
-            <option value="predial">Acessibilidade predial</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="produto-modalidade" class="campo-rotulo">Modalidade</label>
-          <select id="produto-modalidade" class="campo-entrada campo-seletor" required="">
-            <option value="">Selecione</option>
-            <option value="compra-imediata">Compra imediata</option>
-            <option value="sob-consulta">Sob consulta</option>
-            <option value="projeto-personalizado">Projeto personalizado</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="produto-preco" class="campo-rotulo">Preço ou condição comercial</label>
-          <input
-            id="produto-preco"
-            class="campo-entrada"
-            type="text"
-            placeholder="Ex: A partir de R$ 1.290"
-            required=""
-          />
-        </div>
-        <div class="mb-3">
-          <label for="produto-descricao" class="campo-rotulo">Descrição</label>
-          <textarea
-            id="produto-descricao"
-            class="campo-entrada campo-texto"
-            rows="5"
-            placeholder="Descreva o produto, aplicação e diferencial."
-            required=""
-          ></textarea>
-        </div>
-        <div class="d-flex flex-wrap gap-2 align-items-center">
-          <button type="submit" class="btn botao--principal botao--sm">Cadastrar produto</button>
-          <span id="produto-estado" class="conta-painel__subtitulo" aria-live="polite"></span>
-        </div>
-      </form>
-    </div>
-
-  </div>
-</section>
+</main>

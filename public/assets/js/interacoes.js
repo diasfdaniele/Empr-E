@@ -386,7 +386,6 @@ function iniciarAcessibilidade() {
 
   iniciarMenu();
   iniciarAcessibilidade();
-  iniciarSimulacoes();
   iniciarCarrinho();
   iniciarTipoPessoa();
   iniciarConsultaCep();

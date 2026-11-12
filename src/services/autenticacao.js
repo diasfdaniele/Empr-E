@@ -24,8 +24,6 @@ function somenteNumeros(valor) {
 }
 
 export async function cadastrarUsuario(dados) {
-  const cliente = criarClienteSupabase();
-
   const email = normalizarEmail(dados.email);
   const senha = String(dados.senha ?? '');
 
@@ -88,6 +86,7 @@ console.log('Confirmação recebida:', Boolean(dados.confirmarSenha));
   }
 
   // 1. Criar a credencial no Supabase Auth.
+  const cliente = criarClienteSupabase();
   const { data: authData, error: authError } =
     await cliente.auth.signUp({
       email,
@@ -136,7 +135,7 @@ console.log('Confirmação recebida:', Boolean(dados.confirmarSenha));
         cnpj,
         razao_social: razaoSocial,
         nome_fantasia: nomeFantasia,
-        status_conta: 'Aguardando Aprovação',
+        status_conta: 'Ativo',
       })
       .select('id_empresa, id_usuario, status_conta, nome_fantasia')
       .single();

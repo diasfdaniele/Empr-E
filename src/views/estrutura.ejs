@@ -27,6 +27,7 @@
   cadastro: ['cadastro'],
   indisponivel: ['conta'],
   'restritas/conta': ['conta'],
+  'restritas/vendedor': ['conta'],
   conta: ['conta'],
   empresas: ['catalogo'],
   empresa: ['detalhe-produto'],
@@ -58,6 +59,9 @@
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js" defer=""></script>
     <% if (pagina === 'produto') { %>
       <script src="/assets/js/detalhe-produto.js" defer></script>
+    <% } %>
+    <% if (pagina === 'restritas/vendedor') { %>
+      <script src="/assets/js/produtos-vendedor.js" defer></script>
     <% } %>
   </body>
 </html>
