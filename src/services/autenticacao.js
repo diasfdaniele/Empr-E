@@ -27,10 +27,6 @@ export async function cadastrarUsuario(dados) {
   const email = normalizarEmail(dados.email);
   const senha = String(dados.senha ?? '');
 
-console.log('Tamanho da senha recebida:', senha.length);
-console.log('Campo senha recebido:', Boolean(dados.senha));
-console.log('Confirmação recebida:', Boolean(dados.confirmarSenha));
-
   const tipoPessoa = dados.tipoPessoa;
   const perfilComercial = dados.perfilComercial;
 

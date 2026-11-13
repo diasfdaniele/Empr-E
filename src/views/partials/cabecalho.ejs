@@ -52,7 +52,9 @@
 
     <div class="cabecalho__acoes d-flex align-items-center gap-3">
       <% if (usuarioLogado) { %>
-          <a href="/conta" class="btn botao--discreto">Minha Conta</a>
+          <a href="/carrinho" class="btn botao--contorno">Carrinho</a>
+        
+          <a href="/conta" class="btn botao--principal">Minha Conta</a>
 
           <form action="/logout" method="post">
               <button type="submit" class="btn botao--principal">

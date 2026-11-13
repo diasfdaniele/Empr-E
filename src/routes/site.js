@@ -45,7 +45,12 @@ import {
     processarLogin,
     encerrarSessao,
     exibirConta,
-    exibirAdministracao
+    atualizarConta,
+    cadastrarEnderecoConta,
+    atualizarEnderecoConta,
+    atualizarEmpresaConta,
+    exibirAdministracao,
+    excluirEnderecoConta
 } from '../controllers/usuario.js';
 
 import { 
@@ -95,6 +100,11 @@ rotas.get('/institucional', exibirInstitucional);
 rotas.get('/conta', exibirConta);
 rotas.get('/conta/vendedor', autorizarVendedor, exibirPainel);
 rotas.get('/conta/vendedor/produtos/:id/editar', autorizarVendedor, exibirPainel);
+rotas.post('/conta/perfil', atualizarConta);
+rotas.post('/conta/empresa', atualizarEmpresaConta);
+rotas.post('/conta/enderecos', cadastrarEnderecoConta);
+rotas.post('/conta/enderecos/:id', atualizarEnderecoConta);
+rotas.post('/conta/enderecos/:id/excluir', excluirEnderecoConta);
 rotas.post('/conta/vendedor/produtos', autorizarVendedor, uploadProduto, salvarProduto);
 rotas.post('/conta/vendedor/produtos/:id', autorizarVendedor, uploadProduto, salvarProduto);
 rotas.post('/conta/vendedor/produtos/:id/excluir', autorizarVendedor, excluirProduto);

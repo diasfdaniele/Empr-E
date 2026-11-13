@@ -1,5 +1,33 @@
 import { identificador } from '../utils/validacao.js';
 import { supabase } from '../../config/db.js';
+import { createClient } from '@supabase/supabase-js';
+
+// Cria um cliente Supabase utilizando a sessão do usuário.
+function clienteDaSessao(req) {
+    const token = req.session?.tokens?.accessToken;
+
+    if (!token) {
+        throw new Error('Sessão expirada. Entre novamente.');
+    }
+
+    return createClient(
+        process.env.SUPABASE_URL,
+        process.env.SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+                detectSessionInUrl: false
+            },
+            global: {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        }
+    );
+}
+
 
 export const tiposPessoa = Object.freeze(['pf', 'pj']);
 export const papeisUsuario = Object.freeze(['comprador', 'vendedor', 'administrador']);
@@ -109,47 +137,310 @@ export class Contato {
   }
 }
 
-export async function obterDadosCompletosConta(usuarioId) {
-  try {
-    const { data: usuario } = await supabase
-      .from('usuarios')
-      .select('*')
-      .eq('id_usuario', usuarioId)
-      .maybeSingle();
+export async function obterDadosCompletosConta(usuarioId, req) {
 
-    const { data: empresa } = await supabase
-      .from('empresas')
-      .select('*')
-      .eq('id_usuario', usuarioId)
-      .maybeSingle();
+    const cliente = clienteDaSessao(req);
 
-    const { data: enderecos } = await supabase
-      .from('enderecos')
-      .select('*')
-      .eq('idUsuario', usuarioId)
-      .limit(1);
+    const [
+        resultadoUsuario,
+        resultadoEmpresa,
+        resultadoEnderecos,
+        resultadoPedidos
+    ] = await Promise.all([
 
-    const { data: pedidos } = await supabase
-      .from('pedidos')
-      .select('*')
-      .eq('fk_comprador', usuarioId)
-      .order('data_emissao', { ascending: false })
-      .limit(5);
+        cliente
+            .from('usuarios')
+            .select('*')
+            .eq('id_usuario', usuarioId)
+            .maybeSingle(),
 
-    const usuarioCompleto = usuario ? {
-      ...usuario,
-      cnpj: empresa?.cnpj || usuario.cnpj || null,
-      nome_fantasia: empresa?.nome_fantasia || null,
-      razao_social: empresa?.razao_social || null
-    } : null;
+        cliente
+            .from('empresas')
+            .select('*')
+            .eq('id_usuario', usuarioId)
+            .maybeSingle(),
+
+        cliente
+            .from('enderecos')
+            .select('*')
+            .eq('idUsuario', usuarioId)
+            .order('id_endereco', { ascending: true }),
+
+        cliente
+            .from('pedidos')
+            .select('*')
+            .eq('fk_comprador', usuarioId)
+            .order('data_emissao', { ascending: false })
+            .limit(5)
+
+    ]);
+
+    if (resultadoUsuario.error) {
+        throw resultadoUsuario.error;
+    }
+
+    if (resultadoEmpresa.error) {
+        throw resultadoEmpresa.error;
+    }
+
+    if (resultadoEnderecos.error) {
+        throw resultadoEnderecos.error;
+    }
+
+    if (resultadoPedidos.error) {
+        throw resultadoPedidos.error;
+    }
 
     return {
-      usuario: usuarioCompleto,
-      endereco: (enderecos && enderecos.length > 0) ? enderecos[0] : null,
-      pedidos: pedidos || []
+        usuario: resultadoUsuario.data,
+        empresa: resultadoEmpresa.data,
+        enderecos: resultadoEnderecos.data || [],
+        pedidos: resultadoPedidos.data || []
     };
-  } catch (erro) {
-    console.error('Erro ao buscar dados no banco:', erro);
-    return { usuario: null, endereco: null, pedidos: [] };
-  }
+}
+
+export async function atualizarDadosPessoais(usuarioId, req, dados) {
+
+    const cliente = clienteDaSessao(req);
+
+    const nome = String(dados.nomeCompleto || '').trim();
+
+    const cpf = String(dados.cpfPessoa || '')
+        .replace(/\D/g, '');
+
+    if (nome.length < 3) {
+        throw new Error('Informe seu nome completo.');
+    }
+
+    if (!/^\d{11}$/.test(cpf)) {
+        throw new Error('Informe um CPF válido.');
+    }
+
+    const { error } = await cliente
+        .from('usuarios')
+        .update({
+            nome_completo: nome,
+            cpf_pessoa: cpf
+        })
+        .eq('id_usuario', usuarioId);
+
+    if (error) {
+        throw new Error(
+            `Não foi possível atualizar os dados: ${error.message}`
+        );
+    }
+
+    return {
+        nome,
+        cpf
+    };
+}
+
+export async function cadastrarEndereco(usuarioId, req, dados) {
+
+    const cliente = clienteDaSessao(req);
+
+    const endereco = {
+
+        idUsuario: Number(usuarioId),
+
+        tipo_endereco: 'Entrega',
+
+        cep: String(dados.cep || '')
+            .replace(/\D/g, ''),
+
+        logradouro: String(dados.logradouro || '').trim(),
+
+        numero: String(dados.numero || '').trim(),
+
+        complemento: String(dados.complemento || '').trim(),
+
+        bairro: String(dados.bairro || '').trim(),
+
+        cidade: String(dados.cidade || '').trim(),
+
+        estado: String(dados.estado || '')
+            .trim()
+            .toUpperCase()
+
+    };
+
+    if (!/^\d{8}$/.test(endereco.cep)) {
+        throw new Error('Informe um CEP válido.');
+    }
+
+    // Verifica se o CEP realmente existe.
+    const respostaCep = await fetch(
+        `https://viacep.com.br/ws/${endereco.cep}/json/`
+    );
+
+    if (!respostaCep.ok) {
+        throw new Error('Não foi possível validar o CEP.');
+    }
+
+    const dadosCep = await respostaCep.json();
+
+    if (dadosCep.erro) {
+        throw new Error('O CEP informado não foi encontrado.');
+    }
+
+    if (
+        !endereco.logradouro ||
+        !endereco.numero ||
+        !endereco.bairro ||
+        !endereco.cidade ||
+        !/^[A-Z]{2}$/.test(endereco.estado)
+    ) {
+        throw new Error('Preencha todos os campos obrigatórios.');
+    }
+
+    const { error } = await cliente
+        .from('enderecos')
+        .insert(endereco);
+
+    if (error) {
+        throw new Error(
+            `Não foi possível cadastrar o endereço: ${error.message}`
+        );
+    }
+
+    return true;
+}
+
+export async function atualizarDadosEmpresa(usuarioId, req, dados) {
+    const cliente = clienteDaSessao(req);
+
+    const cnpj = String(dados.cnpj || '').replace(/\D/g, '');
+    const razaoSocial = String(dados.razaoSocial || '').trim();
+    const nomeFantasia = String(dados.nomeFantasia || '').trim();
+
+    if (!/^\d{14}$/.test(cnpj)) {
+        throw new Error('Informe um CNPJ com 14 dígitos.');
+    }
+
+    if (razaoSocial.length < 2) {
+        throw new Error('Informe a razão social.');
+    }
+
+    if (nomeFantasia.length < 2) {
+        throw new Error('Informe o nome fantasia.');
+    }
+
+    const empresaAtualizada = {
+        cnpj,
+        razao_social: razaoSocial,
+        nome_fantasia: nomeFantasia,
+        inscricao_estadual: String(dados.inscricaoEstadual || '').trim() || null,
+        categoria_empresa: String(dados.categoriaEmpresa || '').trim() || null,
+        tipo_empresa: String(dados.tipoEmpresa || '').trim() || null,
+        descricao: String(dados.descricao || '').trim() || null,
+        site: String(dados.site || '').trim() || null
+    };
+
+    const { data, error } = await cliente
+        .from('empresas')
+        .update(empresaAtualizada)
+        .eq('id_usuario', usuarioId)
+        .select()
+        .maybeSingle();
+
+    if (error) {
+        throw new Error(
+            `Não foi possível atualizar os dados da empresa: ${error.message}`
+        );
+    }
+
+    if (!data) {
+        throw new Error(
+            'Empresa não encontrada ou você não possui permissão para editá-la.'
+        );
+    }
+
+    return data;
+}
+
+export async function atualizarEndereco(usuarioId, enderecoId, req, dados) {
+    const cliente = clienteDaSessao(req);
+
+    const endereco = {
+        cep: String(dados.cep || '').replace(/\D/g, ''),
+        logradouro: String(dados.logradouro || '').trim(),
+        numero: String(dados.numero || '').trim(),
+        complemento: String(dados.complemento || '').trim(),
+        bairro: String(dados.bairro || '').trim(),
+        cidade: String(dados.cidade || '').trim(),
+        estado: String(dados.estado || '').trim().toUpperCase()
+    };
+
+    if (!/^\d{8}$/.test(endereco.cep)) {
+        throw new Error('Informe um CEP válido.');
+    }
+
+    const respostaCep = await fetch(
+        `https://viacep.com.br/ws/${endereco.cep}/json/`
+    );
+
+    if (!respostaCep.ok) {
+        throw new Error('Não foi possível validar o CEP.');
+    }
+
+    const dadosCep = await respostaCep.json();
+
+    if (dadosCep.erro) {
+        throw new Error('O CEP informado não foi encontrado.');
+    }
+
+    if (
+        !endereco.logradouro ||
+        !endereco.numero ||
+        !endereco.bairro ||
+        !endereco.cidade ||
+        !/^[A-Z]{2}$/.test(endereco.estado)
+    ) {
+        throw new Error('Preencha todos os campos obrigatórios.');
+    }
+
+    const { data, error } = await cliente
+        .from('enderecos')
+        .update(endereco)
+        .eq('id_endereco', enderecoId)
+        .eq('idUsuario', usuarioId)
+        .select()
+        .maybeSingle();
+
+    if (error) {
+        throw new Error(
+            `Não foi possível atualizar o endereço: ${error.message}`
+        );
+    }
+
+    if (!data) {
+        throw new Error(
+            'Endereço não encontrado ou você não possui permissão para editá-lo.'
+        );
+    }
+
+    return data;
+}
+
+export async function excluirEndereco(usuarioId, req, enderecoId) {
+    const cliente = clienteDaSessao(req);
+
+    const { data, error } = await cliente
+        .from('enderecos')
+        .delete()
+        .eq('id_endereco', enderecoId)
+        .eq('idUsuario', usuarioId)
+        .select('id_endereco')
+        .maybeSingle();
+
+    if (error) {
+        throw new Error(`Não foi possível excluir o endereço: ${error.message}`);
+    }
+
+    if (!data) {
+        throw new Error('Endereço não encontrado ou você não possui permissão para excluí-lo.');
+    }
+
+    return true;
 }

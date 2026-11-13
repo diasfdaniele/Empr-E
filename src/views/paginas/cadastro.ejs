@@ -15,8 +15,11 @@
       aria-describedby="cadastro-aviso"
     >
     <% if (erro) { %>
-      <p class="campo-erro" role="alert"><%= erro %></p>
-    <% } %>
+  <div class="cadastro-erro" role="alert" aria-live="assertive">
+    <strong>Não foi possível criar sua conta.</strong>
+    <p><%= erro %></p>
+  </div>
+<% } %>
       <fieldset class="formulario-secao">
         <legend class="formulario-secao__titulo">Tipo de conta</legend>
         <div class="campos-linha">
@@ -24,27 +27,35 @@
             <label for="pessoa-tipo" class="campo-rotulo">Tipo de pessoa</label
             >
             <select
-                id="pessoa-tipo"
-                name="tipoPessoa"
-                class="campo-entrada campo-seletor"
-                required
-            >
-            <option value="pf">Pessoa física</option>
-            <option value="pj">Pessoa jurídica</option>
-            </select>
+  id="pessoa-tipo"
+  name="tipoPessoa"
+  class="campo-entrada campo-seletor"
+  required
+>
+  <option value="pf" <%= (dados?.tipoPessoa || 'pf') === 'pf' ? 'selected' : '' %>>
+    Pessoa física
+  </option>
+  <option value="pj" <%= dados?.tipoPessoa === 'pj' ? 'selected' : '' %>>
+    Pessoa jurídica
+  </option>
+</select>
           </div>
           <div class="campo-grupo">
             <label for="perfil-comercial" class="campo-rotulo">Objetivo na plataforma</label
             >
             <select
-              id="perfil-comercial"
-              name="perfilComercial"
-              class="campo-entrada campo-seletor"
-              required
-            >
-              <option value="comprador">Comprar</option>
-              <option value="vendedor">Vender — somente pessoa jurídica</option>
-            </select>
+  id="perfil-comercial"
+  name="perfilComercial"
+  class="campo-entrada campo-seletor"
+  required
+>
+  <option value="comprador" <%= (dados?.perfilComercial || 'comprador') === 'comprador' ? 'selected' : '' %>>
+    Comprar
+  </option>
+  <option value="vendedor" <%= dados?.perfilComercial === 'vendedor' ? 'selected' : '' %>>
+    Vender — somente pessoa jurídica
+  </option>
+</select>
           </div>
         </div>
         <p class="campo-dica">
@@ -58,36 +69,41 @@
             <label for="razao-social" class="campo-rotulo">Razão social</label
             >
             <input
-              id="razao-social"
-              name="razaoSocial"
-              class="campo-entrada"
-              placeholder="Razão social"
-              autocomplete="organization"
-              required
-            />
+  id="razao-social"
+  name="razaoSocial"
+  class="campo-entrada"
+  placeholder="Razão social"
+  autocomplete="organization"
+  value="<%= dados?.razaoSocial || '' %>"
+  required
+/>
             <label for="nome-fantasia" class="campo-rotulo">Nome Fantasia</label
             >
             <input
-              id="nome-fantasia"
-              name="nomeFantasia"
-              class="campo-entrada"
-              placeholder="Nome fantasia"
-              autocomplete="organization"
-              required
-            />
+  id="nome-fantasia"
+  name="nomeFantasia"
+  class="campo-entrada"
+  placeholder="Nome fantasia"
+  autocomplete="organization"
+  value="<%= dados?.nomeFantasia || '' %>"
+  required
+/>
+
           </div>
           <div class="campo-grupo">
             <label for="cnpj" class="campo-rotulo">CNPJ</label
             >
             <input
-              id="cnpj"
-              name="cnpj"
-              class="campo-entrada"
-              placeholder="00.000.000/0000-00"
-              inputmode="numeric"
-              autocomplete="off"
-              required
-            />
+    id="cnpj"
+    name="cnpj"
+    class="campo-entrada"
+    placeholder="00.000.000/0000-00"
+    inputmode="numeric"
+    autocomplete="off"
+    maxlength="18"
+    value="<%= dados?.cnpj || '' %>"
+    required
+/>
           </div>
         </div>
       </fieldset>
@@ -96,81 +112,115 @@
         <div class="campo-grupo">
           <label for="nome" class="campo-rotulo">Nome completo</label>
           <input
-            id="nome"
-            name="nomeCompleto"
-            class="campo-entrada"
-            placeholder="Nome completo"
-            autocomplete="name"
-            required
-          />
+  id="nome"
+  name="nomeCompleto"
+  class="campo-entrada"
+  placeholder="Nome completo"
+  autocomplete="name"
+  value="<%= dados?.nomeCompleto || '' %>"
+  required
+/>
         </div>
 
         <div class="campo-grupo">
           <label for="cpf-pessoa" class="campo-rotulo">CPF</label>
           <input
-            id="cpf-pessoa"
-            name="cpfPessoa"
-            class="campo-entrada"
-            placeholder="000.000.000-00"
-            inputmode="numeric"
-            autocomplete="off"
-            required
-          />
+    id="cpf-pessoa"
+    name="cpfPessoa"
+    class="campo-entrada"
+    placeholder="000.000.000-00"
+    inputmode="numeric"
+    autocomplete="off"
+    maxlength="14"
+    value="<%= dados?.cpfPessoa || '' %>"
+    required
+/>
         </div>
 
         <div class="campo-grupo">
           <label for="email" class="campo-rotulo">E-mail de acesso</label>
-          <input
-            id="email"
-            name="email"
-            class="campo-entrada"
-            type="email"
-            placeholder="nome@exemplo.com"
-            autocomplete="email"
-            required
-          />
+         <input
+  id="email"
+  name="email"
+  type="email"
+  class="campo-entrada"
+  placeholder="nome@exemplo.com"
+  autocomplete="email"
+  value="<%= dados?.email || '' %>"
+  required
+/>
         </div>
 
         <div class="campo-grupo">
           <label for="telefone" class="campo-rotulo">Telefone</label>
           <input
-            id="telefone"
-            name="telefone"
-            class="campo-entrada"
-            type="tel"
-            placeholder="(00) 00000-0000"
-            autocomplete="tel"
-          />
+  id="telefone"
+  name="telefone"
+  type="tel"
+  class="campo-entrada"
+  placeholder="(00) 00000-0000"
+  autocomplete="tel"
+  value="<%= dados?.telefone || '' %>"
+/>
         </div>
       </fieldset>
       <fieldset class="formulario-secao">
         <legend class="formulario-secao__titulo">Dados de acesso</legend>
         <div class="campos-linha">
-          <div class="campo-grupo">
-            <label for="senha" class="campo-rotulo">Senha</label
-            ><input
-              id="senha"
-              name="senha"
-              class="campo-entrada"
-              type="password"
-              autocomplete="new-password"
-              minlength="8"
-              required
+    <div class="campo-grupo">
+        <label for="senha" class="campo-rotulo">Senha</label>
+
+        <div class="senha-container">
+            <input
+                id="senha"
+                name="senha"
+                class="campo-entrada"
+                type="password"
+                autocomplete="new-password"
+                minlength="8"
+                required
             />
-          </div>
-          <div class="campo-grupo">
-            <label for="confirmar-senha" class="campo-rotulo">Confirmar senha</label
-            ><input
-              id="confirmar-senha"
-              name="confirmarSenha"
-              class="campo-entrada"
-              type="password"
-              autocomplete="new-password"
-              minlength="8"
-              required
-            />
-          </div>
+
+            <button
+                type="button"
+                class="senha-alternar"
+                data-toggle-senha="senha"
+                aria-label="Mostrar senha"
+                aria-pressed="false"
+            >
+                Mostrar
+            </button>
         </div>
+    </div>
+
+    <div class="campo-grupo">
+        <label for="confirmar-senha" class="campo-rotulo">
+            Confirmar senha
+        </label>
+
+        <div class="senha-container">
+            <input
+                id="confirmar-senha"
+                name="confirmarSenha"
+                class="campo-entrada"
+                type="password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+            />
+
+            <button
+                type="button"
+                class="senha-alternar"
+                data-toggle-senha="confirmar-senha"
+                aria-label="Mostrar senha"
+                aria-pressed="false"
+            >
+                Mostrar
+            </button>
+        </div>
+    </div>
+</div>
       </fieldset>
       <button type="submit" class="btn botao--principal botao--lg">
         Criar conta

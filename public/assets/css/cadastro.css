@@ -111,3 +111,67 @@ body.modo-alto-contraste .campo-entrada {
 body.modo-alto-contraste .campo-entrada::placeholder {
   color: #777777;
 }
+
+.cadastro-erro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    padding: 18px 20px;
+    margin-bottom: 24px;
+
+    background-color: #fff0f0;
+    border: 2px solid #dc2626;
+    border-left: 7px solid #dc2626;
+    border-radius: 8px;
+
+    color: #991b1b;
+}
+
+.cadastro-erro strong {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.cadastro-erro p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.senha-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.senha-container .campo-entrada {
+    width: 100%;
+    padding-right: 85px;
+}
+
+.senha-alternar {
+    position: absolute;
+    right: 12px;
+
+    border: none;
+    background: transparent;
+
+    color: #EA580C;
+    font-weight: 600;
+    font-size: 0.85rem;
+
+    cursor: pointer;
+    padding: 6px;
+}
+
+.senha-alternar:hover {
+    text-decoration: underline;
+}
+
+.senha-alternar:focus-visible {
+    outline: 2px solid #EA580C;
+    outline-offset: 3px;
+    border-radius: 4px;
+}

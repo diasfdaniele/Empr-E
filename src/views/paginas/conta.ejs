@@ -1,103 +1,804 @@
+
 <main id="conteudo-principal" tabindex="-1">
 
-  <section class="conta-destaque" aria-labelledby="conta-titulo">
+  <section class="conta-destaque">
     <div class="container">
       <div class="conta-destaque__conteudo">
         <span class="secao-selo">ÁREA DO CLIENTE</span>
-        <h1 id="conta-titulo" class="conta-destaque__titulo">Minha Conta</h1>
+
+        <h1 class="conta-destaque__titulo">Minha Conta</h1>
+
         <p class="conta-destaque__texto">
-          Bem-vindo(a), <strong><%= usuario?.nome_completo || usuario?.nome %></strong>! Gerencie os seus dados cadastrais e acompanhe os seus pedidos.
+          Bem-vindo(a),
+          <strong><%= usuario?.nome_completo || 'cliente' %></strong>!
+          Gerencie seus dados e endereços.
         </p>
-        <% if (usuarioSessao?.tipoPessoa === 'pj' && usuarioSessao?.empresaId) { %>
-          <a href="/conta/vendedor" class="btn botao--principal">
-            <img src="/icones/package.svg" width="18" height="18" alt="" /> Gerenciar produtos
-          </a>
-        <% } %>
       </div>
     </div>
   </section>
 
   <section class="conta-secao">
     <div class="container">
-      <div class="row g-4 align-items-start">
-        
-        <div class="col-lg-7">
-          
-          <div class="conta-painel mb-4">
-            <div class="conta-painel__cabecalho d-flex justify-content-between align-items-center">
-              <div>
-                <h2 class="conta-painel__titulo">Informações Pessoais</h2>
-              </div>
-              <span class="badge bg-secondary text-uppercase">
-                <%= (usuario?.tipoPessoa || usuario?.tipo_pessoa) === 'pj' ? 'Pessoa Jurídica' : 'Pessoa Física' %>
-              </span>
-            </div>
-            <div class="p-4">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <strong>Nome completo</strong>
-                  <p class="text-muted mb-0"><%= usuario?.nome_completo || usuario?.nome %></p>
-                </div>
-                <div class="col-md-6">
-                  <strong>E-mail de acesso</strong>
-                  <p class="text-muted mb-0"><%= usuario?.login || usuario?.email || 'Não informado' %></p>
-                </div>
-                <div class="col-md-6">
-                  <strong>CPF / CNPJ</strong>
-                  <p class="text-muted mb-0"><%= usuario?.cpf_pessoa || usuario?.cnpj || usuario?.cpf || 'Não informado' %></p>
-                </div>
-                <div class="col-md-6">
-                  <strong>Membro desde</strong>
-                  <p class="mb-0"><%= usuario?.criado_em || usuario?.created_at ? new Date(usuario.criado_em || usuario.created_at).getFullYear() : '2026' %></p>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="conta-painel mb-4">
-            <div class="conta-painel__cabecalho">
-              <h2 class="conta-painel__titulo">Endereço de Entrega</h2>
-            </div>
-            <div class="p-4">
-              <% if (endereco) { %>
-                <p class="mb-1"><strong><%= endereco.logradouro %>, <%= endereco.numero %></strong> <%= endereco.complemento ? '— ' + endereco.complemento : '' %></p>
-                <p class="mb-1 text-muted"><%= endereco.bairro %> — <%= endereco.cidade %> / <%= endereco.estado %></p>
-                <p class="mb-0 text-muted">CEP: <%= endereco.cep %></p>
-              <% } else { %>
-                <p class="text-muted mb-3">Nenhum endereço principal cadastrado no momento.</p>
-              <% } %>
-            </div>
+      <% if (query?.sucesso === 'perfil') { %>
+        <div class="alert alert-success">
+          Informações pessoais atualizadas com sucesso!
+        </div>
+      <% } %>
+
+      <% if (query?.sucesso === 'endereco') { %>
+        <div class="alert alert-success">
+          Endereço cadastrado com sucesso!
+        </div>
+      <% } %>
+
+      <% if (query?.erro === 'perfil') { %>
+        <div class="alert alert-danger">
+          Não foi possível atualizar seus dados.
+          Verifique as informações e tente novamente.
+        </div>
+      <% } %>
+
+      <% if (query?.erro === 'endereco') { %>
+        <div class="alert alert-danger">
+          Não foi possível cadastrar o endereço.
+          Verifique os campos e tente novamente.
+        </div>
+      <% } %>
+
+
+      <% if (query?.sucesso === 'empresa') { %>
+          <div class="alert alert-success">
+              Dados da empresa atualizados com sucesso!
           </div>
+      <% } %>
+
+      <% if (query?.erro === 'empresa') { %>
+          <div class="alert alert-danger">
+              Não foi possível atualizar os dados da empresa.
+              Verifique as informações e tente novamente.
+          </div>
+      <% } %>
+
+      <% if (query?.sucesso === 'endereco-editado') { %>
+          <div class="alert alert-success">
+              Endereço atualizado com sucesso!
+          </div>
+      <% } %>
+
+      <% if (query?.erro === 'endereco-edicao') { %>
+          <div class="alert alert-danger">
+              Não foi possível atualizar o endereço.
+              Verifique as informações e tente novamente.
+          </div>
+      <% } %>  
+
+      <!-- INFORMAÇÕES PESSOAIS -->
+
+      <div class="conta-painel mb-4">
+
+        <div class="conta-painel__cabecalho">
+          <h2 class="conta-painel__titulo">
+            Informações Pessoais
+          </h2>
+
+          <span class="badge bg-secondary">
+            <%= usuario?.tipo_pessoa === 'pj'
+              ? 'Pessoa Jurídica'
+              : 'Pessoa Física' %>
+          </span>
         </div>
 
-        <div class="col-lg-5">
-          <div class="conta-painel">
-            <div class="conta-painel__cabecalho">
-              <h2 class="conta-painel__titulo">Histórico de Pedidos</h2>
+        <div class="p-4">
+
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <strong>Nome completo</strong>
+              <p><%= usuario?.nome_completo || 'Não informado' %></p>
             </div>
-            <div class="p-4">
-              <% if (pedidos && pedidos.length > 0) { %>
-                <div class="list-group list-group-flush">
-                  <% for (const pedido of pedidos) { %>
-                    <div class="list-group-item px-0 py-2 border-bottom">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <strong>Pedido #<%= pedido.id_pedido || pedido.id %></strong>
-                        <span class="badge bg-success text-capitalize"><%= pedido.status_pedido || 'Concluído' %></span>
-                      </div>
-                      <div class="d-flex justify-content-between text-muted small mt-1">
-                        <span><%= typeof formatarData === 'function' ? formatarData(pedido.data_emissao) : '-' %></span>
-                        <strong><%= typeof formatarMoeda === 'function' ? formatarMoeda(pedido.total_estimado || pedido.valor_total) : 'R$ 0,00' %></strong>
-                      </div>
-                    </div>
-                  <% } %>
-                </div>
-              <% } else { %>
-                <p class="text-muted mb-0">Você ainda não possui pedidos realizados.</p>
-              <% } %>
+
+            <div class="col-md-6">
+              <strong>E-mail</strong>
+              <p><%= usuario?.login || 'Não informado' %></p>
+              <small>O e-mail não pode ser alterado.</small>
             </div>
+
+            <div class="col-md-6">
+              <strong>CPF</strong>
+              <p><%= usuario?.cpf_pessoa || 'Não informado' %></p>
+            </div>
+
+            <div class="col-md-6">
+              <strong>Membro desde</strong>
+              <p>
+                <%= usuario?.criado_em
+                  ? new Date(usuario.criado_em).toLocaleDateString('pt-BR')
+                  : 'Não informado' %>
+              </p>
+            </div>
+
           </div>
+
+          <details class="mt-3">
+
+            <summary class="btn botao--contorno">
+              Editar informações pessoais
+            </summary>
+
+            <form
+              action="/conta/perfil"
+              method="POST"
+              class="mt-4"
+            >
+
+              <div class="mb-3">
+
+                <label for="nomeCompleto" class="form-label">
+                  Nome completo
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nomeCompleto"
+                  name="nomeCompleto"
+                  value="<%= usuario?.nome_completo || '' %>"
+                  minlength="3"
+                  required
+                >
+
+              </div>
+
+              <div class="mb-3">
+
+                <label for="email" class="form-label">
+                  E-mail
+                </label>
+
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  value="<%= usuario?.login || '' %>"
+                  disabled
+                >
+
+                <small>Este campo não pode ser alterado.</small>
+
+              </div>
+
+              <div class="mb-3">
+
+                <label for="cpfPessoa" class="form-label">
+                  CPF
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cpfPessoa"
+                  name="cpfPessoa"
+                  value="<%= usuario?.cpf_pessoa || '' %>"
+                  maxlength="14"
+                  required
+                >
+
+              </div>
+
+              <button type="submit" class="btn botao--principal">
+                Salvar alterações
+              </button>
+
+            </form>
+
+          </details>
+
         </div>
       </div>
+
+
+      <!-- INFORMAÇÕES DA EMPRESA -->
+
+<% if (usuario?.tipo_pessoa === 'pj') { %>
+
+    <div class="conta-painel mb-4">
+
+        <div class="conta-painel__cabecalho">
+            <h2 class="conta-painel__titulo">
+                Informações da Empresa
+            </h2>
+        </div>
+
+        <div class="p-4">
+
+            <% if (empresa) { %>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <strong>CNPJ</strong>
+                        <p><%= empresa.cnpj || 'Não informado' %></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>Razão Social</strong>
+                        <p><%= empresa.razao_social || 'Não informado' %></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>Nome Fantasia</strong>
+                        <p><%= empresa.nome_fantasia || 'Não informado' %></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>Inscrição Estadual</strong>
+                        <p><%= empresa.inscricao_estadual || 'Não informado' %></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>Categoria</strong>
+                        <p><%= empresa.categoria_empresa || 'Não informado' %></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>Tipo de Empresa</strong>
+                        <p><%= empresa.tipo_empresa || 'Não informado' %></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>Status da Conta</strong>
+                        <p><%= empresa.status_conta || 'Não informado' %></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>Site</strong>
+                        <p><%= empresa.site || 'Não informado' %></p>
+                    </div>
+
+                    <div class="col-12">
+                        <strong>Descrição</strong>
+                        <p><%= empresa.descricao || 'Não informado' %></p>
+                    </div>
+
+                </div>
+
+                <details class="mt-4">
+
+                    <summary class="btn botao--contorno">
+                        Editar informações da empresa
+                    </summary>
+
+                    <form
+                        action="/conta/empresa"
+                        method="POST"
+                        class="mt-4"
+                    >
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label for="cnpjEmpresa" class="form-label">
+                                    CNPJ
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="cnpjEmpresa"
+                                    name="cnpj"
+                                    value="<%= empresa.cnpj || '' %>"
+                                    maxlength="18"
+                                    required
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="razaoSocial" class="form-label">
+                                    Razão Social
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="razaoSocial"
+                                    name="razaoSocial"
+                                    value="<%= empresa.razao_social || '' %>"
+                                    required
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="nomeFantasia" class="form-label">
+                                    Nome Fantasia
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="nomeFantasia"
+                                    name="nomeFantasia"
+                                    value="<%= empresa.nome_fantasia || '' %>"
+                                    required
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="inscricaoEstadual" class="form-label">
+                                    Inscrição Estadual
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="inscricaoEstadual"
+                                    name="inscricaoEstadual"
+                                    value="<%= empresa.inscricao_estadual || '' %>"
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="categoriaEmpresa" class="form-label">
+                                    Categoria da Empresa
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="categoriaEmpresa"
+                                    name="categoriaEmpresa"
+                                    value="<%= empresa.categoria_empresa || '' %>"
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="tipoEmpresa" class="form-label">
+                                    Tipo de Empresa
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="tipoEmpresa"
+                                    name="tipoEmpresa"
+                                    value="<%= empresa.tipo_empresa || '' %>"
+                                >
+                            </div>
+
+                            <div class="col-12">
+                                <label for="siteEmpresa" class="form-label">
+                                    Site
+                                </label>
+
+                                <input
+                                    type="url"
+                                    class="form-control"
+                                    id="siteEmpresa"
+                                    name="site"
+                                    value="<%= empresa.site || '' %>"
+                                    placeholder="https://www.exemplo.com.br"
+                                >
+                            </div>
+
+                            <div class="col-12">
+                                <label for="descricaoEmpresa" class="form-label">
+                                    Descrição da Empresa
+                                </label>
+
+                                <textarea
+                                    class="form-control"
+                                    id="descricaoEmpresa"
+                                    name="descricao"
+                                    rows="4"
+                                ><%= empresa.descricao || '' %></textarea>
+                            </div>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn botao--principal mt-4"
+                        >
+                            Salvar alterações da empresa
+                        </button>
+
+                    </form>
+
+                </details>
+
+            <% } else { %>
+
+                <p>Não existe empresa vinculada a esta conta.</p>
+
+            <% } %>
+
+        </div>
+    </div>
+
+<% } %>
+
+
+      
+<!-- ENDEREÇOS -->
+
+<div class="conta-painel mb-4">
+
+    <div class="conta-painel__cabecalho">
+        <h2 class="conta-painel__titulo">
+            Endereços de Entrega
+        </h2>
+    </div>
+
+    <div class="p-4">
+
+        <% if (query?.sucesso === 'endereco-excluido') { %>
+            <div class="alert alert-success">
+                Endereço excluído com sucesso!
+            </div>
+        <% } %>
+
+        <% if (query?.erro === 'endereco-exclusao') { %>
+            <div class="alert alert-danger">
+                Não foi possível excluir o endereço.
+            </div>
+        <% } %>
+
+        <% if (enderecos && enderecos.length > 0) { %>
+
+            <% enderecos.forEach(endereco => { %>
+
+                <div class="border rounded p-3 mb-3">
+
+                    <strong>
+                        <%= endereco.logradouro %>,
+                        <%= endereco.numero || 's/n' %>
+                    </strong>
+
+                    <p class="mb-1">
+                        <%= endereco.bairro %> -
+                        <%= endereco.cidade %>/<%= endereco.estado %>
+                    </p>
+
+                    <p class="mb-1">
+                        CEP: <%= endereco.cep %>
+                    </p>
+
+                    <% if (endereco.complemento) { %>
+                        <p class="mb-3">
+                            Complemento: <%= endereco.complemento %>
+                        </p>
+                    <% } %>
+
+                    <!-- EDIÇÃO DO ENDEREÇO -->
+
+                    <details class="mt-3">
+
+                        <summary class="btn botao--contorno">
+                            Editar endereço
+                        </summary>
+
+                        <form
+                            action="/conta/enderecos/<%= endereco.id_endereco %>"
+                            method="POST"
+                            class="mt-3"
+                            data-cep-form=""
+                        >
+
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+                                    <label class="form-label">CEP</label>
+
+                                    <input
+                                        type="text"
+                                        name="cep"
+                                        class="form-control"
+                                        value="<%= endereco.cep || '' %>"
+                                        maxlength="9"
+                                        required
+                                    >
+                                    <small class="cep-mensagem d-block mt-1"></small>
+                                </div>
+                                
+
+                                <div class="col-md-8">
+                                    <label class="form-label">Logradouro</label>
+
+                                    <input
+                                        type="text"
+                                        name="logradouro"
+                                        class="form-control"
+                                        value="<%= endereco.logradouro || '' %>"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Número</label>
+
+                                    <input
+                                        type="text"
+                                        name="numero"
+                                        class="form-control"
+                                        value="<%= endereco.numero || '' %>"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="col-md-8">
+                                    <label class="form-label">Complemento</label>
+
+                                    <input
+                                        type="text"
+                                        name="complemento"
+                                        class="form-control"
+                                        value="<%= endereco.complemento || '' %>"
+                                    >
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Bairro</label>
+
+                                    <input
+                                        type="text"
+                                        name="bairro"
+                                        class="form-control"
+                                        value="<%= endereco.bairro || '' %>"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label">Cidade</label>
+
+                                    <input
+                                        type="text"
+                                        name="cidade"
+                                        class="form-control"
+                                        value="<%= endereco.cidade || '' %>"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">Estado (UF)</label>
+
+                                    <input
+                                        type="text"
+                                        name="estado"
+                                        class="form-control"
+                                        value="<%= endereco.estado || '' %>"
+                                        maxlength="2"
+                                        required
+                                    >
+                                </div>
+
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="btn botao--principal mt-3"
+                            >
+                                Salvar endereço
+                            </button>
+
+                        </form>
+
+                    </details>
+
+                    <!-- EXCLUSÃO DO ENDEREÇO -->
+
+                    <form
+                        action="/conta/enderecos/<%= endereco.id_endereco %>/excluir"
+                        method="POST"
+                        class="mt-3"
+                        onsubmit="return confirm('Tem certeza que deseja excluir este endereço?');"
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
+                        >
+                            Excluir endereço
+                        </button>
+
+                    </form>
+
+                </div>
+
+            <% }) %>
+
+        <% } else { %>
+
+            <p>
+                Você ainda não possui endereços cadastrados.
+            </p>
+
+        <% } %>
+
+        <!-- CADASTRO DE NOVO ENDEREÇO -->
+
+        <details class="mt-4">
+
+            <summary class="btn botao--principal">
+                Adicionar endereço
+            </summary>
+
+            <form
+                action="/conta/enderecos"
+                method="POST"
+                class="mt-4"
+                data-cep-form
+            >
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label for="cep" class="form-label">
+                            CEP
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="cep"
+                            name="cep"
+                            maxlength="9"
+                            placeholder="00000-000"
+                            required
+                        >
+
+                        <small id="cep-mensagem"></small>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label for="logradouro" class="form-label">
+                            Logradouro
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="logradouro"
+                            name="logradouro"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="numero" class="form-label">
+                            Número
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="numero"
+                            name="numero"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-8">
+                        <label for="complemento" class="form-label">
+                            Complemento
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="complemento"
+                            name="complemento"
+                        >
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="bairro" class="form-label">
+                            Bairro
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="bairro"
+                            name="bairro"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-5">
+                        <label for="cidade" class="form-label">
+                            Cidade
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="cidade"
+                            name="cidade"
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="estado" class="form-label">
+                            Estado (UF)
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="estado"
+                            name="estado"
+                            maxlength="2"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn botao--principal mt-4"
+                >
+                    Salvar endereço
+                </button>
+
+            </form>
+
+        </details>
+
+    </div>
+</div>
+
+
+
+      <!-- HISTÓRICO DE PEDIDOS -->
+
+      <div class="conta-painel">
+
+        <div class="conta-painel__cabecalho">
+          <h2 class="conta-painel__titulo">
+            Histórico de Pedidos
+          </h2>
+        </div>
+
+        <div class="p-4">
+
+          <% if (pedidos && pedidos.length > 0) { %>
+
+            <% pedidos.forEach(pedido => { %>
+
+              <div class="border-bottom py-3">
+
+                <strong>
+                  Pedido #<%= pedido.id_pedido %>
+                </strong>
+
+                <span class="badge bg-success">
+                  <%= pedido.status_pedido %>
+                </span>
+
+                <p class="mb-0">
+                  <%= formatarData(pedido.data_emissao) %>
+                  -
+                  <%= formatarMoeda(pedido.total_estimado) %>
+                </p>
+
+              </div>
+
+            <% }) %>
+
+          <% } else { %>
+
+            <p>Você ainda não possui pedidos.</p>
+
+          <% } %>
+
+        </div>
+      </div>
+
     </div>
   </section>
+
 </main>
