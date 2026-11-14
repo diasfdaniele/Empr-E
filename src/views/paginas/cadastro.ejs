@@ -12,6 +12,7 @@
       class="cadastro-formulario"
       action="/cadastro"
       method="POST"
+      enctype="multipart/form-data"
       aria-describedby="cadastro-aviso"
     >
     <% if (erro) { %>
@@ -105,6 +106,20 @@
     required
 />
           </div>
+        </div>
+        <div class="campo-grupo">
+          <label for="logo-empresa" class="campo-rotulo">Logo da empresa (opcional)</label>
+          <input
+            id="logo-empresa"
+            name="logoEmpresa"
+            class="campo-entrada"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            aria-describedby="logo-empresa-dica"
+          />
+          <p class="campo-dica" id="logo-empresa-dica">
+            JPEG, PNG ou WebP · Até 5 MB. A logo será exibida na página de empresas.
+          </p>
         </div>
       </fieldset>
       <fieldset class="formulario-secao">

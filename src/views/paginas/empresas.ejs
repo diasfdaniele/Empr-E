@@ -12,55 +12,95 @@
 
   <section class="catalogo-produtos">
     <div class="container">
+      <form class="empresas-filtros filtros" id="filtros-empresas" role="search" aria-label="Filtrar empresas">
+        <div class="filtro-grupo">
+          <label for="empresa-busca" class="filtro-rotulo">Nome da empresa</label>
+          <input
+            id="empresa-busca"
+            class="campo-entrada"
+            type="search"
+            placeholder="Buscar por nome"
+            autocomplete="off"
+          />
+        </div>
+        <div class="filtro-grupo">
+          <label for="empresa-setor" class="filtro-rotulo">Setor</label>
+          <select id="empresa-setor" class="campo-entrada campo-seletor">
+            <option value="">Todos os setores</option>
+            <% for (const setor of setores || []) { %>
+              <option value="<%= setor %>"><%= setor %></option>
+            <% } %>
+          </select>
+        </div>
+        <div class="filtro-grupo">
+          <label for="empresa-ordenacao" class="filtro-rotulo">Ordenar por</label>
+          <select id="empresa-ordenacao" class="campo-entrada campo-seletor">
+            <option value="az">Nome (A–Z)</option>
+            <option value="za">Nome (Z–A)</option>
+          </select>
+        </div>
+        <button type="reset" class="btn botao--discreto">Limpar filtros</button>
+      </form>
+
       <div class="catalogo__cabecalho mt-4">
-        <h2 class="catalogo__titulo">Catálogo de Parceiros</h2>
-        <span class="catalogo__resultado">
+        <h2 class="catalogo__titulo">Empresas encontradas</h2>
+        <span class="catalogo__resultado" id="empresas-resultado" role="status" aria-live="polite">
           <%= empresas ? empresas.length : 0 %> <%= empresas && empresas.length === 1 ? 'empresa encontrada' : 'empresas encontradas' %>
         </span>
       </div>
 
-      <div class="catalogo__grade">
+      <div class="catalogo__grade" id="empresas-grade">
         <% if (empresas && empresas.length > 0) { %>
           <% for (const emp of empresas) { %>
-            
-            <article class="produto-cartao">
-              <div class="produto-cartao__midia">
-                <span class="produto-cartao__empresa">Parceiro Verificado</span>
-                <span class="produto-cartao__modalidade">
-                  ★ Demonstração
-                </span>
+            <article
+              class="produto-cartao"
+              data-empresa-card
+              data-nome="<%= emp.nomeFantasia %>"
+              data-setor="<%= emp.categoriaEmpresa %>"
+            >
+              <div class="produto-cartao__midia empresas-cadastradas__midia">
+                <% if (emp.logoUrl) { %>
+                  <img
+                    class="empresas-cadastradas__logo"
+                    src="<%= emp.logoUrl %>"
+                    alt="Logo da empresa <%= emp.nomeFantasia %>"
+                    width="320"
+                    height="220"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                <% } else { %>
+                  <span class="empresas-cadastradas__sem-logo" aria-hidden="true">
+                    <%= (emp.nomeFantasia || 'E').slice(0, 1).toLocaleUpperCase('pt-BR') %>
+                  </span>
+                <% } %>
               </div>
               
               <div class="produto-cartao__conteudo">
-                <span class="produto-cartao__categoria">
-                  <%= emp.categoriaEmpresa || (emp.nome === 'Klinker' ? 'Mobilidade e Sinalização' : 'Acessibilidade Digital') %>
-                </span>
-                
+                <span class="produto-cartao__categoria"><%= emp.categoriaEmpresa %></span>
                 <h3 class="produto-cartao__titulo">
-                  <%= emp.nomeFantasia || emp.nome %>
+                  <%= emp.nomeFantasia %>
                 </h3>
                 
                 <p class="produto-cartao__descricao">
-                  <%= emp.descricao || (emp.nome === 'Klinker' ? 'Especializada em pisos táteis e sinalização acessível para pessoas com deficiência visual.' : 'Empresa especializada em soluções de acessibilidade digital para empresas.') %>
+                  Empresa vendedora cadastrada na Empr-E.
                 </p>
                 
                 <div class="produto-cartao__rodape">
                   <div class="produto-cartao__acoes w-100">
-                    <a href="/empresa/<%= emp.id %>" class="btn botao--contorno w-100">
-                      Ver detalhes da empresa &rarr;
+                    <a href="/catalogo?empresa=<%= encodeURIComponent(emp.nomeFantasia) %>" class="btn botao--contorno w-100">
+                      Ver produtos da empresa &rarr;
                     </a>
                   </div>
                 </div>
               </div>
             </article>
-            
           <% } %>
-        <% } else { %>
-          <div class="col-12">
-            <p>Nenhuma empresa encontrada no momento.</p>
-          </div>
         <% } %>
       </div>
+      <p id="empresas-sem-resultados" class="empresas-sem-resultados" <%= empresas && empresas.length ? 'hidden' : '' %>>
+        Nenhuma empresa encontrada com esses filtros.
+      </p>
     </div>
   </section>
 </main>

@@ -1,5 +1,10 @@
 //autenticacao
 import { createClient } from '@supabase/supabase-js';
+import { fileTypeFromBuffer } from 'file-type';
+import { randomUUID } from 'node:crypto';
+
+export const BUCKET_EMPRESAS = 'ImagensEmpresas';
+export const LIMITE_LOGO_EMPRESA = 5 * 1024 * 1024;
 
 function criarClienteSupabase() {
   return createClient(
@@ -23,7 +28,31 @@ function somenteNumeros(valor) {
   return String(valor ?? '').replace(/\D/g, '');
 }
 
-export async function cadastrarUsuario(dados) {
+export async function validarLogoEmpresa(arquivo) {
+  if (!arquivo) return null;
+
+  if (!Buffer.isBuffer(arquivo.buffer)) {
+    throw new Error('Arquivo de logo inválido.');
+  }
+  if (arquivo.size > LIMITE_LOGO_EMPRESA || arquivo.buffer.length > LIMITE_LOGO_EMPRESA) {
+    throw new Error('A logo deve ter no máximo 5 MB.');
+  }
+
+  let tipo;
+  try {
+    tipo = await fileTypeFromBuffer(arquivo.buffer);
+  } catch {
+    throw new Error('Arquivo de logo inválido.');
+  }
+
+  if (!tipo || !['image/jpeg', 'image/png', 'image/webp'].includes(tipo.mime)) {
+    throw new Error('Envie a logo em formato JPEG, PNG ou WebP.');
+  }
+
+  return { buffer: arquivo.buffer, mime: tipo.mime, extensao: tipo.ext };
+}
+
+export async function cadastrarUsuario(dados, arquivoLogo = null) {
   const email = normalizarEmail(dados.email);
   const senha = String(dados.senha ?? '');
 
@@ -68,6 +97,12 @@ export async function cadastrarUsuario(dados) {
   const cnpj = somenteNumeros(dados.cnpj);
   const razaoSocial = String(dados.razaoSocial ?? '').trim();
   const nomeFantasia = String(dados.nomeFantasia ?? '').trim();
+  if (arquivoLogo && perfilComercial !== 'vendedor') {
+    throw new Error('A logo está disponível apenas para empresas vendedoras.');
+  }
+  const logo = perfilComercial === 'vendedor'
+    ? await validarLogoEmpresa(arquivoLogo)
+    : null;
 
   if (perfilComercial === 'vendedor') {
     if (
@@ -121,9 +156,40 @@ export async function cadastrarUsuario(dados) {
   }
 
   let empresa = null;
+  let avisoLogo = null;
 
   // 3. Somente vendedores PJ criam um registro em empresas.
   if (perfilComercial === 'vendedor') {
+    let logoUrl = null;
+    let caminhoLogo = null;
+
+    if (logo) {
+      caminhoLogo = `${authData.user.id}/${randomUUID()}.${logo.extensao}`;
+      let erroLogo;
+      try {
+        ({ error: erroLogo } = await cliente.storage
+          .from(BUCKET_EMPRESAS)
+          .upload(caminhoLogo, logo.buffer, {
+            contentType: logo.mime,
+            upsert: false,
+          }));
+      } catch (erro) {
+        erroLogo = erro;
+      }
+
+      if (erroLogo) {
+        const codigo = String(erroLogo.statusCode ?? erroLogo.status ?? 'indisponivel');
+        console.error('Falha ao enviar logo da empresa:', {
+          etapa: 'storage',
+          codigo: /^\d{3}$/.test(codigo) ? codigo : 'indisponivel',
+        });
+        avisoLogo = 'A empresa foi cadastrada, mas não foi possível enviar a logo. Tente novamente mais tarde.';
+        caminhoLogo = null;
+      } else {
+        logoUrl = cliente.storage.from(BUCKET_EMPRESAS).getPublicUrl(caminhoLogo).data.publicUrl;
+      }
+    }
+
     const { data: empresaCriada, error: empresaError } = await cliente
       .from('empresas')
       .insert({
@@ -132,11 +198,25 @@ export async function cadastrarUsuario(dados) {
         razao_social: razaoSocial,
         nome_fantasia: nomeFantasia,
         status_conta: 'Ativo',
+        logo_url: logoUrl,
       })
-      .select('id_empresa, id_usuario, status_conta, nome_fantasia')
+      .select('id_empresa, id_usuario, status_conta, nome_fantasia, logo_url')
       .single();
 
     if (empresaError) {
+      if (caminhoLogo) {
+        try {
+          const { error: erroRemocaoLogo } = await cliente.storage
+            .from(BUCKET_EMPRESAS)
+            .remove([caminhoLogo]);
+          if (erroRemocaoLogo) throw erroRemocaoLogo;
+        } catch (erroRemocaoLogo) {
+          console.error('Falha ao remover logo após erro no cadastro da empresa:', {
+            etapa: 'storage',
+            codigo: String(erroRemocaoLogo.statusCode ?? erroRemocaoLogo.status ?? 'indisponivel'),
+          });
+        }
+      }
       await cliente
         .from('usuarios')
         .delete()
@@ -154,6 +234,7 @@ export async function cadastrarUsuario(dados) {
   return {
     usuario,
     empresa,
+    avisoLogo,
     session: authData.session,
   };
 }

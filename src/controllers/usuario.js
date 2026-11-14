@@ -36,7 +36,11 @@ export function exibirLogin(req, res) {
 
 export async function processarCadastro(req, res) {
     try {
-        const resultado = await cadastrarUsuario(req.body);
+        if (req.erroUpload) {
+            throw new Error(req.erroUpload);
+        }
+
+        const resultado = await cadastrarUsuario(req.body, req.file);
 
         req.session.usuario = {
             id: resultado.usuario.id_usuario,
@@ -54,6 +58,7 @@ export async function processarCadastro(req, res) {
             refreshToken: resultado.session.refresh_token,
             expiresAt: resultado.session.expires_at,
         };
+        req.session.avisoCadastro = resultado.avisoLogo;
 
         req.session.save((erro) => {
             if (erro) {
@@ -161,6 +166,8 @@ export async function exibirConta(req, res) {
     }
 
     const usuarioSessao = req.session.usuario;
+    const avisoCadastro = req.session.avisoCadastro ?? null;
+    delete req.session.avisoCadastro;
 
     const usuarioId = usuarioSessao.id;
 
@@ -189,6 +196,7 @@ export async function exibirConta(req, res) {
             {
                 usuario: dadosBanco.usuario,
                 usuarioSessao,
+                avisoCadastro,
 
                 empresa: dadosBanco.empresa,
 

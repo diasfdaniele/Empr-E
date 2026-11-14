@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         camposEmpresa.hidden = !mostrarEmpresa;
         camposEmpresa.disabled = !mostrarEmpresa;
 
-        camposEmpresa.querySelectorAll('input').forEach((campo) => {
+        camposEmpresa.querySelectorAll('input:not([type="file"])').forEach((campo) => {
             campo.required = mostrarEmpresa;
         });
     }

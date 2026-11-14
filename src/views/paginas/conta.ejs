@@ -20,6 +20,12 @@
   <section class="conta-secao">
     <div class="container">
 
+      <% if (avisoCadastro) { %>
+        <div class="alert alert-warning" role="status">
+          <%= avisoCadastro %>
+        </div>
+      <% } %>
+
       <% if (query?.sucesso === 'perfil') { %>
         <div class="alert alert-success">
           Informações pessoais atualizadas com sucesso!

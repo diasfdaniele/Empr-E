@@ -60,13 +60,14 @@ import {
     excluirProduto
 } from '../controllers/vendas.js';
 import { uploadProduto } from '../middlewares/upload-produto.js';
+import { uploadLogoEmpresa } from '../middlewares/upload-logo-empresa.js';
 
 const rotas = Router();
 
 rotas.get('/', exibirInicio);
 
 rotas.get('/cadastro', exibirCadastro);
-rotas.post('/cadastro', processarCadastro);
+rotas.post('/cadastro', uploadLogoEmpresa, processarCadastro);
 
 rotas.get('/login', exibirLogin);
 rotas.post('/login', processarLogin);

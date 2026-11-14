@@ -1,5 +1,5 @@
 //Controller empresa
-import { listarEmpresas } from '../models/empresa.js';
+import { listarEmpresas, listarEmpresasVendedoras } from '../models/empresa.js';
 import { supabase } from '../../config/db.js';
 
 export class Empresa {
@@ -82,14 +82,15 @@ import { renderizarPagina } from '../utils/apresentacao.js';
 
 export async function exibirListaEmpresas(req, res) {
   try {
-    const { listarEmpresas } = await import('../models/empresa.js');
-    const empresas = listarEmpresas();
+    const empresas = await listarEmpresasVendedoras();
+    const setores = [...new Set(empresas.map((empresa) => empresa.categoriaEmpresa))]
+      .sort((a, b) => a.localeCompare(b, 'pt-BR'));
     
     return renderizarPagina(
       res, 
       'empresas',
       'Empresas parceiras | Empr-E', 
-      { empresas }
+      { empresas, setores }
     );
   } catch (erro) {
     console.error('Erro ao renderizar a lista de empresas:', erro);

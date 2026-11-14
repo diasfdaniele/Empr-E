@@ -972,9 +972,13 @@ button.menu-movel__link {
 .empresa-cartao__logo-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: inherit;
   display: block;
+}
+
+.empresa-cartao__inicial {
+  color: var(--cinza-900);
 }
 
 .empresa-cartao__selo {
