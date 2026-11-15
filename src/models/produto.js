@@ -185,6 +185,13 @@ export async function listarProdutos(filtros = {}) {
             Number(filtros.categoria)
         );
     }
+    // Filtra os produtos pelo ID da empresa vendedora.
+    if (filtros.empresaId) {
+        consulta = consulta.eq(
+            'fk_vendedor',
+            Number(filtros.empresaId)
+        );
+    }
 
     const faixa = faixasPreco[filtros.preco];
 

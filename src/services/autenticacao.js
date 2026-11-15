@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { fileTypeFromBuffer } from 'file-type';
 import { randomUUID } from 'node:crypto';
 
-export const BUCKET_EMPRESAS = 'ImagensEmpresas';
+export const BUCKET_EMPRESAS = 'logosEmpresas';
 export const LIMITE_LOGO_EMPRESA = 5 * 1024 * 1024;
 
 function criarClienteSupabase() {
@@ -197,7 +197,7 @@ export async function cadastrarUsuario(dados, arquivoLogo = null) {
         cnpj,
         razao_social: razaoSocial,
         nome_fantasia: nomeFantasia,
-        status_conta: 'Ativo',
+        status_conta: 'Aguardando Aprovação',
         logo_url: logoUrl,
       })
       .select('id_empresa, id_usuario, status_conta, nome_fantasia, logo_url')

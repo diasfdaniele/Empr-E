@@ -99,15 +99,6 @@ function validarQuantidade(valor) {
     return quantidade;
 }
 
-function ehCompraImediata(produto) {
-    const modalidade = String(
-        produto?.modalidade ?? ''
-    ).trim().toLowerCase();
-
-    return modalidade === 'compra' ||
-        modalidade === 'compra imediata';
-}
-
 function normalizarVariacao(produto, valor) {
     const solicitada = String(valor ?? '').trim();
 
@@ -116,6 +107,7 @@ function normalizarVariacao(produto, valor) {
     );
 
     if (variante) return variante.variacao;
+
     if (
         solicitada === 'Padrão' &&
         produto.variantes?.length === 1 &&
@@ -164,6 +156,8 @@ async function buscarOuCriarCarrinho(cliente, usuarioId) {
     return criado;
 }
 
+// Calcula o subtotal considerando TODOS os produtos,
+// independentemente de serem compra imediata ou sob consulta.
 async function calcularESalvarSubtotal(cliente, carrinhoId) {
     const { data: linhas, error } = await cliente
         .from('produtos_carrinho')
@@ -181,11 +175,11 @@ async function calcularESalvarSubtotal(cliente, carrinhoId) {
     for (const linha of linhas ?? []) {
         const produto = await buscarProduto(linha.fk_produto);
 
-        if (produto && ehCompraImediata(produto)) {
-            subtotalCentavos +=
-                Math.round(Number(produto.preco) * 100) *
-                linha.quantidade;
-        }
+        if (!produto) continue;
+
+        subtotalCentavos +=
+            Math.round(Number(produto.preco) * 100) *
+            Number(linha.quantidade);
     }
 
     const subtotal = subtotalCentavos / 100;
@@ -206,6 +200,7 @@ async function calcularESalvarSubtotal(cliente, carrinhoId) {
 
 export async function listarItensCarrinho(usuarioId, req) {
     const cliente = await obterClienteAutenticado(req);
+
     const carrinho = await buscarOuCriarCarrinho(
         cliente,
         usuarioId
@@ -247,9 +242,8 @@ export async function listarItensCarrinho(usuarioId, req) {
         });
     }
 
+    // Todos os produtos entram no cálculo.
     const totalCentavos = itens.reduce((soma, item) => {
-        if (!ehCompraImediata(item.produto)) return soma;
-
         return soma +
             Math.round(Number(item.produto.preco) * 100) *
             item.quantidade;
@@ -260,11 +254,25 @@ export async function listarItensCarrinho(usuarioId, req) {
         0
     );
 
+    // Mantém o subtotal da tabela carrinhos atualizado.
+    const total = totalCentavos / 100;
+
+    const { error: erroAtualizacao } = await cliente
+        .from('carrinhos')
+        .update({ subtotal: total })
+        .eq('id_carrinho', carrinho.id_carrinho);
+
+    if (erroAtualizacao) {
+        throw new Error(
+            `Não foi possível atualizar o subtotal: ${erroAtualizacao.message}`
+        );
+    }
+
     return {
         carrinhoId: carrinho.id_carrinho,
         itens,
         quantidade,
-        total: totalCentavos / 100
+        total
     };
 }
 
@@ -276,7 +284,9 @@ export async function adicionarItemCarrinho(
     variacaoInformada
 ) {
     const cliente = await obterClienteAutenticado(req);
+
     const idProduto = validarId(produtoId, 'Produto');
+
     const quantidadeAdicionar = validarQuantidade(
         quantidadeInformada
     );
@@ -351,8 +361,11 @@ export async function definirQuantidadeItemCarrinho(
     variacaoInformada
 ) {
     const cliente = await obterClienteAutenticado(req);
+
     const idProduto = validarId(produtoId, 'Produto');
+
     const quantidade = validarQuantidade(quantidadeInformada);
+
     const produto = await buscarProduto(idProduto);
 
     if (!produto) {
@@ -413,7 +426,9 @@ export async function removerItemCarrinho(
     variacaoInformada
 ) {
     const cliente = await obterClienteAutenticado(req);
+
     const idProduto = validarId(produtoId, 'Produto');
+
     const produto = await buscarProduto(idProduto);
 
     if (!produto) {
@@ -451,6 +466,7 @@ export async function removerItemCarrinho(
 
 export async function limparCarrinhoUsuario(usuarioId, req) {
     const cliente = await obterClienteAutenticado(req);
+
     const carrinho = await buscarOuCriarCarrinho(
         cliente,
         usuarioId

@@ -21,10 +21,6 @@ import {
     exibirDetalhesEmpresa
 } from '../controllers/empresa.js';
 
-import { 
-    exibirPedidos 
-} from '../controllers/pedido.js';
-
 import {
     exibirCarrinho,
     adicionarItem,
@@ -34,8 +30,9 @@ import {
 } from '../controllers/carrinho.js';
 
 import {
-    exibirPagamento, 
-    processarPagamento 
+    exibirPagamento,
+    processarPagamento,
+    cadastrarEnderecoCheckout
 } from '../controllers/pagamento.js';
 
 import {
@@ -61,6 +58,11 @@ import {
 } from '../controllers/vendas.js';
 import { uploadProduto } from '../middlewares/upload-produto.js';
 import { uploadLogoEmpresa } from '../middlewares/upload-logo-empresa.js';
+
+import {
+    exibirPedidos,
+    exibirDetalhesPedido
+} from '../controllers/pedido.js';
 
 const rotas = Router();
 
@@ -95,6 +97,7 @@ rotas.post(
 rotas.post('/carrinho/limpar', limparCarrinho);
 
 rotas.get('/pagamento', exibirPagamento);
+rotas.post('/pagamento/enderecos',cadastrarEnderecoCheckout);
 rotas.post('/pagamento/confirmar', processarPagamento);
 
 rotas.get('/institucional', exibirInstitucional);
@@ -111,5 +114,6 @@ rotas.post('/conta/vendedor/produtos/:id', autorizarVendedor, uploadProduto, sal
 rotas.post('/conta/vendedor/produtos/:id/excluir', autorizarVendedor, excluirProduto);
 rotas.get('/conta/admin', exibirAdministracao);
 rotas.get('/conta/pedidos', exibirPedidos);
+rotas.get('/conta/pedidos/:id', exibirDetalhesPedido);
 
 export default rotas;

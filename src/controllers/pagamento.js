@@ -1,11 +1,23 @@
-import { 
-    listarItensCarrinho, 
-    limparCarrinhoUsuario 
+
+import {
+    listarItensCarrinho
 } from '../models/carrinho.js';
 
-import { renderizarPagina } from '../utils/apresentacao.js';
+import {
+    listarEnderecosPagamento,
+    finalizarPedido
+} from '../models/pagamento.js';
 
-function obterUsuarioAutenticado(req, res) {
+import {
+    cadastrarEndereco
+} from '../models/usuario.js';
+
+import {
+    renderizarPagina
+} from '../utils/apresentacao.js';
+
+export function obterUsuarioAutenticado(req, res) {
+
     if (
         !req.session?.usuario ||
         !req.session?.tokens?.accessToken
@@ -19,31 +31,70 @@ function obterUsuarioAutenticado(req, res) {
 
 // GET /pagamento
 export async function exibirPagamento(req, res) {
+
     const usuario = obterUsuarioAutenticado(req, res);
+
     if (!usuario) return;
 
     try {
-        const carrinho = await listarItensCarrinho(usuario.id, req);
 
-        const quantidade = Number(carrinho?.quantidade) || 0;
-        const valorNumerico = Number(carrinho?.total) || 0;
-        const total = Number(Math.max(0, valorNumerico).toFixed(2));
+        const [
+            carrinho,
+            enderecos
+        ] = await Promise.all([
+
+            listarItensCarrinho(usuario.id, req),
+
+            listarEnderecosPagamento(usuario.id, req)
+
+        ]);
+
+        if (!carrinho?.itens?.length || carrinho.total <= 0) {
+            return res.redirect('/carrinho');
+        }
+
+        const formatarMoeda = (valor) => {
+
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(Number(valor) || 0);
+
+        };
 
         return renderizarPagina(
             res,
             'pagamento',
             'Finalizar Pagamento | Empr-E',
             {
-                itens: carrinho?.itens || [],
-                quantidade,
-                quantidadeTotal: quantidade,
-                total,
-                totalGeral: total,
-                usuarioLogado: usuario
+                itens: carrinho.itens,
+
+                quantidade: carrinho.quantidade,
+
+                quantidadeTotal: carrinho.quantidade,
+
+                total: carrinho.total,
+
+                totalGeral: carrinho.total,
+
+                enderecos,
+
+                usuarioLogado: usuario,
+
+                formatarMoeda,
+
+                erro: req.query.erro || null,
+
+                sucesso: req.query.sucesso || null
             }
         );
+
     } catch (erro) {
-        console.error('Erro ao carregar checkout:', erro);
+
+        console.error(
+            'Erro ao carregar checkout:',
+            erro
+        );
 
         return renderizarPagina(
             res.status(500),
@@ -51,30 +102,80 @@ export async function exibirPagamento(req, res) {
             'Pagamento | Empr-E',
             {
                 tituloPagina: 'Não foi possível carregar o checkout',
-                mensagem: erro.message || 'Ocorreu um erro ao carregar os dados do seu pedido.'
+                mensagem: erro.message
             }
         );
     }
 }
 
-export async function processarPagamento(req, res) {
+// POST /pagamento/enderecos
+export async function cadastrarEnderecoCheckout(req, res) {
+
     const usuario = obterUsuarioAutenticado(req, res);
+
     if (!usuario) return;
 
     try {
-        await limparCarrinhoUsuario(usuario.id, req);
-        return res.redirect('/conta/pedidos');
-    } catch (erro) {
-        console.error('Erro ao processar pagamento:', erro);
 
-        return renderizarPagina(
-            res.status(500),
-            'indisponivel',
-            'Pagamento | Empr-E',
+        await cadastrarEndereco(
+            usuario.id,
+            req,
+            req.body
+        );
+
+        return res.redirect(
+            '/pagamento?sucesso=endereco'
+        );
+
+    } catch (erro) {
+
+        console.error(
+            'Erro ao cadastrar endereço no checkout:',
+            erro
+        );
+
+        return res.redirect(
+            '/pagamento?erro=endereco'
+        );
+    }
+}
+
+// POST /pagamento/confirmar
+export async function processarPagamento(req, res) {
+
+    const usuario = obterUsuarioAutenticado(req, res);
+
+    if (!usuario) return;
+
+    try {
+
+        const pedidoId = await finalizarPedido(
             {
-                tituloPagina: 'Erro ao finalizar pedido',
-                mensagem: 'Não foi possível registrar o pedido. Tente novamente.'
-            }
+                enderecoId: req.body.enderecoId,
+                metodo: req.body.metodo,
+                parcelas: req.body.parcelas,
+                observacoes: req.body.observacoes
+            },
+            req
+        );
+
+        console.log(
+            `Pedido ${pedidoId} finalizado pelo usuário ${usuario.id}.`
+        );
+
+        return res.redirect(
+            '/conta/pedidos?sucesso=pedido'
+        );
+
+    } catch (erro) {
+
+         console.error('Mensagem:', erro.message);
+            console.error('Detalhes:', erro.details);
+            console.error('Código:', erro.code);
+            console.error('Dica:', erro.hint);
+
+        return res.redirect(
+            '/pagamento?erro=finalizacao'
         );
     }
 }

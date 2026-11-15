@@ -1,284 +1,413 @@
+
 <main id="conteudo-principal" tabindex="-1">
+
+  <!-- Destaque do checkout -->
   <section class="pagamento-destaque" aria-labelledby="pagamento-titulo">
     <div class="container">
       <div class="pagamento-destaque__conteudo">
         <span class="secao-selo">Checkout</span>
-        <h1 id="pagamento-titulo" class="pagamento-destaque__titulo">Finalizar pedido</h1>
+
+        <h1 id="pagamento-titulo" class="pagamento-destaque__titulo">
+          Finalizar pedido
+        </h1>
+
         <p class="pagamento-destaque__texto">
-          Confirme seus dados de entrega e selecione a forma de pagamento.
+          Escolha seu endereço de entrega e selecione a forma de pagamento.
         </p>
       </div>
     </div>
   </section>
 
+  <!-- Conteúdo principal -->
   <section class="pagamento-secao" aria-labelledby="pagamento-formulario-titulo">
     <div class="container">
+
       <div class="row g-4 align-items-start">
+
+        <!-- Coluna do formulário -->
         <div class="col-lg-7">
-          <section class="pagamento-painel" aria-labelledby="pagamento-formulario-titulo">
+
+          <section class="pagamento-painel"
+            aria-labelledby="pagamento-formulario-titulo">
+
             <div class="pagamento-painel__cabecalho">
               <div>
-                <h2 id="pagamento-formulario-titulo" class="pagamento-painel__titulo">
+                <h2 id="pagamento-formulario-titulo"
+                  class="pagamento-painel__titulo">
                   Dados para pagamento
                 </h2>
               </div>
-              <a href="/carrinho" class="btn botao--discreto">Voltar ao carrinho</a>
+
+              <a href="/carrinho" class="btn botao--discreto">
+                Voltar ao carrinho
+              </a>
             </div>
 
+            <% if (typeof erro !== 'undefined' && erro) { %>
+              <div class="alert alert-danger" role="alert">
+                <%= erro %>
+              </div>
+            <% } %>
+
+            <% if (typeof sucesso !== 'undefined' && sucesso) { %>
+              <div class="alert alert-success" role="status">
+                <%= sucesso %>
+              </div>
+            <% } %>
+
+            <!-- FORMULÁRIO PRINCIPAL DE PAGAMENTO -->
             <form
               id="pagamento-formulario"
               action="/pagamento/confirmar"
               method="POST"
               class="pagamento-formulario"
             >
-              <div class="campo-grupo">
-                <label for="pessoa-tipo" class="campo-rotulo">Tipo de pessoa</label>
-                <select id="pessoa-tipo" name="tipo_pessoa" class="campo-seletor">
-                  <option value="pf">Pessoa física</option>
-                  <option value="pj">Pessoa jurídica</option>
-                </select>
-              </div>
 
-              <div class="pagamento-formulario__grade">
-                <div class="campo-grupo" hidden="" data-campos-pj="">
-                  <label for="empresa" class="campo-rotulo">Empresa</label>
-                  <input
-                    id="empresa"
-                    name="empresa"
-                    class="campo-entrada"
-                    type="text"
-                    placeholder="Nome da empresa"
-                    autocomplete="off"
-                  />
-                </div>
-                <div class="campo-grupo" hidden="" data-campos-pj="">
-                  <label for="cnpj" class="campo-rotulo">CNPJ</label>
-                  <input
-                    id="cnpj"
-                    name="cnpj"
-                    class="campo-entrada"
-                    type="text"
-                    placeholder="00.000.000/0001-00"
-                    autocomplete="off"
-                  />
-                </div>
-                <div class="campo-grupo">
-                  <label for="responsavel" class="campo-rotulo">Nome completo / responsável</label>
-                  <input
-                    id="responsavel"
-                    name="responsavel"
-                    class="campo-entrada"
-                    type="text"
-                    placeholder="Nome do responsável"
-                    value="<%= usuarioLogado?.nome_completo || '' %>"
-                    autocomplete="off"
-                    required
-                  />
-                </div>
-                <div class="campo-grupo">
-                  <label for="email" class="campo-rotulo">E-mail</label>
-                  <input
-                    id="email"
-                    name="email"
-                    class="campo-entrada"
-                    type="email"
-                    placeholder="empresa@exemplo.com.br"
-                    value="<%= usuarioLogado?.login || '' %>"
-                    autocomplete="off"
-                    required
-                  />
-                </div>
-              </div>
+              <!-- ENDEREÇO DE ENTREGA -->
+              <section class="pagamento-bloco">
 
-              <section class="pagamento-bloco" aria-labelledby="pagamento-endereco-titulo">
                 <div class="pagamento-bloco__cabecalho">
-                  <h3 id="pagamento-endereco-titulo" class="pagamento-bloco__titulo">
-                    Confirmação de endereço
+                  <h3 class="pagamento-bloco__titulo">
+                    Endereço de entrega
                   </h3>
+
                   <p class="pagamento-bloco__texto">
-                    Confirme o endereço para entrega e faturamento.
+                    Selecione um dos seus endereços cadastrados.
                   </p>
                 </div>
 
-                <div class="pagamento-formulario__grade pagamento-formulario__grade--endereco-topo">
-                  <div class="campo-grupo">
-                    <label for="cep" class="campo-rotulo">CEP</label>
-                    <input
-                      id="cep"
-                      name="cep"
-                      class="campo-entrada"
-                      type="text"
-                      inputmode="numeric"
-                      placeholder="00000-000"
-                      maxlength="9"
-                      autocomplete="off"
-                      required
-                    />
-                    <button type="button" id="botao-consultar-cep" class="btn botao--contorno mt-2">
-                      Consultar CEP
-                    </button>
-                    <p id="cep-estado" role="status">
-                      Preencha o CEP para preencher o endereço automaticamente.
-                    </p>
-                  </div>
-                </div>
+                <% if (enderecos && enderecos.length > 0) { %>
 
-                <div class="pagamento-formulario__grade pagamento-formulario__grade--endereco">
-                  <div class="campo-grupo pagamento-formulario__campo--logradouro">
-                    <label for="logradouro" class="campo-rotulo">Logradouro</label>
-                    <input
-                      id="logradouro"
-                      name="logradouro"
-                      class="campo-entrada"
-                      type="text"
-                      placeholder="Rua, avenida ou alameda"
-                      autocomplete="off"
-                      required
-                    />
+                  <div class="enderecos-checkout">
+
+                    <% enderecos.forEach((endereco, indice) => { %>
+
+                      <label class="endereco-checkout">
+
+                        <input
+                          type="radio"
+                          name="enderecoId"
+                          value="<%= endereco.id_endereco %>"
+                          <%= indice === 0 ? 'checked' : '' %>
+                          required
+                        >
+
+                        <div>
+
+                          <strong>
+                            <%= endereco.tipo_endereco || 'Endereço' %>
+                          </strong>
+
+                          <p>
+                            <%= endereco.logradouro %>,
+                            <%= endereco.numero || 'S/N' %>
+                          </p>
+
+                          <p>
+                            <%= endereco.bairro %> -
+                            <%= endereco.cidade %>/<%= endereco.estado %>
+                          </p>
+
+                          <p>
+                            CEP: <%= endereco.cep %>
+                          </p>
+
+                          <% if (endereco.complemento) { %>
+                            <small>
+                              <%= endereco.complemento %>
+                            </small>
+                          <% } %>
+
+                        </div>
+
+                      </label>
+
+                    <% }) %>
+
                   </div>
-                  <div class="campo-grupo">
-                    <label for="numero" class="campo-rotulo">Número</label>
-                    <input
-                      id="numero"
-                      name="numero"
-                      class="campo-entrada"
-                      type="text"
-                      placeholder="123"
-                      autocomplete="off"
-                      required
-                    />
-                  </div>
-                  <div class="campo-grupo">
-                    <label for="complemento" class="campo-rotulo">Complemento</label>
-                    <input
-                      id="complemento"
-                      name="complemento"
-                      class="campo-entrada"
-                      type="text"
-                      placeholder="Sala, bloco, andar"
-                      autocomplete="off"
-                    />
-                  </div>
-                  <div class="campo-grupo">
-                    <label for="bairro" class="campo-rotulo">Bairro</label>
-                    <input
-                      id="bairro"
-                      name="bairro"
-                      class="campo-entrada"
-                      type="text"
-                      placeholder="Bairro"
-                      autocomplete="off"
-                      required
-                    />
-                  </div>
-                  <div class="campo-grupo">
-                    <label for="cidade" class="campo-rotulo">Cidade</label>
-                    <input
-                      id="cidade"
-                      name="cidade"
-                      class="campo-entrada"
-                      type="text"
-                      placeholder="Cidade"
-                      autocomplete="off"
-                      required
-                    />
-                  </div>
-                  <div class="campo-grupo">
-                    <label for="estado" class="campo-rotulo">Estado</label>
-                    <input
-                      id="estado"
-                      name="estado"
-                      class="campo-entrada"
-                      type="text"
-                      maxlength="2"
-                      placeholder="UF"
-                      autocomplete="off"
-                      required
-                    />
-                  </div>
-                </div>
+
+                <% } else { %>
+
+                  <p class="text-muted">
+                    Você ainda não possui endereços cadastrados.
+                    Cadastre um endereço para continuar.
+                  </p>
+
+                <% } %>
+
+                <a href="/conta" class="btn botao--contorno mt-3">
+                  Gerenciar meus endereços
+                </a>
+
               </section>
 
-              <div class="pagamento-formulario__grade pagamento-formulario__grade--financeiro">
-                <div class="campo-grupo">
-                  <label for="metodo" class="campo-rotulo">Método de pagamento</label>
-                  <select id="metodo" name="metodo" class="campo-seletor" required autocomplete="off">
-                    <option value="">Selecione</option>
-                    <option value="cartao">Cartão de Crédito</option>
-                    <option value="boleto">Boleto</option>
-                    <option value="pix">PIX</option>
-                  </select>
-                </div>
-                <div class="campo-grupo">
-                  <label for="parcelas" class="campo-rotulo">Parcelamento</label>
-                  <select id="parcelas" name="parcelas" class="campo-seletor" autocomplete="off">
-                    <option value="1">1x à vista</option>
-                    <option value="2">2x</option>
-                    <option value="3">3x</option>
-                    <option value="6">6x</option>
-                  </select>
-                </div>
-              </div>
-            
-              <div id="container-metodos-pagamento" class="mb-4">
-                
-                <section id="painel-cartao" class="pagamento-metodo" aria-labelledby="painel-cartao-titulo" hidden>
-                  <div class="pagamento-bloco__header mb-3">
-                    <h3 id="painel-cartao-titulo" class="pagamento-bloco__titulo">Pagamento por cartão de crédito</h3>
-                  </div>
-                  <div class="pagamento-form__grid pagamento-form__grid--cartao row g-3">
-                    <div class="campo-grupo pagamento-form__campo--cartao-numero col-md-12">
-                      <label for="cartao-numero" class="campo-rotulo">Número do cartão</label>
-                      <input id="cartao-numero" name="cartao-numero" class="campo-entrada" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" autocomplete="cc-number" />
-                    </div>
-                    <div class="campo-grupo col-md-6">
-                      <label for="cartao-nome" class="campo-rotulo">Nome impresso</label>
-                      <input id="cartao-nome" name="cartao-nome" class="campo-entrada" type="text" placeholder="Nome como no cartão" autocomplete="cc-name" />
-                    </div>
-                    <div class="campo-grupo col-md-3">
-                      <label for="cartao-validade" class="campo-rotulo">Validade</label>
-                      <input id="cartao-validade" name="cartao-validade" class="campo-entrada" type="text" inputmode="numeric" placeholder="MM/AA" autocomplete="cc-exp" />
-                    </div>
-                    <div class="campo-grupo col-md-3">
-                      <label for="cartao-cvv" class="campo-rotulo">CVV</label>
-                      <input id="cartao-cvv" name="cartao-cvv" class="campo-entrada" type="password" inputmode="numeric" placeholder="123" maxlength="4" autocomplete="cc-csc" />
-                    </div>
-                  </div>
-                </section>
+              <!-- MÉTODO DE PAGAMENTO -->
+              <section class="pagamento-bloco">
 
-                <section id="painel-pix" class="pagamento-metodo" aria-labelledby="painel-pix-titulo" hidden>
-                  <div class="pagamento-bloco__header mb-3">
-                    <h3 id="painel-pix-titulo" class="pagamento-bloco__titulo">Pagamento via PIX</h3>
+                <div class="pagamento-bloco__cabecalho">
+                  <h3 class="pagamento-bloco__titulo">
+                    Forma de pagamento
+                  </h3>
+                </div>
+
+                <div class="pagamento-formulario__grade pagamento-formulario__grade--financeiro">
+
+                  <div class="campo-grupo">
+
+                    <label for="metodo" class="campo-rotulo">
+                      Método de pagamento
+                    </label>
+
+                    <select
+                      id="metodo"
+                      name="metodo"
+                      class="campo-seletor"
+                      required
+                      autocomplete="off"
+                    >
+                      <option value="">Selecione</option>
+                      <option value="cartao">Cartão de Crédito</option>
+                      <option value="boleto">Boleto</option>
+                      <option value="pix">PIX</option>
+                    </select>
+
                   </div>
-                  <div class="pagamento-pix d-flex flex-column align-items-center text-center p-3 border rounded bg-light">
-                    <div class="pagamento-pix__qr-wrap mb-3">
-                      <img id="pix-qr-image" class="pagamento-pix__qr img-fluid" src="" alt="QR code PIX simulado" title="QR code PIX simulado" style="max-width: 180px;" />
+
+                  <div class="campo-grupo">
+
+                    <label for="parcelas" class="campo-rotulo">
+                      Parcelamento
+                    </label>
+
+                    <select
+                      id="parcelas"
+                      name="parcelas"
+                      class="campo-seletor"
+                      autocomplete="off"
+                    >
+                      <option value="1">1x à vista</option>
+                      <option value="2">2x</option>
+                      <option value="3">3x</option>
+                      <option value="6">6x</option>
+                    </select>
+
+                  </div>
+
+                </div>
+
+                <!-- PAINÉIS DOS MÉTODOS -->
+                <div id="container-metodos-pagamento" class="mb-4">
+
+                  <!-- CARTÃO -->
+                  <section
+                    id="painel-cartao"
+                    class="pagamento-metodo"
+                    aria-labelledby="painel-cartao-titulo"
+                    hidden
+                  >
+
+                    <div class="pagamento-bloco__header mb-3">
+                      <h3 id="painel-cartao-titulo"
+                        class="pagamento-bloco__titulo">
+                        Pagamento por cartão de crédito
+                      </h3>
                     </div>
-                    <div class="pagamento-pix__conteudo w-100">
-                      <label for="pix-code" class="campo-rotulo">Código PIX copia e cola</label>
-                      <textarea id="pix-code" class="campo-texto form-control mb-2" rows="3" readonly></textarea>
-                      <div class="pagamento-pix__acoes">
-                        <button id="btn-copiar-pix" type="button" class="btn botao--contorno">Copiar código PIX</button>
+
+                    <div class="pagamento-form__grid pagamento-form__grid--cartao row g-3">
+
+                      <div class="campo-grupo pagamento-form__campo--cartao-numero col-md-12">
+
+                        <label for="cartao-numero" class="campo-rotulo">
+                          Número do cartão
+                        </label>
+
+                        <input
+                          id="cartao-numero"
+                          name="cartao-numero"
+                          class="campo-entrada"
+                          type="text"
+                          inputmode="numeric"
+                          placeholder="0000 0000 0000 0000"
+                          autocomplete="cc-number"
+                          disabled
+                        >
+
                       </div>
+
+                      <div class="campo-grupo col-md-6">
+
+                        <label for="cartao-nome" class="campo-rotulo">
+                          Nome impresso
+                        </label>
+
+                        <input
+                          id="cartao-nome"
+                          name="cartao-nome"
+                          class="campo-entrada"
+                          type="text"
+                          placeholder="Nome como no cartão"
+                          autocomplete="cc-name"
+                          disabled
+                        >
+
+                      </div>
+
+                      <div class="campo-grupo col-md-3">
+
+                        <label for="cartao-validade" class="campo-rotulo">
+                          Validade
+                        </label>
+
+                        <input
+                          id="cartao-validade"
+                          name="cartao-validade"
+                          class="campo-entrada"
+                          type="text"
+                          inputmode="numeric"
+                          placeholder="MM/AA"
+                          autocomplete="cc-exp"
+                          disabled
+                        >
+
+                      </div>
+
+                      <div class="campo-grupo col-md-3">
+
+                        <label for="cartao-cvv" class="campo-rotulo">
+                          CVV
+                        </label>
+
+                        <input
+                          id="cartao-cvv"
+                          name="cartao-cvv"
+                          class="campo-entrada"
+                          type="password"
+                          inputmode="numeric"
+                          placeholder="123"
+                          maxlength="4"
+                          autocomplete="cc-csc"
+                          disabled
+                        >
+
+                      </div>
+
                     </div>
-                  </div>
-                </section>
 
-                <section id="painel-boleto" class="pagamento-metodo" aria-labelledby="painel-boleto-titulo" hidden>
-                  <div class="pagamento-bloco__header mb-3">
-                    <h3 id="painel-boleto-titulo" class="pagamento-bloco__titulo">Boleto Bancário</h3>
-                  </div>
-                  <div class="pagamento-boleto p-3 border rounded bg-light">
-                    <strong>Linha digitável do boleto</strong>
-                    <input id="boleto-linha-digitavel" name="boleto_linha_digitavel" type="text" class="campo-entrada my-2" readonly />
-                    <p class="mb-0 text-muted small">O boleto será gerado após a validação comercial do pedido e enviado ao e-mail informado.</p>
-                  </div>
-                </section>
+                    <small class="text-muted">
+                      Esta é uma simulação. Os dados do cartão não serão
+                      armazenados nem utilizados em uma transação real.
+                    </small>
 
-              </div>
+                  </section>
 
+                  <!-- PIX -->
+                  <section
+                    id="painel-pix"
+                    class="pagamento-metodo"
+                    aria-labelledby="painel-pix-titulo"
+                    hidden
+                  >
+
+                    <div class="pagamento-bloco__header mb-3">
+                      <h3 id="painel-pix-titulo"
+                        class="pagamento-bloco__titulo">
+                        Pagamento via PIX
+                      </h3>
+                    </div>
+
+                    <div class="pagamento-pix d-flex flex-column align-items-center text-center p-3 border rounded bg-light">
+
+                      <div class="pagamento-pix__qr-wrap mb-3">
+
+                        <img
+                          id="pix-qr-image"
+                          class="pagamento-pix__qr img-fluid"
+                          src=""
+                          alt="QR code PIX simulado"
+                          title="QR code PIX simulado"
+                          style="max-width: 180px;"
+                        >
+
+                      </div>
+
+                      <div class="pagamento-pix__conteudo w-100">
+
+                        <label for="pix-code" class="campo-rotulo">
+                          Código PIX copia e cola
+                        </label>
+
+                        <textarea
+                          id="pix-code"
+                          class="campo-texto form-control mb-2"
+                          rows="3"
+                          readonly
+                        ></textarea>
+
+                        <div class="pagamento-pix__acoes">
+
+                          <button
+                            id="btn-copiar-pix"
+                            type="button"
+                            class="btn botao--contorno"
+                          >
+                            Copiar código PIX
+                          </button>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </section>
+
+                  <!-- BOLETO -->
+                  <section
+                    id="painel-boleto"
+                    class="pagamento-metodo"
+                    aria-labelledby="painel-boleto-titulo"
+                    hidden
+                  >
+
+                    <div class="pagamento-bloco__header mb-3">
+                      <h3 id="painel-boleto-titulo"
+                        class="pagamento-bloco__titulo">
+                        Boleto Bancário
+                      </h3>
+                    </div>
+
+                    <div class="pagamento-boleto p-3 border rounded bg-light">
+
+                      <strong>
+                        Linha digitável do boleto
+                      </strong>
+
+                      <input
+                        id="boleto-linha-digitavel"
+                        type="text"
+                        class="campo-entrada my-2"
+                        readonly
+                      >
+
+                      <p class="mb-0 text-muted small">
+                        Esta é uma simulação de pagamento por boleto.
+                      </p>
+
+                    </div>
+
+                  </section>
+
+                </div>
+
+              </section>
+
+              <!-- OBSERVAÇÕES -->
               <div class="campo-grupo">
-                <label for="observacoes" class="campo-rotulo">Observações do pedido</label>
+
+                <label for="observacoes" class="campo-rotulo">
+                  Observações do pedido
+                </label>
+
                 <textarea
                   id="observacoes"
                   name="observacoes"
@@ -287,58 +416,283 @@
                   placeholder="Instruções de entrega ou observações."
                   autocomplete="off"
                 ></textarea>
+
               </div>
 
+              <!-- BOTÕES -->
               <div class="pagamento-formulario__acoes">
-                <button id="botao-confirmar-pagamento" type="submit" class="btn botao--principal botao--lg">
+
+                <button
+                  id="botao-confirmar-pagamento"
+                  type="submit"
+                  class="btn botao--principal botao--lg"
+                  <%= !enderecos || enderecos.length === 0 ? 'disabled' : '' %>
+                >
                   Finalizar Pedido
                 </button>
-                <a href="/carrinho" class="btn botao--contorno botao--lg">Voltar para carrinho</a>
+
+                <a href="/carrinho" class="btn botao--contorno botao--lg">
+                  Voltar para carrinho
+                </a>
+
               </div>
+
             </form>
+            <!-- FIM DO FORMULÁRIO PRINCIPAL -->
+
+            <!-- CADASTRO DE NOVO ENDEREÇO -->
+            <section class="pagamento-bloco mt-4">
+
+              <details>
+
+                <summary class="btn botao--contorno">
+                  <i class="bi bi-plus-circle" aria-hidden="true"></i>
+                  Adicionar novo endereço
+                </summary>
+
+                <form
+                  action="/pagamento/enderecos"
+                  method="POST"
+                  class="mt-4"
+                  data-cep-form
+                >
+
+                  <div class="row g-3">
+
+                    <div class="col-md-4">
+
+                      <label for="cep" class="form-label">
+                        CEP
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="cep"
+                        name="cep"
+                        maxlength="9"
+                        placeholder="00000-000"
+                        required
+                      >
+
+                      <small id="cep-mensagem"></small>
+
+                    </div>
+
+                    <div class="col-md-8">
+
+                      <label for="logradouro" class="form-label">
+                        Logradouro
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="logradouro"
+                        name="logradouro"
+                        required
+                      >
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                      <label for="numero" class="form-label">
+                        Número
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="numero"
+                        name="numero"
+                        required
+                      >
+
+                    </div>
+
+                    <div class="col-md-8">
+
+                      <label for="complemento" class="form-label">
+                        Complemento
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="complemento"
+                        name="complemento"
+                      >
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                      <label for="bairro" class="form-label">
+                        Bairro
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="bairro"
+                        name="bairro"
+                        required
+                      >
+
+                    </div>
+
+                    <div class="col-md-5">
+
+                      <label for="cidade" class="form-label">
+                        Cidade
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="cidade"
+                        name="cidade"
+                        required
+                      >
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                      <label for="estado" class="form-label">
+                        Estado (UF)
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="estado"
+                        name="estado"
+                        maxlength="2"
+                        required
+                      >
+
+                    </div>
+
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="btn botao--principal mt-4"
+                  >
+                    Salvar endereço
+                  </button>
+
+                </form>
+
+              </details>
+
+            </section>
+
           </section>
+
         </div>
 
+        <!-- COLUNA DO RESUMO -->
         <div class="col-lg-5">
-          <aside class="pagamento-resumo" aria-label="Resumo do pagamento">
-            <span class="pagamento-resumo__rotulo">Checkout</span>
-            <h2 class="pagamento-resumo__titulo">Resumo do seu pedido</h2>
 
-            <div id="pagamento-lista" class="pagamento-lista mb-3" aria-live="polite">
+          <aside class="pagamento-resumo" aria-label="Resumo do pagamento">
+
+            <span class="pagamento-resumo__rotulo">
+              Checkout
+            </span>
+
+            <h2 class="pagamento-resumo__titulo">
+              Resumo do seu pedido
+            </h2>
+
+            <div id="pagamento-lista"
+              class="pagamento-lista mb-3"
+              aria-live="polite"
+            >
+
               <% if (itens && itens.length > 0) { %>
-                <% for (const item of itens) { 
-                  const nomeProduto = item.produto?.nome || item.nome || 'Produto';
-                  const precoProduto = Number(item.produto?.preco || item.preco) || 0;
-                  const qtdItem = Number(item.quantidade) || 1;
+
+                <% for (const item of itens) {
+
+                  const nomeProduto =
+                    item.produto?.nome || item.nome || 'Produto';
+
+                  const precoProduto =
+                    Number(item.produto?.preco || item.preco) || 0;
+
+                  const qtdItem =
+                    Number(item.quantidade) || 1;
+
                 %>
+
                   <div class="carrinho-item-resumo mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+
                     <div>
-                      <strong><%= nomeProduto %></strong>
-                      <small class="text-muted d-block">Qtd: <%= qtdItem %> <%= item.variacao ? '· ' + item.variacao : '' %></small>
+
+                      <strong>
+                        <%= nomeProduto %>
+                      </strong>
+
+                      <small class="text-muted d-block">
+                        Qtd: <%= qtdItem %>
+                        <%= item.variacao ? '· ' + item.variacao : '' %>
+                      </small>
+
                     </div>
-                    <span><%= formatarMoeda(precoProduto * qtdItem) %></span>
+
+                    <span>
+                      <%= formatarMoeda(precoProduto * qtdItem) %>
+                    </span>
+
                   </div>
+
                 <% } %>
+
               <% } else { %>
-                <p class="text-muted">Seu carrinho está vazio.</p>
+
+                <p class="text-muted">
+                  Seu carrinho está vazio.
+                </p>
+
               <% } %>
+
             </div>
 
             <dl class="pagamento-metricas">
+
               <div class="pagamento-metrica">
+
                 <dt>Itens totais</dt>
-                <dd id="pagamento-total-itens"><%= quantidade %></dd>
+
+                <dd id="pagamento-total-itens">
+                  <%= quantidade %>
+                </dd>
+
               </div>
+
               <div class="pagamento-metrica">
+
                 <dt>Total</dt>
-                <dd id="pagamento-total-valor"><%= formatarMoeda(Number(typeof total !== 'undefined' ? total : 0)) %></dd>
+
+                <dd id="pagamento-total-valor">
+                  <%= formatarMoeda(Number(typeof total !== 'undefined' ? total : 0)) %>
+                </dd>
+
               </div>
+
             </dl>
+
           </aside>
+
         </div>
+
       </div>
+
     </div>
   </section>
+
 </main>
 
 <script src="/assets/js/checkout.js"></script>

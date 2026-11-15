@@ -1,74 +1,81 @@
-import { identificador } from '../utils/validacao.js';
+
 import { supabase } from '../../config/db.js';
 
-export class Empresa {
-  constructor({ id, nome, categoriaEmpresa, descricao, statusConta, site, imagem }) {
-    this.id = identificador(id, 'Empresa');
-    this.nome = identificador(nome, 'Nome da empresa');
-    this.categoriaEmpresa = categoriaEmpresa || 'Setor não informado';
-    this.descricao = descricao || 'Empresa parceira especializada em soluções de acessibilidade.';
-    this.statusConta = statusConta || 'Ativo';
-    this.site = site || '';
-    this.imagem = imagem || `/assets/img/${id}.jpg`;
-    Object.freeze(this);
-  }
+// Campos disponíveis na view pública.
+const CAMPOS_EMPRESA_PUBLICA = `
+  id_empresa,
+  nome_fantasia,
+  categoria_empresa,
+  descricao,
+  status_conta,
+  site,
+  logo_url
+`;
+
+// Converte os nomes do banco para os nomes utilizados nas views EJS.
+function mapearEmpresa(empresa) {
+  return {
+    id: empresa.id_empresa,
+    nomeFantasia: empresa.nome_fantasia,
+    categoriaEmpresa:
+      empresa.categoria_empresa || 'Setor não informado',
+    descricao:
+      empresa.descricao ||
+      'Empresa parceira especializada em soluções de acessibilidade.',
+    statusConta: empresa.status_conta,
+    site: empresa.site || '',
+    logoUrl: empresa.logo_url || null,
+    imagem:
+      empresa.logo_url || '/assets/img/placeholder-empresa.jpg'
+  };
 }
 
-const empresas = Object.freeze([
-  new Empresa({ 
-    id: 'klinker', 
-    nome: 'Klinker',
-    categoriaEmpresa: 'Mobilidade e Sinalização',
-    descricao: 'Especializada em pisos táteis e sinalização acessível para pessoas com deficiência visual.',
-    statusConta: 'Ativo',
-    site: 'www.klinker.com.br',
-    imagem: '/assets/img/klinker.jpg'
-  }),
-  new Empresa({ 
-    id: 'acessify', 
-    nome: 'Acessify',
-    categoriaEmpresa: 'Acessibilidade Digital',
-    descricao: 'Empresa especializada em soluções de acessibilidade digital para empresas.',
-    statusConta: 'Ativo',
-    site: 'www.acessify.com.br',
-    imagem: '/assets/img/acessify.jpg'
-  }),
-]);
-
-export function listarEmpresas() {
-  return [...empresas];
-}
-
-export function buscarEmpresa(id) {
-  return empresas.find((empresa) => empresa.id === id);
-}
-
+// Lista somente empresas ativas.
 export async function listarEmpresasVendedoras(cliente = supabase) {
   const { data, error } = await cliente
     .from('empresas_publicas')
-    .select('id_empresa, nome_fantasia, logo_url, categoria_empresa')
+    .select(CAMPOS_EMPRESA_PUBLICA)
     .order('nome_fantasia', { ascending: true });
 
   if (error) {
-    throw new Error(`Não foi possível carregar as empresas vendedoras: ${error.message}`);
+    throw new Error(
+      `Não foi possível carregar as empresas: ${error.message}`
+    );
   }
 
-  return (data ?? []).map((empresa) => ({
-    id: empresa.id_empresa,
-    nomeFantasia: empresa.nome_fantasia,
-    logoUrl: empresa.logo_url,
-    categoriaEmpresa: empresa.categoria_empresa || 'Setor não informado',
-  }));
+  return (data ?? []).map(mapearEmpresa);
+}
+
+// Mantém compatibilidade com o middleware do catálogo.
+export async function listarEmpresas(cliente = supabase) {
+  return listarEmpresasVendedoras(cliente);
+}
+
+// Busca uma empresa ativa pelo ID.
+export async function buscarEmpresa(id, cliente = supabase) {
+  const idEmpresa = Number(id);
+
+  if (!Number.isSafeInteger(idEmpresa) || idEmpresa < 1) {
+    return null;
+  }
+
+  const { data, error } = await cliente
+    .from('empresas_publicas')
+    .select(CAMPOS_EMPRESA_PUBLICA)
+    .eq('id_empresa', idEmpresa)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(
+      `Não foi possível consultar a empresa: ${error.message}`
+    );
+  }
+
+  return data ? mapearEmpresa(data) : null;
 }
 
 export function selecionarEmpresasDestaque(empresas) {
-  const ehKlinker = (empresa) => /\bklinker\b/i.test(empresa.nomeFantasia);
-  const comLogo = empresas.filter((empresa) => empresa.logoUrl).sort((a, b) =>
-    a.nomeFantasia.localeCompare(b.nomeFantasia, 'pt-BR')
-  );
-  const klinker = comLogo.find(ehKlinker) ?? empresas.find(ehKlinker);
-  return [
-    ...(klinker ? [klinker] : []),
-    ...comLogo.filter((empresa) => !ehKlinker(empresa)),
-  ].slice(0, 2);
+  const comLogo = empresas.filter((empresa) => empresa.logoUrl);
+
+  return comLogo.slice(0, 2);
 }

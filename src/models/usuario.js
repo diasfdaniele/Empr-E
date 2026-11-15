@@ -444,3 +444,22 @@ export async function excluirEndereco(usuarioId, req, enderecoId) {
 
     return true;
 }
+
+export async function listarEnderecosUsuario(usuarioId, req) {
+
+    const cliente = clienteDaSessao(req);
+
+    const { data, error } = await cliente
+        .from('enderecos')
+        .select('*')
+        .eq('idUsuario', usuarioId)
+        .order('id_endereco', { ascending: true });
+
+    if (error) {
+        throw new Error(
+            `Não foi possível carregar os endereços: ${error.message}`
+        );
+    }
+
+    return data || [];
+}

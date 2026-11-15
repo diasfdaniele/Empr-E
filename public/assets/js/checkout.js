@@ -102,7 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (painelPix) painelPix.hidden = true;
     if (painelBoleto) painelBoleto.hidden = true;
     
-    inputsCartao.forEach(input => input.removeAttribute('required'));
+    inputsCartao.forEach(input => {
+      input.required = false;
+      input.disabled = true;
+    });
 
     if (selectParcelas) {
       if (metodoSelecionado === 'pix' || metodoSelecionado === 'boleto') {
@@ -114,9 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (metodoSelecionado === 'cartao' && painelCartao) {
+
       painelCartao.hidden = false;
-      inputsCartao.forEach(input => input.setAttribute('required', 'required'));
-    } 
+
+      inputsCartao.forEach(input => {
+          input.required = true;
+          input.disabled = false;
+      });
+
+    }
     else if (metodoSelecionado === 'pix' && painelPix) {
       painelPix.hidden = false;
       if (pixCodeTextarea && !pixCodeTextarea.value) {

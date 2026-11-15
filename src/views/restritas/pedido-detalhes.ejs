@@ -1,0 +1,289 @@
+
+<main class="pagina-detalhes-pedido container py-4">
+
+    <header class="mb-4">
+
+        <a href="/conta/pedidos" class="btn botao--contorno">
+            ← Voltar aos meus pedidos
+        </a>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+            <div>
+                <h1>Pedido #<%= pedido.id_pedido %></h1>
+
+                <p class="text-muted mb-0">
+                    Realizado em <%= formatarData(pedido.data_emissao) %>
+                </p>
+            </div>
+
+            <span class="badge bg-secondary fs-6">
+                <%= pedido.status_pedido %>
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <!-- RESUMO DO PEDIDO -->
+
+    <section class="card mb-4">
+
+        <div class="card-body">
+
+            <h2 class="h5 mb-3">Resumo do pedido</h2>
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Número do pedido
+                    </small>
+
+                    <strong>#<%= pedido.id_pedido %></strong>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Data da compra
+                    </small>
+
+                    <strong>
+                        <%= formatarData(pedido.data_emissao) %>
+                    </strong>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Status
+                    </small>
+
+                    <strong>
+                        <%= pedido.status_pedido %>
+                    </strong>
+                </div>
+
+            </div>
+
+            <% if (pedido.possui_itens_sob_consulta) { %>
+
+                <div class="alert alert-info mt-3 mb-0">
+                    Este pedido contém produtos classificados como projeto personalizado ou sob consulta.
+                </div>
+
+            <% } %>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUTOS -->
+
+    <section class="card mb-4">
+
+        <div class="card-body">
+
+            <h2 class="h5 mb-3">Produtos do pedido</h2>
+
+            <% if (!itens || itens.length === 0) { %>
+
+                <p class="text-muted">
+                    Não foram encontrados itens para este pedido.
+                </p>
+
+            <% } else { %>
+
+                <% itens.forEach(item => { %>
+
+                    <article class="border-bottom py-3">
+
+                        <div class="d-flex flex-wrap justify-content-between gap-3">
+
+                            <div>
+
+                                <h3 class="h6 mb-1">
+                                    <%= item.produto
+                                        ? item.produto.nome_produto
+                                        : 'Produto indisponível' %>
+                                </h3>
+
+                                <p class="text-muted mb-1">
+                                    Variação:
+                                    <%= item.variacao || 'Padrão' %>
+                                </p>
+
+                                <p class="text-muted mb-0">
+                                    Quantidade:
+                                    <%= item.quantidade %>
+                                </p>
+
+                            </div>
+
+                            <div class="text-end">
+
+                                <small class="text-muted d-block">
+                                    Preço unitário:
+                                    <%= formatarMoeda(item.preco_venda) %>
+                                </small>
+
+                                <strong>
+                                    <%= formatarMoeda(item.subtotal) %>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                <% }) %>
+
+            <% } %>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+
+                <strong class="fs-5">Total do pedido</strong>
+
+                <strong class="fs-4">
+                    <%= formatarMoeda(pedido.total_estimado) %>
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENDEREÇO -->
+
+    <section class="card mb-4">
+
+        <div class="card-body">
+
+            <h2 class="h5 mb-3">Endereço de entrega</h2>
+
+            <% if (endereco) { %>
+
+                <p class="mb-1">
+                    <strong>
+                        <%= endereco.tipo_endereco || 'Endereço' %>
+                    </strong>
+                </p>
+
+                <p class="mb-1">
+                    <%= endereco.logradouro %>,
+                    <%= endereco.numero %>
+                </p>
+
+                <% if (endereco.complemento) { %>
+                    <p class="mb-1">
+                        Complemento: <%= endereco.complemento %>
+                    </p>
+                <% } %>
+
+                <p class="mb-1">
+                    <%= endereco.bairro %>
+                </p>
+
+                <p class="mb-1">
+                    <%= endereco.cidade %> - <%= endereco.estado %>
+                </p>
+
+                <p class="mb-0">
+                    CEP: <%= endereco.cep %>
+                </p>
+
+            <% } else { %>
+
+                <p class="text-muted mb-0">
+                    Não foi possível localizar o endereço deste pedido.
+                </p>
+
+            <% } %>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAGAMENTO -->
+
+    <section class="card mb-4">
+
+        <div class="card-body">
+
+            <h2 class="h5 mb-3">Informações de pagamento</h2>
+
+            <% if (pagamento) { %>
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <small class="text-muted d-block">
+                            Método
+                        </small>
+
+                        <strong><%= pagamento.metodo %></strong>
+                    </div>
+
+                    <div class="col-md-4">
+                        <small class="text-muted d-block">
+                            Situação
+                        </small>
+
+                        <strong>
+                            <%= pagamento.status_pagamento %>
+                        </strong>
+                    </div>
+
+                    <div class="col-md-4">
+                        <small class="text-muted d-block">
+                            Parcelas
+                        </small>
+
+                        <strong>
+                            <%= pagamento.parcelas %>x
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+                    <small class="text-muted d-block">
+                        Valor registrado
+                    </small>
+
+                    <strong>
+                        <%= formatarMoeda(pagamento.valor) %>
+                    </strong>
+                </div>
+
+            <% } else { %>
+
+                <p class="text-muted mb-0">
+                    Não foi possível localizar os dados do pagamento.
+                </p>
+
+            <% } %>
+
+        </div>
+
+    </section>
+
+
+    <div class="text-center mb-4">
+
+        <a href="/conta/pedidos" class="btn botao--contorno">
+            Voltar aos meus pedidos
+        </a>
+
+        <a href="/catalogo" class="btn botao--principal">
+            Continuar comprando
+        </a>
+
+    </div>
+
+</main>

@@ -199,3 +199,74 @@
     justify-content: center;
   }
 }
+
+
+/* Ajustes visuais da página de produto */
+/* Página do produto: mesma linguagem visual da página inicial. */
+.produto-detalhe-destaque {
+  padding: 1.75rem 0 1rem;
+}
+
+.produto-detalhe-destaque__conteudo {
+  background: linear-gradient(135deg, var(--azul-profundo) 0%, #1a3270 100%);
+  border: 0;
+  border-radius: var(--raio-xl);
+  padding: clamp(1.2rem, 2.4vw, 1.75rem);
+  box-shadow: var(--sombra-lg);
+}
+
+.produto-detalhe-destaque__titulo {
+  color: var(--branco);
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.produto-detalhe {
+  background: var(--branco);
+  border: 1px solid var(--cinza-200);
+  color: var(--cor-texto);
+}
+
+.produto-detalhe__imagem-principal-wrap {
+  background: var(--cinza-50);
+  border-color: var(--cinza-200);
+}
+
+.produto-detalhe__imagem-principal,
+.produto-detalhe__miniatura img {
+  background: var(--branco);
+}
+
+.produto-detalhe__titulo {
+  color: var(--cinza-900);
+}
+
+.produto-detalhe__descricao,
+.produto-detalhe__modalidade {
+  color: var(--cor-texto);
+}
+
+.produto-detalhe__painel {
+  background: var(--laranja-palido);
+  border-color: rgba(249, 115, 22, 0.25);
+}
+
+.produto-detalhe__painel-rotulo,
+.produto-detalhe__preco {
+  color: var(--laranja-escuro);
+}
+
+.produto-detalhe .btn.botao--principal {
+  background: var(--laranja-vivo);
+  color: #111827;
+  border: 2px solid var(--laranja-vivo);
+  box-shadow: var(--sombra-laranja);
+}
+
+.produto-detalhe .btn.botao--principal:hover,
+.produto-detalhe .btn.botao--principal:focus-visible {
+  background: var(--laranja-escuro);
+  border-color: var(--laranja-escuro);
+  color: #ffffff;
+}

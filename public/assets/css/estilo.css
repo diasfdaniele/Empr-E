@@ -2115,3 +2115,269 @@ body.modo-simplificado * {
     padding-top: 0;
   }
 }
+
+
+/* Ajustes de cabeçalho e responsividade */
+/* =========================================================
+   AJUSTES DE CONSISTÊNCIA — CABEÇALHO, PRODUTO E CONTRASTE
+   Regras adicionadas ao final para prevalecer sobre estilos antigos.
+========================================================= */
+
+/* Mantém a faixa principal consistente em todas as páginas. */
+.cabecalho__interno {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: 1rem;
+}
+
+.cabecalho__acoes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.cabecalho__acoes .btn {
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.cabecalho__acoes .botao-cabecalho-acesso {
+  min-width: 0;
+  padding: 0.625rem 1rem;
+}
+
+@media (max-width: 1024px) {
+  .cabecalho__acoes {
+    display: flex !important;
+  }
+
+  .cabecalho__acoes .botao--principal {
+    display: none !important;
+  }
+
+  .cabecalho__acoes .botao--contorno {
+    display: inline-flex !important;
+  }
+
+  .cabecalho__interno {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 0.75rem;
+  }
+
+  .navegacao {
+    display: none !important;
+  }
+
+  .botao-menu-movel {
+    display: flex;
+  }
+}
+
+@media (max-width: 640px) {
+  .cabecalho__acoes {
+    gap: 0.35rem;
+  }
+
+  .cabecalho__acoes .btn {
+    min-height: 38px;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .cabecalho__acoes .botao-cabecalho-acesso {
+    min-width: 0;
+    padding-inline: 0.65rem;
+  }
+
+  .cabecalho__interno {
+    column-gap: 0.5rem;
+  }
+}
+
+
+/* Ajustes globais do modo de alto contraste */
+/* Alto contraste: fundo escuro uniforme e texto claro.
+   Imagens mantêm uma superfície própria para não alterar as fotos. */
+body.modo-alto-contraste {
+  background: #000000 !important;
+  color: #ffffff !important;
+  --cor-fundo: #000000;
+  --cor-fundo-alt: #101010;
+  --cor-texto: #ffffff;
+  --cor-texto-suave: #e5e7eb;
+  --cor-texto-claro: #d1d5db;
+  --cor-borda: #ffffff;
+  --cinza-50: #080808;
+  --cinza-100: #101010;
+  --cinza-200: #242424;
+  --cinza-300: #d1d5db;
+  --cinza-400: #e5e7eb;
+  --cinza-500: #f3f4f6;
+  --cinza-600: #f3f4f6;
+  --cinza-700: #ffffff;
+  --cinza-800: #ffffff;
+  --cinza-900: #ffffff;
+  --laranja-palido: #211205;
+  --laranja-escuro: #ffb36b;
+}
+
+body.modo-alto-contraste .cabecalho,
+body.modo-alto-contraste .menu-movel,
+body.modo-alto-contraste .rodape,
+body.modo-alto-contraste main,
+body.modo-alto-contraste section,
+body.modo-alto-contraste .produto-detalhe-destaque__conteudo,
+body.modo-alto-contraste .produto-detalhe,
+body.modo-alto-contraste .produto-detalhe__painel,
+body.modo-alto-contraste .produto-detalhe__imagem-principal-wrap,
+body.modo-alto-contraste .produto-detalhe__miniatura,
+body.modo-alto-contraste .carrinho-painel,
+body.modo-alto-contraste .carrinho-resumo,
+body.modo-alto-contraste .carrinho-item,
+body.modo-alto-contraste .conta-resumo,
+body.modo-alto-contraste .conta-painel,
+body.modo-alto-contraste .conta-metrica,
+body.modo-alto-contraste .formulario-secao,
+body.modo-alto-contraste .filtros,
+body.modo-alto-contraste .produto-cartao,
+body.modo-alto-contraste .pagamento-painel,
+body.modo-alto-contraste .pagamento-resumo,
+body.modo-alto-contraste .pagamento-bloco,
+body.modo-alto-contraste .pagamento-metrica {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Texto dos conteúdos: evita combinações de branco sobre branco. */
+body.modo-alto-contraste :is(
+  h1, h2, h3, h4, h5, h6, p, span, strong, label, small, dt, dd,
+  li, legend, .produto-detalhe__empresa, .produto-detalhe__descricao,
+  .produto-detalhe__modalidade, .produto-detalhe__painel-rotulo,
+  .produto-detalhe__preco, .produto-cartao__titulo,
+  .produto-cartao__descricao, .carrinho-item__descricao,
+  .carrinho-item__empresa, .conta-painel__subtitulo,
+  .conta-resumo__texto, .secao-subtitulo
+) {
+  color: #ffffff !important;
+}
+
+body.modo-alto-contraste a,
+body.modo-alto-contraste .navegacao__link,
+body.modo-alto-contraste .menu-movel__link,
+body.modo-alto-contraste .rodape__link {
+  color: #ffffff !important;
+}
+
+body.modo-alto-contraste a:hover,
+body.modo-alto-contraste .navegacao__link:hover,
+body.modo-alto-contraste .navegacao__link--ativo,
+body.modo-alto-contraste .menu-movel__link:hover {
+  color: #000000 !important;
+  background: #f97316 !important;
+}
+
+body.modo-alto-contraste .botao--principal,
+body.modo-alto-contraste .botao-acess[aria-pressed="true"],
+body.modo-alto-contraste .produto-detalhe__categoria,
+body.modo-alto-contraste .produto-cartao__categoria,
+body.modo-alto-contraste .carrinho-item__categoria,
+body.modo-alto-contraste .secao-selo {
+  background: #f97316 !important;
+  color: #000000 !important;
+  border-color: #f97316 !important;
+}
+
+body.modo-alto-contraste .botao--contorno,
+body.modo-alto-contraste .botao--discreto,
+body.modo-alto-contraste .cabecalho__acoes .btn,
+body.modo-alto-contraste .botao-menu-movel,
+body.modo-alto-contraste .botao-acess {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #f97316 !important;
+}
+
+body.modo-alto-contraste .campo-entrada,
+body.modo-alto-contraste .campo-seletor,
+body.modo-alto-contraste .campo-texto,
+body.modo-alto-contraste .form-control,
+body.modo-alto-contraste .form-select,
+body.modo-alto-contraste input,
+body.modo-alto-contraste select,
+body.modo-alto-contraste textarea {
+  background: #101010 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+body.modo-alto-contraste input::placeholder,
+body.modo-alto-contraste textarea::placeholder,
+body.modo-alto-contraste .form-control::placeholder {
+  color: #d1d5db !important;
+  opacity: 1;
+}
+
+body.modo-alto-contraste .produto-detalhe__imagem-principal,
+body.modo-alto-contraste .produto-detalhe__miniatura img,
+body.modo-alto-contraste .produto-cartao__imagem {
+  background: #ffffff !important;
+}
+
+body.modo-alto-contraste .produto-detalhe__titulo,
+body.modo-alto-contraste .produto-detalhe-destaque__titulo {
+  color: #ffffff !important;
+}
+
+body.modo-alto-contraste :is(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid #ffffff !important;
+  outline-offset: 3px;
+}
+
+
+/* Superfícies específicas que também possuem estilos próprios. */
+body.modo-alto-contraste .vendedor,
+body.modo-alto-contraste .vendedor-foto,
+body.modo-alto-contraste .vendedor-upload,
+body.modo-alto-contraste .vendedor-icone,
+body.modo-alto-contraste .vendedor-lista__contador,
+body.modo-alto-contraste .conta-produto-formulario,
+body.modo-alto-contraste .conta-administracao-metrica,
+body.modo-alto-contraste .conta-administracao-bloco,
+body.modo-alto-contraste .pedidos__painel,
+body.modo-alto-contraste .pedidos__item,
+body.modo-alto-contraste .pedidos__vazio,
+body.modo-alto-contraste .pedido-detalhes__painel,
+body.modo-alto-contraste .pedido-detalhes__bloco,
+body.modo-alto-contraste .pedido-detalhes__metrica,
+body.modo-alto-contraste .pedido-detalhes__item,
+body.modo-alto-contraste .pedido-detalhes__endereco {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+body.modo-alto-contraste .vendedor :is(
+  h1, h2, h3, p, span, label, legend, a, .vendedor-formulario__erro
+),
+body.modo-alto-contraste .pedidos :is(h1, h2, h3, p, span, a),
+body.modo-alto-contraste .pedido-detalhes :is(h1, h2, h3, p, span, a) {
+  color: #ffffff !important;
+}
+
+body.modo-alto-contraste .vendedor :is(input, select, textarea) {
+  background: #101010 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+body.modo-alto-contraste .vendedor :is(input, select, textarea)::placeholder {
+  color: #d1d5db !important;
+}

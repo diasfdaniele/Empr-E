@@ -32,7 +32,8 @@ export async function exibirCatalogo(req, res, next) {
             'busca',
             'categoria',
             'preco',
-            'empresa'
+            'empresa',
+            'empresaId'
         ]) {
             const valor = req.query[chave];
 
@@ -60,6 +61,16 @@ export async function exibirCatalogo(req, res, next) {
                 res,
                 400,
                 'Categoria inválida.'
+            );
+        }
+        if (
+            filtros.empresaId &&
+            !/^[1-9]\d*$/.test(filtros.empresaId)
+        ) {
+            return exibirIndisponibilidade(
+                res,
+                400,
+                'Empresa inválida.'
             );
         }
 

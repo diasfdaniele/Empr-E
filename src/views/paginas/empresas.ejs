@@ -88,8 +88,18 @@
                 
                 <div class="produto-cartao__rodape">
                   <div class="produto-cartao__acoes w-100">
-                    <a href="/catalogo?empresa=<%= encodeURIComponent(emp.nomeFantasia) %>" class="btn botao--contorno w-100">
-                      Ver produtos da empresa &rarr;
+                    <a
+                      href="/empresa/<%= emp.id %>"
+                      class="btn botao--principal w-100"
+                    >
+                      Conhecer empresa
+                    </a>
+
+                    <a
+                      href="/catalogo?empresa=<%= encodeURIComponent(emp.nomeFantasia) %>"
+                      class="btn botao--contorno w-100"
+                    >
+                      Ver produtos da empresa
                     </a>
                   </div>
                 </div>

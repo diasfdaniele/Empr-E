@@ -20,6 +20,13 @@
           <aside class="catalogo__lateral filtros" aria-label="Filtros do catálogo">
             <h2 class="filtros__titulo">Filtros</h2>
             <form id="filtros-catalogo" action="/catalogo" method="get">
+              <% if (filtros.empresaId) { %>
+                <input
+                  type="hidden"
+                  name="empresaId"
+                  value="<%= filtros.empresaId %>"
+                />
+              <% } %>
               <div class="filtro-grupo">
                 <label for="campo-busca" class="filtro-rotulo">Buscar produto</label>
                 <input

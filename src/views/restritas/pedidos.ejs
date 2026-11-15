@@ -1,0 +1,117 @@
+
+<main class="pagina-pedidos container py-4">
+
+    <header class="mb-4">
+        <a href="/conta" class="btn botao--contorno">
+            ← Voltar à minha conta
+        </a>
+
+        <h1>Meus pedidos</h1>
+
+        <p class="text-muted">
+            Acompanhe suas compras realizadas na Empr-E.
+        </p>
+    </header>
+
+    <% if (!pedidos || pedidos.length === 0) { %>
+
+        <section class="text-center p-5 border rounded">
+            <h2>Você ainda não realizou pedidos.</h2>
+
+            <p class="text-muted">
+                Quando finalizar uma compra, os detalhes aparecerão nesta página.
+            </p>
+
+            <a href="/catalogo" class="btn botao--principal">
+                Explorar catálogo
+            </a>
+        </section>
+
+    <% } else { %>
+
+        <div class="lista-pedidos">
+
+            <% pedidos.forEach(pedido => { %>
+
+                <article class="card mb-3 shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="d-flex flex-wrap justify-content-between gap-3 mb-3">
+
+                            <div>
+                                <h2 class="h5 mb-1">
+                                    Pedido #<%= pedido.id_pedido %>
+                                </h2>
+
+                                <small class="text-muted">
+                                    Realizado em:
+                                    <%= formatarData(pedido.data_emissao) %>
+                                </small>
+                            </div>
+
+                            <span class="badge bg-secondary align-self-start">
+                                <%= pedido.status_pedido %>
+                            </span>
+
+                        </div>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+                                <small class="text-muted d-block">
+                                    Valor total
+                                </small>
+
+                                <strong>
+                                    <%= formatarMoeda(pedido.total_estimado) %>
+                                </strong>
+                            </div>
+
+                            <div class="col-md-4">
+                                <small class="text-muted d-block">
+                                    Pagamento
+                                </small>
+
+                                <strong>
+                                    <%= pedido.metodo_pagamento || 'Não informado' %>
+                                </strong>
+                            </div>
+
+                            <div class="col-md-4">
+                                <small class="text-muted d-block">
+                                    Entrega
+                                </small>
+
+                                <% if (pedido.endereco) { %>
+                                    <strong>
+                                        <%= pedido.endereco.cidade %> -
+                                        <%= pedido.endereco.estado %>
+                                    </strong>
+                                <% } else { %>
+                                    <strong>Endereço não disponível</strong>
+                                <% } %>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-4">
+                            <a
+                                href="/conta/pedidos/<%= pedido.id_pedido %>"
+                                class="btn botao--principal"
+                            >
+                                Visualizar pedido
+                            </a>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            <% }) %>
+
+        </div>
+
+    <% } %>
+
+</main>

@@ -19,18 +19,20 @@
     <link href="/bibliotecas/bootstrap.min.css" rel="stylesheet" />
     <link href="/assets/css/estilo.css" rel="stylesheet" />
     <% const estilos = {
-  catalogo: ['catalogo'],
-  produto: ['detalhe-produto'],
-  carrinho: ['carrinho'],
-  pagamento: ['pagamento'],
-  login: ['login'],
-  cadastro: ['cadastro'],
-  indisponivel: ['conta'],
-  'restritas/conta': ['conta'],
-  'restritas/vendedor': ['conta'],
-  conta: ['conta'],
-  empresas: ['catalogo'],
-  empresa: ['detalhe-produto'],
+    catalogo: ['catalogo'],
+    produto: ['detalhe-produto'],
+    carrinho: ['carrinho'],
+    pagamento: ['pagamento'],
+    login: ['login'],
+    cadastro: ['cadastro'],
+    indisponivel: ['conta'],
+    'restritas/conta': ['conta'],
+    'restritas/vendedor': ['conta'],
+    'restritas/pedidos': ['pedidos'],
+    'restritas/pedido-detalhes': ['pedidos'],
+    conta: ['conta'],
+    empresas: ['catalogo'],
+    empresa: ['detalhe-produto']
 }; %>
     <% for (const estilo of estilos[pagina] || []) { %>
     <link href="/assets/css/<%= estilo %>.css" rel="stylesheet" />

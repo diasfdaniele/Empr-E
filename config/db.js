@@ -1,4 +1,4 @@
-//Congig DB
+//Config DB
 import 'dotenv/config';
 
 import { createClient } from '@supabase/supabase-js';

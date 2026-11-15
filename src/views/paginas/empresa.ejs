@@ -64,9 +64,62 @@
           </div>
 
           <div class="produto-detalhe__acoes mt-4">
-            <a href="/catalogo?empresa=<%= empresa.id %>" class="btn botao--principal">
-              Ver produtos da empresa
+            <a
+                href="/catalogo?empresaId=<%= empresa.id %>"
+                class="btn botao--principal"
+            >
+                Ver todos os produtos
             </a>
+
+              <section class="catalogo-produtos empresa-produtos"
+                      aria-labelledby="empresa-produtos-titulo">
+
+                  <div class="container">
+
+                      <div class="catalogo__cabecalho">
+                          <div>
+                              <span class="secao-selo">
+                                  Produtos da empresa
+                              </span>
+
+                              <h2 id="empresa-produtos-titulo"
+                                  class="catalogo__titulo">
+                                  Soluções oferecidas por
+                                  <%= empresa.nomeFantasia %>
+                              </h2>
+                          </div>
+
+                          <p class="catalogo__resultado" aria-live="polite">
+                              <%= produtos.length %> produto(s)
+                          </p>
+                      </div>
+
+                      <% if (produtos.length) { %>
+
+                          <div id="catalogo-lista"
+                              class="catalogo__grade">
+
+                              <% for (const produto of produtos) { %>
+                                  <%- include('../partials/cartao-produto', {
+                                      produto
+                                  }) %>
+                              <% } %>
+
+                          </div>
+
+                      <% } else { %>
+
+                          <p class="demo-nota">
+                              Esta empresa ainda não possui produtos disponíveis
+                              no catálogo.
+                          </p>
+
+                      <% } %>
+
+                  </div>
+
+              </section>
+
             
             <% if (empresa.site) { %>
               <a href="<%= empresa.site.startsWith('http') ? empresa.site : 'https://' + empresa.site %>" target="_blank" rel="noopener noreferrer" class="btn botao--contorno">

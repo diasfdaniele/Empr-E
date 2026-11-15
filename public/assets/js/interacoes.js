@@ -89,8 +89,19 @@
   // =========================================================
 
   
+
 function iniciarAcessibilidade() {
   let tamanhoFonte = 16;
+
+  // Chave utilizada para manter o alto contraste entre páginas.
+  const chaveContraste = 'empre:contraste';
+
+  // Recupera a preferência salva anteriormente.
+  const contrasteAtivo =
+    localStorage.getItem(chaveContraste) === 'ativo';
+
+  // Aplica o contraste antes de configurar os botões.
+  corpo.classList.toggle('modo-alto-contraste', contrasteAtivo);
 
   function atualizarFonte() {
     const tamanho =
@@ -117,10 +128,24 @@ function iniciarAcessibilidade() {
       continue;
     }
 
+    // Atualiza o estado visual do botão ao carregar a página.
+    const ativoInicial = corpo.classList.contains(classe);
+
+    botao.setAttribute('aria-pressed', String(ativoInicial));
+
     botao.addEventListener('click', () => {
       const ativo = corpo.classList.toggle(classe);
 
       botao.setAttribute('aria-pressed', String(ativo));
+
+      // Salva a preferência somente para o alto contraste.
+      if (classe === 'modo-alto-contraste') {
+        localStorage.setItem(
+          chaveContraste,
+          ativo ? 'ativo' : 'inativo'
+        );
+      }
+
       atualizarFonte();
     });
   }
@@ -150,6 +175,7 @@ function iniciarAcessibilidade() {
 
   atualizarFonte();
 }
+
 
 
 
