@@ -422,6 +422,35 @@
         </div>
 
       <% } %>
+      
+      <% if (
+    usuario?.tipo_pessoa === 'pj' &&
+    empresa?.status_conta === 'Ativo'
+) { %>
+
+    <section class="conta-painel mb-4">
+      <div class="conta-painel__cabecalho">
+        <div>
+          <h2 class="conta-painel__titulo">
+            Gerenciamento de produtos
+          </h2>
+
+          <p>
+            Cadastre, edite e gerencie os produtos
+            comercializados pela sua empresa.
+          </p>
+        </div>
+
+        <a
+          href="/conta/vendedor"
+          class="btn botao--principal"
+        >
+          Gerenciar meus produtos
+        </a>
+      </div>
+    </section>
+
+  <% } %>
 
 
       <!-- ENDEREÇOS -->

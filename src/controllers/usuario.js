@@ -51,6 +51,7 @@ export async function processarCadastro(req, res) {
             cpf_pessoa: resultado.usuario.cpf_pessoa,
             empresaId: resultado.empresa?.id_empresa ?? null,
             statusEmpresa: resultado.empresa?.status_conta ?? null,
+            papel: resultado.usuario.papel,
         };
 
         req.session.tokens = {
@@ -117,6 +118,7 @@ export async function processarLogin(req, res) {
         cpf_pessoa: resultado.usuario.cpf_pessoa,
         empresaId: resultado.empresa?.id_empresa ?? null,
         statusEmpresa: resultado.empresa?.status_conta ?? null,
+        papel: resultado.usuario.papel,
       };
 
       req.session.tokens = {
@@ -219,10 +221,6 @@ export async function exibirConta(req, res) {
             'Não foi possível carregar os dados da sua conta.'
         );
     }
-}
-
-export function exibirAdministracao(req, res) {
-  exibirIndisponibilidade(req, res);
 }
 
 export async function atualizarConta(req, res) {

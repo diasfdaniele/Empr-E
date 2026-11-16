@@ -166,7 +166,9 @@
   margin-top: 0.25rem;
 }
 
-.btn.botao--principal {
+
+/* Botão principal exclusivo da área de ações do produto */
+.produto-detalhe__acoes .btn.botao--principal {
   background: #c2410c;
   color: #fff;
   border: none;
@@ -178,6 +180,12 @@
   box-shadow: 0 1px 8px 0 #0001;
   transition: background 0.2s;
 }
+
+.produto-detalhe__acoes .btn.botao--principal:hover,
+.produto-detalhe__acoes .btn.botao--principal:focus-visible {
+  background: #9a3412;
+}
+
 
 .btn.botao--principal:hover,
 .btn.botao--principal:focus {

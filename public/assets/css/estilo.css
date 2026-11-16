@@ -2381,3 +2381,100 @@ body.modo-alto-contraste .vendedor :is(input, select, textarea) {
 body.modo-alto-contraste .vendedor :is(input, select, textarea)::placeholder {
   color: #d1d5db !important;
 }
+
+/* ==========================================
+   CABEÇALHO — ACOMODAÇÃO DO BOTÃO ADMINISTRAÇÃO
+   Preserva o posicionamento original do cabeçalho
+========================================== */
+
+.cabecalho__interno {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--altura-cabecalho);
+}
+
+.cabecalho__logo {
+    flex: 0 0 auto;
+}
+
+.cabecalho__interno > nav {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.cabecalho__acoes {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    gap: 0.5rem !important;
+    flex-wrap: nowrap;
+}
+
+.cabecalho__acoes > a,
+.cabecalho__acoes > form {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.cabecalho__acoes .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+/* Mantém Administração com aparência semelhante aos demais botões */
+.cabecalho__acoes a[href="/conta/admin"] {
+    background: transparent;
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda);
+    font-weight: 600;
+}
+
+.cabecalho__acoes a[href="/conta/admin"]:hover {
+    background: var(--cinza-100);
+    color: var(--cor-texto);
+}
+
+/* Telas intermediárias */
+@media (max-width: 1200px) {
+    .cabecalho__interno {
+        gap: 0.6rem;
+    }
+
+    .cabecalho__acoes {
+        gap: 0.3rem !important;
+    }
+
+    .cabecalho__acoes .btn {
+        padding-inline: 0.5rem;
+        font-size: 0.76rem;
+    }
+
+    .cabecalho__logo svg {
+        width: 95px;
+    }
+}
+
+/* Navegação móvel */
+@media (max-width: 991px) {
+    .cabecalho__interno > nav {
+        display: none;
+    }
+
+    .cabecalho__acoes {
+        margin-left: auto;
+        margin-right: 0.5rem;
+    }
+
+    .cabecalho__acoes > a,
+    .cabecalho__acoes > form {
+        display: none;
+    }
+}

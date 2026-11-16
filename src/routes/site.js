@@ -46,7 +46,6 @@ import {
     cadastrarEnderecoConta,
     atualizarEnderecoConta,
     atualizarEmpresaConta,
-    exibirAdministracao,
     excluirEnderecoConta
 } from '../controllers/usuario.js';
 
@@ -63,6 +62,21 @@ import {
     exibirPedidos,
     exibirDetalhesPedido
 } from '../controllers/pedido.js';
+
+import {
+    autorizarAdministrador
+} from '../middlewares/autorizacao.js';
+import {
+    exibirAdministracao,
+    atualizarUsuarioAdmin,
+    excluirUsuarioAdmin,
+    atualizarEmpresaAdmin,
+    excluirEmpresaAdmin,
+    atualizarProdutoAdmin,
+    excluirProdutoAdmin,
+    atualizarPedidoAdmin,
+    excluirPedidoAdmin
+} from '../controllers/administrador.js';
 
 const rotas = Router();
 
@@ -83,17 +97,14 @@ rotas.get('/empresa/:id', exibirDetalhesEmpresa);
 
 rotas.get('/carrinho', exibirCarrinho);
 rotas.post('/carrinho/itens', adicionarItem);
-
 rotas.post(
     '/carrinho/itens/:produtoId/quantidade',
     atualizarQuantidade
 );
-
 rotas.post(
     '/carrinho/itens/:produtoId/remover',
     removerItem
 );
-
 rotas.post('/carrinho/limpar', limparCarrinho);
 
 rotas.get('/pagamento', exibirPagamento);
@@ -101,6 +112,7 @@ rotas.post('/pagamento/enderecos',cadastrarEnderecoCheckout);
 rotas.post('/pagamento/confirmar', processarPagamento);
 
 rotas.get('/institucional', exibirInstitucional);
+
 rotas.get('/conta', exibirConta);
 rotas.get('/conta/vendedor', autorizarVendedor, exibirPainel);
 rotas.get('/conta/vendedor/produtos/:id/editar', autorizarVendedor, exibirPainel);
@@ -112,8 +124,53 @@ rotas.post('/conta/enderecos/:id/excluir', excluirEnderecoConta);
 rotas.post('/conta/vendedor/produtos', autorizarVendedor, uploadProduto, salvarProduto);
 rotas.post('/conta/vendedor/produtos/:id', autorizarVendedor, uploadProduto, salvarProduto);
 rotas.post('/conta/vendedor/produtos/:id/excluir', autorizarVendedor, excluirProduto);
-rotas.get('/conta/admin', exibirAdministracao);
 rotas.get('/conta/pedidos', exibirPedidos);
 rotas.get('/conta/pedidos/:id', exibirDetalhesPedido);
+rotas.get(
+    '/conta/admin',
+    autorizarAdministrador,
+    exibirAdministracao
+);
+
+rotas.post(
+    '/conta/admin/usuarios/:id',
+    autorizarAdministrador,
+    atualizarUsuarioAdmin
+);
+rotas.post(
+    '/conta/admin/usuarios/:id/excluir',
+    autorizarAdministrador,
+    excluirUsuarioAdmin
+);
+rotas.post(
+    '/conta/admin/empresas/:id',
+    autorizarAdministrador,
+    atualizarEmpresaAdmin
+);
+rotas.post(
+    '/conta/admin/empresas/:id/excluir',
+    autorizarAdministrador,
+    excluirEmpresaAdmin
+);
+rotas.post(
+    '/conta/admin/produtos/:id',
+    autorizarAdministrador,
+    atualizarProdutoAdmin
+);
+rotas.post(
+    '/conta/admin/produtos/:id/excluir',
+    autorizarAdministrador,
+    excluirProdutoAdmin
+);
+rotas.post(
+    '/conta/admin/pedidos/:id',
+    autorizarAdministrador,
+    atualizarPedidoAdmin
+);
+rotas.post(
+    '/conta/admin/pedidos/:id/excluir',
+    autorizarAdministrador,
+    excluirPedidoAdmin
+);
 
 export default rotas;

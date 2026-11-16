@@ -1,161 +1,935 @@
-<section
-  id="conta-administracao-painel"
-  class="conta-painel conta-painel--secundario conta-administracao-painel"
-  aria-labelledby="conta-admin-titulo"
-  hidden=""
->
-  <div class="container">
-    <div class="conta-painel__cabecalho">
-      <div>
-        <span class="conta-resumo__rotulo">Administração</span>
-        <h2 id="conta-admin-titulo" class="conta-painel__titulo">Painel administrativo</h2>
-        <p id="conta-admin-texto" class="conta-painel__subtitulo">
-          Visualize empresas, produtos e vendas.
-        </p>
-      </div>
-    </div>
 
-    <dl class="conta-administracao-metricas" aria-label="Resumo do painel administrativo">
-      <div class="conta-administracao-metrica">
-        <dt>Vendedoras</dt>
-        <dd id="admin-total-vendedoras">0</dd>
-      </div>
-      <div class="conta-administracao-metrica">
-        <dt>Compradoras</dt>
-        <dd id="admin-total-compradoras">0</dd>
-      </div>
-      <div class="conta-administracao-metrica">
-        <dt>Produtos</dt>
-        <dd id="admin-total-produtos">0</dd>
-      </div>
-      <div class="conta-administracao-metrica">
-        <dt>Vendas</dt>
-        <dd id="admin-total-vendas">0</dd>
-      </div>
-    </dl>
+<main id="conteudo-principal" tabindex="-1">
 
-    <p id="admin-painel-texto" class="conta-administracao-painel"></p>
+    <section class="conta-destaque">
+        <div class="container">
+            <div class="conta-destaque__conteudo">
+                <span class="secao-selo">Administração</span>
 
-    <div class="row g-4">
-      <div class="col-lg-6">
-        <section class="conta-administracao-bloco" aria-labelledby="admin-vendedoras-titulo">
-          <div class="conta-painel__cabecalho">
-            <div>
-              <h3
-                id="admin-vendedoras-titulo"
-                class="conta-painel__titulo conta-painel__titulo--secundario"
-              >
-                Empresas vendedoras
-              </h3>
-              <p class="conta-painel__subtitulo">
-                Dados básicos das empresas que anunciam produtos na plataforma.
-              </p>
+                <h1 class="conta-destaque__titulo">
+                    Painel administrativo
+                </h1>
+
+                <p class="conta-destaque__texto">
+                    Bem-vindo(a),
+                    <strong><%= usuarioLogado?.nome || 'Administrador' %></strong>.
+                    Acompanhe e gerencie os dados da Empr-E.
+                </p>
             </div>
-          </div>
-          <div
-            id="admin-vendedoras-lista"
-            class="conta-administracao-lista"
-            aria-live="polite"
-          ></div>
-          <div class="conta-administracao-rodape">
-            <button
-              type="button"
-              id="admin-vendedoras-toggle"
-              class="btn botao--contorno botao--sm conta-administracao-toggle"
-              hidden=""
-            >
-              Ver mais
-            </button>
-          </div>
-        </section>
-      </div>
+        </div>
+    </section>
 
-      <div class="col-lg-6">
-        <section class="conta-administracao-bloco" aria-labelledby="admin-compradoras-titulo">
-          <div class="conta-painel__cabecalho">
-            <div>
-              <h3
-                id="admin-compradoras-titulo"
-                class="conta-painel__titulo conta-painel__titulo--secundario"
-              >
-                Empresas compradoras
-              </h3>
-              <p class="conta-painel__subtitulo">
-                Empresas que se cadastraram para comprar soluções.
-              </p>
-            </div>
-          </div>
-          <div
-            id="admin-compradoras-lista"
-            class="conta-administracao-lista"
-            aria-live="polite"
-          ></div>
-          <div class="conta-administracao-rodape">
-            <button
-              type="button"
-              id="admin-compradoras-toggle"
-              class="btn botao--contorno botao--sm conta-administracao-toggle"
-              hidden=""
-            >
-              Ver mais
-            </button>
-          </div>
-        </section>
-      </div>
+    <section class="conta-secao">
+        <div class="container">
 
-      <div class="col-lg-6">
-        <section class="conta-administracao-bloco" aria-labelledby="admin-produtos-titulo">
-          <div class="conta-painel__cabecalho">
-            <div>
-              <h3
-                id="admin-produtos-titulo"
-                class="conta-painel__titulo conta-painel__titulo--secundario"
-              >
-                Produtos cadastrados
-              </h3>
-              <p class="conta-painel__subtitulo">Todos os produtos anunciados na plataforma.</p>
-            </div>
-          </div>
-          <div id="admin-produtos-lista" class="conta-administracao-lista" aria-live="polite"></div>
-          <div class="conta-administracao-rodape">
-            <button
-              type="button"
-              id="admin-produtos-toggle"
-              class="btn botao--contorno botao--sm conta-administracao-toggle"
-              hidden=""
-            >
-              Ver mais
-            </button>
-          </div>
-        </section>
-      </div>
+            <% if (mensagemAdmin) { %>
+                <div class="alert <%= mensagemAdmin.tipo === 'sucesso' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show" role="alert">
+                    <%= mensagemAdmin.texto %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                </div>
+            <% } %>
 
-      <div class="col-lg-6">
-        <section class="conta-administracao-bloco" aria-labelledby="admin-vendas-titulo">
-          <div class="conta-painel__cabecalho">
-            <div>
-              <h3
-                id="admin-vendas-titulo"
-                class="conta-painel__titulo conta-painel__titulo--secundario"
-              >
-                Vendas realizadas
-              </h3>
-              <p class="conta-painel__subtitulo">Pedidos e transações registradas na plataforma.</p>
+            <!-- MÉTRICAS -->
+            <div class="conta-administracao-metricas">
+
+                <div class="conta-administracao-metrica">
+                    <dt>Usuários cadastrados</dt>
+                    <dd><%= metricas.totalUsuarios %></dd>
+                </div>
+
+                <div class="conta-administracao-metrica">
+                    <dt>Compradores</dt>
+                    <dd><%= metricas.totalCompradores %></dd>
+                </div>
+
+                <div class="conta-administracao-metrica">
+                    <dt>Empresas ativas</dt>
+                    <dd><%= metricas.totalVendedoras %></dd>
+                </div>
+
+                <div class="conta-administracao-metrica">
+                    <dt>Produtos</dt>
+                    <dd><%= metricas.totalProdutos %></dd>
+                </div>
+
+                <div class="conta-administracao-metrica">
+                    <dt>Pedidos</dt>
+                    <dd><%= metricas.totalPedidos %></dd>
+                </div>
+
             </div>
-          </div>
-          <div id="admin-vendas-lista" class="conta-administracao-lista" aria-live="polite"></div>
-          <div class="conta-administracao-rodape">
-            <button
-              type="button"
-              id="admin-vendas-toggle"
-              class="btn botao--contorno botao--sm conta-administracao-toggle"
-              hidden=""
-            >
-              Ver mais
-            </button>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
-</section>
+
+
+            <!-- ====================================== -->
+            <!-- EMPRESAS -->
+            <!-- ====================================== -->
+
+            <section class="conta-painel mb-4">
+
+                <div class="conta-painel__cabecalho">
+                    <div>
+                        <h2 class="conta-painel__titulo">
+                            Empresas cadastradas
+                        </h2>
+
+                        <p>Consulte, edite e exclua empresas da plataforma.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive p-3">
+
+                    <% if (empresas.length > 0) { %>
+
+                        <table class="table align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>CNPJ</th>
+                                    <th>Responsável</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <% empresas.forEach(empresa => { %>
+
+                                    <tr>
+                                        <td>
+                                            <strong><%= empresa.nome_fantasia %></strong>
+                                        </td>
+
+                                        <td><%= empresa.cnpj %></td>
+
+                                        <td>
+                                            <%= empresa.responsavel?.nome_completo || '-' %>
+                                        </td>
+
+                                        <td>
+                                            <span class="badge
+                                                <%= empresa.status_conta === 'Ativo'
+                                                    ? 'bg-success'
+                                                    : empresa.status_conta === 'Bloqueado'
+                                                        ? 'bg-danger'
+                                                        : 'bg-warning text-dark'
+                                                %>">
+                                                <%= empresa.status_conta %>
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex gap-2 flex-wrap">
+
+                                                <button
+                                                    class="btn btn-sm btn-outline-primary"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#editar-empresa-<%= empresa.id_empresa %>"
+                                                    aria-expanded="false">
+                                                    Editar
+                                                </button>
+
+                                                <form
+                                                    method="POST"
+                                                    action="/conta/admin/empresas/<%= empresa.id_empresa %>/excluir"
+                                                    onsubmit="return confirm('Tem certeza que deseja excluir esta empresa e seus produtos vinculados?')">
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                        Excluir
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="collapse" id="editar-empresa-<%= empresa.id_empresa %>">
+                                        <td colspan="5">
+
+                                            <form
+                                                method="POST"
+                                                action="/conta/admin/empresas/<%= empresa.id_empresa %>"
+                                                class="admin-formulario">
+
+                                                <h3 class="h5 mb-3">
+                                                    Editar empresa #<%= empresa.id_empresa %>
+                                                </h3>
+
+                                                <div class="row g-3">
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Razão social</label>
+                                                        <input
+                                                            type="text"
+                                                            name="razao_social"
+                                                            class="form-control"
+                                                            value="<%= empresa.razao_social %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Nome fantasia</label>
+                                                        <input
+                                                            type="text"
+                                                            name="nome_fantasia"
+                                                            class="form-control"
+                                                            value="<%= empresa.nome_fantasia %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">CNPJ</label>
+                                                        <input
+                                                            type="text"
+                                                            name="cnpj"
+                                                            class="form-control"
+                                                            value="<%= empresa.cnpj %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Inscrição estadual</label>
+                                                        <input
+                                                            type="text"
+                                                            name="inscricao_estadual"
+                                                            class="form-control"
+                                                            value="<%= empresa.inscricao_estadual || '' %>">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Categoria</label>
+                                                        <input
+                                                            type="text"
+                                                            name="categoria_empresa"
+                                                            class="form-control"
+                                                            value="<%= empresa.categoria_empresa || '' %>">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Tipo de empresa</label>
+                                                        <input
+                                                            type="text"
+                                                            name="tipo_empresa"
+                                                            class="form-control"
+                                                            value="<%= empresa.tipo_empresa || '' %>">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Site</label>
+                                                        <input
+                                                            type="text"
+                                                            name="site"
+                                                            class="form-control"
+                                                            value="<%= empresa.site || '' %>">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Status da conta</label>
+                                                        <select name="status_conta" class="form-select" required>
+                                                            <option value="Aguardando Aprovação" <%= empresa.status_conta === 'Aguardando Aprovação' ? 'selected' : '' %>>
+                                                                Aguardando Aprovação
+                                                            </option>
+                                                            <option value="Ativo" <%= empresa.status_conta === 'Ativo' ? 'selected' : '' %>>
+                                                                Ativo
+                                                            </option>
+                                                            <option value="Bloqueado" <%= empresa.status_conta === 'Bloqueado' ? 'selected' : '' %>>
+                                                                Bloqueado
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <label class="form-label">Descrição</label>
+                                                        <textarea
+                                                            name="descricao"
+                                                            class="form-control"
+                                                            rows="3"><%= empresa.descricao || '' %></textarea>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="d-flex gap-2 mt-3">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Salvar alterações
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-outline-secondary"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#editar-empresa-<%= empresa.id_empresa %>">
+                                                        Cancelar
+                                                    </button>
+                                                </div>
+
+                                            </form>
+
+                                        </td>
+                                    </tr>
+
+                                <% }) %>
+
+                            </tbody>
+                        </table>
+
+                    <% } else { %>
+
+                        <p class="p-3">Nenhuma empresa vinculada cadastrada.</p>
+
+                    <% } %>
+
+                </div>
+            </section>
+
+
+            <!-- ====================================== -->
+            <!-- USUÁRIOS -->
+            <!-- ====================================== -->
+
+            <section class="conta-painel mb-4">
+
+                <div class="conta-painel__cabecalho">
+                    <div>
+                        <h2 class="conta-painel__titulo">
+                            Usuários cadastrados
+                        </h2>
+
+                        <p>Gerencie compradores, vendedores e administradores.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive p-3">
+
+                    <% if (usuarios.length > 0) { %>
+
+                        <table class="table align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>E-mail</th>
+                                    <th>CPF</th>
+                                    <th>Tipo</th>
+                                    <th>Perfil</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <% usuarios.forEach(usuario => { %>
+
+                                    <tr>
+                                        <td><%= usuario.nome_completo %></td>
+                                        <td><%= usuario.login %></td>
+                                        <td><%= usuario.cpf_pessoa %></td>
+
+                                        <td>
+                                            <%= usuario.tipo_pessoa === 'pf'
+                                                ? 'Pessoa física'
+                                                : 'Pessoa jurídica'
+                                            %>
+                                        </td>
+
+                                        <td>
+                                            <span class="badge
+                                                <%= usuario.papel === 'administrador'
+                                                    ? 'bg-danger'
+                                                    : usuario.papel === 'vendedor'
+                                                        ? 'bg-primary'
+                                                        : 'bg-secondary'
+                                                %>">
+                                                <%= usuario.papel %>
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex gap-2 flex-wrap">
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#editar-usuario-<%= usuario.id_usuario %>">
+                                                    Editar
+                                                </button>
+
+                                                <form
+                                                    method="POST"
+                                                    action="/conta/admin/usuarios/<%= usuario.id_usuario %>/excluir"
+                                                    onsubmit="return confirm('Tem certeza que deseja excluir este usuário e seus dados vinculados?')">
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                        Excluir
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="collapse" id="editar-usuario-<%= usuario.id_usuario %>">
+                                        <td colspan="6">
+
+                                            <form
+                                                method="POST"
+                                                action="/conta/admin/usuarios/<%= usuario.id_usuario %>"
+                                                class="admin-formulario">
+
+                                                <h3 class="h5 mb-3">
+                                                    Editar usuário #<%= usuario.id_usuario %>
+                                                </h3>
+
+                                                <div class="row g-3">
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Nome completo</label>
+                                                        <input
+                                                            type="text"
+                                                            name="nome_completo"
+                                                            class="form-control"
+                                                            value="<%= usuario.nome_completo %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">E-mail</label>
+                                                        <input
+                                                            type="email"
+                                                            name="login"
+                                                            class="form-control"
+                                                            value="<%= usuario.login %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">CPF</label>
+                                                        <input
+                                                            type="text"
+                                                            name="cpf_pessoa"
+                                                            class="form-control"
+                                                            value="<%= usuario.cpf_pessoa %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Tipo de pessoa</label>
+                                                        <select
+                                                            name="tipo_pessoa"
+                                                            class="form-select"
+                                                            required>
+
+                                                            <option value="pf" <%= usuario.tipo_pessoa === 'pf' ? 'selected' : '' %>>
+                                                                Pessoa física
+                                                            </option>
+
+                                                            <option value="pj" <%= usuario.tipo_pessoa === 'pj' ? 'selected' : '' %>>
+                                                                Pessoa jurídica
+                                                            </option>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Perfil</label>
+                                                        <select
+                                                            name="papel"
+                                                            class="form-select"
+                                                            required>
+
+                                                            <option value="comprador" <%= usuario.papel === 'comprador' ? 'selected' : '' %>>
+                                                                Comprador
+                                                            </option>
+
+                                                            <option value="vendedor" <%= usuario.papel === 'vendedor' ? 'selected' : '' %>>
+                                                                Vendedor
+                                                            </option>
+
+                                                            <option value="administrador" <%= usuario.papel === 'administrador' ? 'selected' : '' %>>
+                                                                Administrador
+                                                            </option>
+
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="d-flex gap-2 mt-3">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Salvar alterações
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-outline-secondary"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#editar-usuario-<%= usuario.id_usuario %>">
+                                                        Cancelar
+                                                    </button>
+                                                </div>
+
+                                            </form>
+
+                                        </td>
+                                    </tr>
+
+                                <% }) %>
+
+                            </tbody>
+
+                        </table>
+
+                    <% } else { %>
+
+                        <p class="p-3">Nenhum usuário cadastrado.</p>
+
+                    <% } %>
+
+                </div>
+            </section>
+
+
+            <!-- ====================================== -->
+            <!-- PRODUTOS -->
+            <!-- ====================================== -->
+
+            <section class="conta-painel mb-4">
+
+                <div class="conta-painel__cabecalho">
+                    <div>
+                        <h2 class="conta-painel__titulo">
+                            Produtos cadastrados
+                        </h2>
+
+                        <p>Gerencie os produtos anunciados na plataforma.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive p-3">
+
+                    <% if (produtos.length > 0) { %>
+
+                        <table class="table align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Empresa</th>
+                                    <th>Preço</th>
+                                    <th>Estoque</th>
+                                    <th>Tipo</th>
+                                    <th>Situação</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <% produtos.forEach(produto => { %>
+
+                                    <tr>
+                                        <td>
+                                            <strong><%= produto.nome_produto %></strong>
+                                        </td>
+
+                                        <td><%= produto.empresa_nome %></td>
+
+                                        <td><%= formatarMoeda(produto.preco_unitario) %></td>
+
+                                        <td><%= produto.estoque_atual %></td>
+
+                                        <td><%= produto.tipo_compra || '-' %></td>
+
+                                        <td>
+                                            <span class="badge <%= produto.ativo ? 'bg-success' : 'bg-secondary' %>">
+                                                <%= produto.ativo ? 'Ativo' : 'Inativo' %>
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex gap-2 flex-wrap">
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#editar-produto-<%= produto.id_produto %>">
+                                                    Editar
+                                                </button>
+
+                                                <form
+                                                    method="POST"
+                                                    action="/conta/admin/produtos/<%= produto.id_produto %>/excluir"
+                                                    onsubmit="return confirm('Tem certeza que deseja excluir este produto? As imagens e os itens vinculados também serão removidos.')">
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                        Excluir
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="collapse" id="editar-produto-<%= produto.id_produto %>">
+                                        <td colspan="7">
+
+                                            <form
+                                                method="POST"
+                                                action="/conta/admin/produtos/<%= produto.id_produto %>"
+                                                class="admin-formulario">
+
+                                                <h3 class="h5 mb-3">
+                                                    Editar produto #<%= produto.id_produto %>
+                                                </h3>
+
+                                                <div class="row g-3">
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Nome do produto</label>
+                                                        <input
+                                                            type="text"
+                                                            name="nome_produto"
+                                                            class="form-control"
+                                                            value="<%= produto.nome_produto %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Preço unitário</label>
+                                                        <input
+                                                            type="number"
+                                                            name="preco_unitario"
+                                                            class="form-control"
+                                                            min="0.01"
+                                                            step="0.01"
+                                                            value="<%= produto.preco_unitario %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Tipo de compra</label>
+                                                        <select
+                                                            name="tipo_compra"
+                                                            class="form-select"
+                                                            required>
+
+                                                            <option value="Compra" <%= produto.tipo_compra === 'Compra' ? 'selected' : '' %>>
+                                                                Compra
+                                                            </option>
+
+                                                            <option value="Sob consulta" <%= produto.tipo_compra === 'Sob consulta' ? 'selected' : '' %>>
+                                                                Sob consulta
+                                                            </option>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Estoque atual</label>
+                                                        <input
+                                                            type="number"
+                                                            name="estoque_atual"
+                                                            class="form-control"
+                                                            min="0"
+                                                            step="1"
+                                                            value="<%= produto.estoque_atual %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Estoque mínimo</label>
+                                                        <input
+                                                            type="number"
+                                                            name="estoque_minimo"
+                                                            class="form-control"
+                                                            min="0"
+                                                            step="1"
+                                                            value="<%= produto.estoque_minimo || 0 %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">ID da categoria</label>
+                                                        <input
+                                                            type="number"
+                                                            name="fk_categoria"
+                                                            class="form-control"
+                                                            min="1"
+                                                            value="<%= produto.fk_categoria %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">ID da empresa vendedora</label>
+                                                        <input
+                                                            type="number"
+                                                            name="fk_vendedor"
+                                                            class="form-control"
+                                                            min="1"
+                                                            value="<%= produto.fk_vendedor %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Situação</label>
+                                                        <select name="ativo" class="form-select" required>
+                                                            <option value="true" <%= produto.ativo ? 'selected' : '' %>>
+                                                                Ativo
+                                                            </option>
+                                                            <option value="false" <%= !produto.ativo ? 'selected' : '' %>>
+                                                                Inativo
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <label class="form-label">Descrição</label>
+                                                        <textarea
+                                                            name="descricao"
+                                                            class="form-control"
+                                                            rows="3"><%= produto.descricao || '' %></textarea>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="d-flex gap-2 mt-3">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Salvar alterações
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-outline-secondary"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#editar-produto-<%= produto.id_produto %>">
+                                                        Cancelar
+                                                    </button>
+                                                </div>
+
+                                            </form>
+
+                                        </td>
+                                    </tr>
+
+                                <% }) %>
+
+                            </tbody>
+
+                        </table>
+
+                    <% } else { %>
+
+                        <p class="p-3">Nenhum produto cadastrado.</p>
+
+                    <% } %>
+
+                </div>
+            </section>
+
+
+            <!-- ====================================== -->
+            <!-- PEDIDOS -->
+            <!-- ====================================== -->
+
+            <section class="conta-painel mb-4">
+
+                <div class="conta-painel__cabecalho">
+                    <div>
+                        <h2 class="conta-painel__titulo">
+                            Pedidos registrados
+                        </h2>
+
+                        <p>Consulte e gerencie os pedidos da plataforma.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive p-3">
+
+                    <% if (pedidos.length > 0) { %>
+
+                        <table class="table align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Comprador</th>
+                                    <th>Data</th>
+                                    <th>Pagamento</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <% pedidos.forEach(pedido => { %>
+
+                                    <tr>
+                                        <td>#<%= pedido.id_pedido %></td>
+
+                                        <td>
+                                            <%= pedido.comprador?.nome_completo || 'Registro histórico' %>
+                                        </td>
+
+                                        <td><%= formatarData(pedido.data_emissao) %></td>
+
+                                        <td><%= pedido.metodo_pagamento || '-' %></td>
+
+                                        <td><%= formatarMoeda(pedido.total_estimado) %></td>
+
+                                        <td>
+                                            <span class="badge
+                                                <%= pedido.status_pedido === 'Pago'
+                                                    ? 'bg-success'
+                                                    : pedido.status_pedido === 'Cancelado'
+                                                        ? 'bg-danger'
+                                                        : 'bg-secondary'
+                                                %>">
+                                                <%= pedido.status_pedido %>
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex gap-2 flex-wrap">
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#editar-pedido-<%= pedido.id_pedido %>">
+                                                    Editar
+                                                </button>
+
+                                                <form
+                                                    method="POST"
+                                                    action="/conta/admin/pedidos/<%= pedido.id_pedido %>/excluir"
+                                                    onsubmit="return confirm('Tem certeza que deseja excluir este pedido e seus dados de pagamento e itens?')">
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                        Excluir
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="collapse" id="editar-pedido-<%= pedido.id_pedido %>">
+                                        <td colspan="7">
+
+                                            <form
+                                                method="POST"
+                                                action="/conta/admin/pedidos/<%= pedido.id_pedido %>"
+                                                class="admin-formulario">
+
+                                                <h3 class="h5 mb-3">
+                                                    Editar pedido #<%= pedido.id_pedido %>
+                                                </h3>
+
+                                                <div class="row g-3">
+
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Status do pedido</label>
+                                                        <select name="status_pedido" class="form-select" required>
+
+                                                            <% ['Aberto', 'Pago', 'Cancelado', 'Enviado'].forEach(status => { %>
+                                                                <option value="<%= status %>" <%= pedido.status_pedido === status ? 'selected' : '' %>>
+                                                                    <%= status %>
+                                                                </option>
+                                                            <% }) %>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Método de pagamento</label>
+                                                        <select name="metodo_pagamento" class="form-select" required>
+
+                                                            <option value="">Selecione</option>
+
+                                                            <% ['Pix', 'Débito', 'Crédito', 'Boleto'].forEach(metodo => { %>
+                                                                <option value="<%= metodo %>" <%= pedido.metodo_pagamento === metodo ? 'selected' : '' %>>
+                                                                    <%= metodo %>
+                                                                </option>
+                                                            <% }) %>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Parcelamento</label>
+                                                        <input
+                                                            type="number"
+                                                            name="parcelamento"
+                                                            class="form-control"
+                                                            min="1"
+                                                            max="12"
+                                                            step="1"
+                                                            value="<%= pedido.parcelamento || '' %>"
+                                                            placeholder="1 a 12">
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <label class="form-label">Observações</label>
+                                                        <textarea
+                                                            name="observacoes"
+                                                            class="form-control"
+                                                            rows="3"><%= pedido.observacoes || '' %></textarea>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="d-flex gap-2 mt-3">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Salvar alterações
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-outline-secondary"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#editar-pedido-<%= pedido.id_pedido %>">
+                                                        Cancelar
+                                                    </button>
+                                                </div>
+
+                                                <p class="text-muted small mt-3 mb-0">
+                                                    O valor total, o comprador e o endereço original do pedido não são editáveis.
+                                                </p>
+
+                                            </form>
+
+                                        </td>
+                                    </tr>
+
+                                <% }) %>
+
+                            </tbody>
+
+                        </table>
+
+                    <% } else { %>
+
+                        <p class="p-3">Nenhum pedido registrado.</p>
+
+                    <% } %>
+
+                </div>
+            </section>
+
+        </div>
+    </section>
+
+</main>

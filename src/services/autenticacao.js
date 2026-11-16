@@ -144,8 +144,13 @@ export async function cadastrarUsuario(dados, arquivoLogo = null) {
       login: email,
       nome_completo: nomeCompleto,
       cpf_pessoa: cpfPessoa,
+
+      // O cadastro nunca permite criar administradores.
+      papel: perfilComercial === 'vendedor'
+        ? 'vendedor'
+        : 'comprador',
     })
-    .select('id_usuario, id_auth, tipo_pessoa, login, nome_completo')
+    .select('id_usuario, id_auth, tipo_pessoa, login, nome_completo, cpf_pessoa, papel')
     .single();
 
   if (usuarioError) {
@@ -253,7 +258,15 @@ export async function autenticarUsuario(emailInformado, senha) {
 
   const { data: usuario, error: perfilError } = await cliente
     .from('usuarios')
-    .select('id_usuario, id_auth, tipo_pessoa, nome_completo, login, cpf_pessoa')
+    .select(`
+      id_usuario,
+      id_auth,
+      tipo_pessoa,
+      nome_completo,
+      login,
+      cpf_pessoa,
+      papel
+    `)
     .eq('id_auth', data.user.id)
     .single();
 

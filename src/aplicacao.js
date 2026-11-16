@@ -12,6 +12,7 @@ aplicacao.use(express.static('public'));
 aplicacao.disable('x-powered-by');
 aplicacao.set('view engine', 'ejs');
 aplicacao.use(express.urlencoded({extended: true}));
+aplicacao.use('/assets', express.static('public/assets'));
 aplicacao.use(
   session({
     name: 'empre.sid',

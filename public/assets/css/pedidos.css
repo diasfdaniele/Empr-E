@@ -572,6 +572,10 @@ body.modo-alto-contraste .pedido-detalhes :is(a, button):focus-visible {
   outline-color: #ffffff;
 }
 
+body.modo-alto-contraste .card{
+  background-color: #181818;
+}
+
 /* =========================================
    MODO SIMPLIFICADO
 ========================================= */
@@ -616,3 +620,5 @@ body.modo-leitura .pedido-detalhes__grade {
 body.modo-leitura .pedido-detalhes__resumo {
   grid-template-columns: minmax(0, 1fr);
 }
+
+
