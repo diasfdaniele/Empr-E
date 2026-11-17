@@ -72,6 +72,7 @@ export async function processarCadastro(req, res) {
             expiresAt: resultado.session.expires_at,
         };
         req.session.avisoCadastro = resultado.avisoLogo;
+        req.session.cadastroConcluido = true;
 
         req.session.save((erro) => {
             if (erro) {
@@ -192,6 +193,8 @@ export async function exibirConta(req, res) {
             usuarioId,
             req
         );
+        const cadastroConcluido = req.session.cadastroConcluido === true;
+        delete req.session.cadastroConcluido;
 
         const formatarMoeda = (valor) =>
             new Intl.NumberFormat('pt-BR', {
@@ -212,6 +215,7 @@ export async function exibirConta(req, res) {
                 usuario: dadosBanco.usuario,
                 usuarioSessao,
                 avisoCadastro,
+                cadastroConcluido,
 
                 empresa: dadosBanco.empresa,
 

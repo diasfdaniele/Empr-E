@@ -93,6 +93,16 @@ pessoa jurídica, o formulário solicita razão social, nome fantasia, CNPJ, cat
 principal e descrição; inscrição estadual, site e logo são opcionais. As categorias
 são carregadas da mesma tabela usada no catálogo, e os dados adicionais são salvos
 nas colunas existentes de `empresas` no Supabase.
+Após o cadastro, a página Minha Conta exibe uma confirmação de sucesso uma única
+vez, sem substituir eventuais avisos sobre o envio da logo.
+
+Na página inicial, são exibidas até três empresas ativas com logo e um card de
+cadastro, em quatro colunas no desktop, duas no tablet e uma no celular.
+
+Os filtros do catálogo de produtos atualizam os resultados sem recarregar a
+página: os seletores são aplicados imediatamente e a busca aguarda uma pausa de
+350 ms na digitação. A URL acompanha os filtros; sem JavaScript, o botão Filtrar
+mantém o envio tradicional do formulário.
 
 A tela de entrada oferece recuperação de senha simulada em `/recuperar-senha`.
 O código de teste é exibido na própria página e expira após 10 minutos. Não há

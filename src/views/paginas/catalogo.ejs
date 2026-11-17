@@ -17,9 +17,8 @@
     <div class="container">
       <div class="row g-4 align-items-start">
         <div class="col-lg-3">
-          <aside class="catalogo__lateral filtros" aria-label="Filtros do catálogo">
-            <h2 class="filtros__titulo">Filtros</h2>
-            <form id="filtros-catalogo" action="/catalogo" method="get">
+          <aside class="catalogo__lateral catalogo-filtros filtros" aria-label="Filtros do catálogo">
+            <form id="filtros-catalogo" class="catalogo-filtros__formulario" action="/catalogo" method="get">
               <% if (filtros.empresaId) { %>
                 <input
                   type="hidden"
@@ -29,19 +28,25 @@
               <% } %>
               <div class="filtro-grupo">
                 <label for="campo-busca" class="filtro-rotulo">Buscar produto</label>
-                <input
-                  id="campo-busca"
-                  name="busca"
-                  class="form-control"
-                  type="search"
-                  maxlength="160"
-                  value="<%= filtros.busca %>"
-                  placeholder="Nome, empresa ou solução"
-                />
+                <div class="filtros__busca">
+                  <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                    <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                    <path d="m16 16 4 4"></path>
+                  </svg>
+                  <input
+                    id="campo-busca"
+                    name="busca"
+                    class="form-control campo-entrada"
+                    type="search"
+                    maxlength="160"
+                    value="<%= filtros.busca %>"
+                    placeholder="Nome, empresa ou solução"
+                  />
+                </div>
               </div>
               <div class="filtro-grupo">
                 <label for="filtro-categoria" class="filtro-rotulo">Categoria</label>
-                <select id="filtro-categoria" name="categoria" class="form-select">
+                <select id="filtro-categoria" name="categoria" class="form-select campo-entrada">
                   <option value="">Todas as categorias</option>
                   <% for (const categoria of categorias) { %>
                   <option
@@ -55,7 +60,7 @@
               </div>
               <div class="filtro-grupo">
                 <label for="filtro-preco" class="filtro-rotulo">Faixa de preço</label>
-                <select id="filtro-preco" name="preco" class="form-select">
+                <select id="filtro-preco" name="preco" class="form-select campo-entrada">
                   <% for (const opcao of opcoesPreco) { %>
                   <option value="<%= opcao.valor %>" <%= filtros.preco === opcao.valor ? 'selected' : '' %>><%= opcao.nome %></option>
                   <% } %>
@@ -63,28 +68,34 @@
               </div>
               <div class="filtro-grupo">
                 <label for="filtro-empresa" class="filtro-rotulo">Empresa</label>
-                <div class="filtro-grupo">
-
-                  <input
+                <input
                     id="filtro-empresa"
                     name="empresa"
-                    class="form-control"
+                    class="form-control campo-entrada"
                     type="search"
                     maxlength="160"
                     value="<%= filtros.empresa || '' %>"
                     placeholder="Digite o nome da empresa"
-                  />
-                </div>
+                />
               </div>
-              <button type="submit" class="btn botao--principal">Filtrar</button>
-              <a href="/catalogo" class="btn botao--discreto">Limpar</a>
+              <div class="catalogo-filtros__acoes">
+                <button type="submit" class="btn botao--principal">Filtrar</button>
+                <a id="catalogo-limpar" href="/catalogo" class="btn botao--contorno">
+                  <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 10a9 9 0 1 1 2.5 8M3 4v6h6"></path>
+                  </svg>
+                  Limpar
+                </a>
+              </div>
             </form>
+            <p id="catalogo-filtro-estado" class="catalogo-filtros__estado" role="status" hidden></p>
+            <p id="catalogo-filtro-erro" class="campo-erro" role="alert" hidden></p>
           </aside>
         </div>
-        <div class="col-lg-9">
+        <div id="catalogo-resultados" class="col-lg-9">
           <div class="catalogo__cabecalho">
             <h2 id="catalogo-lista-titulo" class="catalogo__titulo">Soluções em destaque</h2>
-            <p class="catalogo__resultado" aria-live="polite"><%= produtos.length %> resultado(s)</p>
+            <p class="catalogo__resultado"><%= produtos.length %> resultado(s)</p>
           </div>
           <div id="catalogo-lista" class="catalogo__grade">
             <% for (const produto of produtos) { %>

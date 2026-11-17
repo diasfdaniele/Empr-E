@@ -14,6 +14,7 @@ import ejs from 'ejs';
 import { fileURLToPath } from 'node:url';
 import { PGlite } from '@electric-sql/pglite';
 import { cadastrarUsuario } from '../src/services/autenticacao.js';
+import { processarCadastro, exibirConta } from '../src/controllers/usuario.js';
 
 const dados = {
   nome: 'Piso tátil', descricao: 'Piso para orientação.', categoria: '1',
@@ -99,13 +100,58 @@ test('cadastro PF recebe apenas papel de compra mesmo com tentativa de escolher 
     }
     return new Response(JSON.stringify(resposta), { status: 200, headers: { 'Content-Type': 'application/json' } });
   });
-  const resultado = await cadastrarUsuario({
+  const cadastro = {
     email: 'comprador@example.com', senha: 'senha-de-teste', confirmarSenha: 'senha-de-teste',
     nomeCompleto: 'Pessoa teste', cpfPessoa: '12345678901', tipoPessoa: 'pf',
     perfilComercial: 'vendedor', papel: 'administrador', categoriaEmpresa: '999', site: 'invalido',
-  });
+  };
+  const resultado = await cadastrarUsuario(cadastro);
   assert.equal(usuarioRecebido.papel, 'comprador');
   assert.equal(resultado.empresa, null);
+
+  const req = { body: cadastro, session: { save(callback) { callback(); } } };
+  let destino;
+  await processarCadastro(req, { redirect(url) { destino = url; } });
+  assert.equal(destino, '/conta');
+  assert.equal(req.session.cadastroConcluido, true);
+});
+
+test('conta mostra confirmação de cadastro uma vez e preserva o aviso de logo', async (t) => {
+  const usuario = { id_usuario: 1, nome_completo: 'Pessoa teste', tipo_pessoa: 'pf' };
+  t.mock.method(globalThis, 'fetch', async (entrada) => {
+    const url = new URL(typeof entrada === 'string' ? entrada : entrada.url ?? entrada.toString());
+    const respostas = {
+      '/rest/v1/usuarios': usuario,
+      '/rest/v1/empresas': null,
+      '/rest/v1/enderecos': [],
+      '/rest/v1/pedidos': [],
+    };
+    assert.ok(Object.hasOwn(respostas, url.pathname), 'Somente consultas da conta são esperadas');
+    return new Response(JSON.stringify(respostas[url.pathname]),
+      { status: 200, headers: { 'Content-Type': 'application/json' } });
+  });
+  const req = {
+    session: {
+      usuario: { id: 1 },
+      tokens: { accessToken: 'token-teste' },
+      cadastroConcluido: true,
+      avisoCadastro: 'Não foi possível enviar a logo.',
+    },
+    query: {},
+  };
+  let dados;
+  const res = { render(pagina, valores) { dados = valores; } };
+  const arquivo = fileURLToPath(new URL('../src/views/paginas/conta.ejs', import.meta.url));
+
+  await exibirConta(req, res);
+  const html = await ejs.renderFile(arquivo, dados);
+  assert.match(html, /class="alert alert-success" role="status">\s*Sua conta foi criada com sucesso!/);
+  assert.match(html, /Não foi possível enviar a logo/);
+  assert.equal(req.session.cadastroConcluido, undefined);
+
+  await exibirConta(req, res);
+  const proximoHtml = await ejs.renderFile(arquivo, dados);
+  assert.doesNotMatch(proximoHtml, /Sua conta foi criada com sucesso/);
 });
 
 test('cadastro PJ valida descrição, site e categoria antes de criar a credencial', async (t) => {

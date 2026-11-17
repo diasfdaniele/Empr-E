@@ -77,5 +77,5 @@ export async function buscarEmpresa(id, cliente = supabase) {
 export function selecionarEmpresasDestaque(empresas) {
   const comLogo = empresas.filter((empresa) => empresa.logoUrl);
 
-  return comLogo.slice(0, 2);
+  return comLogo.slice(0, 3);
 }

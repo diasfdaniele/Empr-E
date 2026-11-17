@@ -229,22 +229,24 @@ test('filtros de nome e setor e ordenação atualizam os cartões e a contagem',
   assert.equal(semResultados.hidden, false);
 });
 
-test('destaques colocam Klinker primeiro e priorizam logos sem alterar a lista original', () => {
+test('destaques selecionam até três empresas com logo sem alterar a lista original', () => {
   const empresas = [
     { nomeFantasia: 'Alpha sem logo', logoUrl: null },
     { nomeFantasia: 'Zeta com logo', logoUrl: '/zeta.png' },
     { nomeFantasia: 'Cerâmica Klinker', logoUrl: null },
     { nomeFantasia: 'Beta com logo', logoUrl: '/beta.png' },
+    { nomeFantasia: 'Gama com logo', logoUrl: '/gama.png' },
+    { nomeFantasia: 'Delta com logo', logoUrl: '/delta.png' },
   ];
   assert.deepEqual(
     selecionarEmpresasDestaque(empresas).map((empresa) => empresa.nomeFantasia),
-    ['Cerâmica Klinker', 'Beta com logo'],
+    ['Zeta com logo', 'Beta com logo', 'Gama com logo'],
   );
   assert.equal(empresas[0].nomeFantasia, 'Alpha sem logo');
   assert.deepEqual(
     selecionarEmpresasDestaque(empresas.filter((empresa) => empresa.nomeFantasia !== 'Cerâmica Klinker'))
       .map((empresa) => empresa.nomeFantasia),
-    ['Beta com logo', 'Zeta com logo'],
+    ['Zeta com logo', 'Beta com logo', 'Gama com logo'],
   );
   assert.deepEqual(selecionarEmpresasDestaque([]), []);
   assert.equal(selecionarEmpresasDestaque(empresas.slice(0, 1)).length, 0);
@@ -265,6 +267,7 @@ test('início mostra empresas reais, logos e selo de cadastrada sem os cards dem
   const empresasDestaque = [
     { nomeFantasia: 'Klinker', logoUrl: '/logo-real.png', categoriaEmpresa: 'Mobilidade' },
     { nomeFantasia: 'Empresa & inclusão', logoUrl: null, categoriaEmpresa: 'Digital' },
+    { nomeFantasia: 'Terceira empresa', logoUrl: '/terceira.png', categoriaEmpresa: 'Tecnologia assistiva' },
   ];
   const html = await ejs.renderFile(arquivo, { empresasDestaque });
   const secao = html.split('<section id="empresas"')[1].split('</section>')[0];
@@ -275,6 +278,9 @@ test('início mostra empresas reais, logos e selo de cadastrada sem os cards dem
   assert.doesNotMatch(secao, /Demonstração|Acessify|acessify-logo/);
   assert.match(secao, /\/catalogo\?empresa=Empresa%20%26%20inclus/);
   assert.match(secao, /href="\/empresas"/);
+  assert.equal((secao.match(/<article\b/g) || []).length, 4);
+  assert.match(secao, /Terceira empresa/);
+  assert.match(secao, /Sua empresa aqui/);
   const vazio = await ejs.renderFile(arquivo, { empresasDestaque: [] });
   assert.match(vazio, /Sua empresa aqui/);
 });

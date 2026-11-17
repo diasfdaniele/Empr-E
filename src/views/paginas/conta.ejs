@@ -25,6 +25,12 @@
     <div class="container">
 
       <!-- MENSAGENS DE RETORNO -->
+      <% if (cadastroConcluido) { %>
+        <div class="alert alert-success" role="status">
+          Sua conta foi criada com sucesso!
+        </div>
+      <% } %>
+
       <% if (avisoCadastro) { %>
         <div class="alert alert-warning" role="status">
           <%= avisoCadastro %>

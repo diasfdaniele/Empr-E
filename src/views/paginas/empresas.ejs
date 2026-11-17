@@ -12,20 +12,29 @@
 
   <section class="catalogo-produtos">
     <div class="container">
-      <form class="empresas-filtros filtros" id="filtros-empresas" role="search" aria-label="Filtrar empresas">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-3">
+          <aside class="catalogo__lateral catalogo-filtros filtros" aria-label="Filtros de empresas">
+      <form class="catalogo-filtros__formulario" id="filtros-empresas" role="search" aria-label="Filtrar empresas">
         <div class="filtro-grupo">
           <label for="empresa-busca" class="filtro-rotulo">Nome da empresa</label>
-          <input
-            id="empresa-busca"
-            class="campo-entrada"
-            type="search"
-            placeholder="Buscar por nome"
-            autocomplete="off"
-          />
+          <div class="filtros__busca">
+            <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="10.5" cy="10.5" r="6.5"></circle>
+              <path d="m16 16 4 4"></path>
+            </svg>
+            <input
+              id="empresa-busca"
+              class="form-control campo-entrada"
+              type="search"
+              placeholder="Digite o nome da empresa"
+              autocomplete="off"
+            />
+          </div>
         </div>
         <div class="filtro-grupo">
           <label for="empresa-setor" class="filtro-rotulo">Setor</label>
-          <select id="empresa-setor" class="campo-entrada campo-seletor">
+          <select id="empresa-setor" class="form-select campo-entrada">
             <option value="">Todos os setores</option>
             <% for (const setor of setores || []) { %>
               <option value="<%= setor %>"><%= setor %></option>
@@ -34,15 +43,25 @@
         </div>
         <div class="filtro-grupo">
           <label for="empresa-ordenacao" class="filtro-rotulo">Ordenar por</label>
-          <select id="empresa-ordenacao" class="campo-entrada campo-seletor">
+          <select id="empresa-ordenacao" class="form-select campo-entrada">
             <option value="az">Nome (A–Z)</option>
             <option value="za">Nome (Z–A)</option>
           </select>
         </div>
-        <button type="reset" class="btn botao--discreto">Limpar filtros</button>
+        <div class="catalogo-filtros__acoes">
+          <button type="submit" class="btn botao--principal">Filtrar</button>
+          <button type="reset" class="btn botao--contorno">
+          <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10a9 9 0 1 1 2.5 8M3 4v6h6"></path>
+          </svg>
+            Limpar
+          </button>
+        </div>
       </form>
-
-      <div class="catalogo__cabecalho mt-4">
+          </aside>
+        </div>
+        <div class="col-lg-9">
+      <div class="catalogo__cabecalho">
         <h2 class="catalogo__titulo">Empresas encontradas</h2>
         <span class="catalogo__resultado" id="empresas-resultado" role="status" aria-live="polite">
           <%= empresas ? empresas.length : 0 %> <%= empresas && empresas.length === 1 ? 'empresa encontrada' : 'empresas encontradas' %>
@@ -111,6 +130,8 @@
       <p id="empresas-sem-resultados" class="empresas-sem-resultados" <%= empresas && empresas.length ? 'hidden' : '' %>>
         Nenhuma empresa encontrada com esses filtros.
       </p>
+        </div>
+      </div>
     </div>
   </section>
 </main>
