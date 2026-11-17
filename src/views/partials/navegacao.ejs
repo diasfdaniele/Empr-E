@@ -17,11 +17,25 @@
 <div id="menu-movel" class="menu-movel" hidden="">
   <nav aria-label="Navegação mobile">
     <ul class="menu-movel__lista">
-      <% for (const link of [...links, { endereco: "/carrinho", nome: "Carrinho" }, { endereco: "/conta", nome: "Minha conta" }, { endereco: "/login", nome: "Entrar" }, { endereco: "/cadastro", nome: "Criar conta" }]) { %>
+      <% const linksConta = usuarioLogado
+        ? [
+            ...(usuarioSessao?.papel === 'administrador' ? [{ endereco: '/conta/admin', nome: 'Administração' }] : []),
+            { endereco: '/carrinho', nome: 'Meu carrinho' },
+            { endereco: '/conta', nome: 'Minha conta' },
+          ]
+        : [{ endereco: '/login', nome: 'Entrar' }, { endereco: '/cadastro', nome: 'Criar conta' }]; %>
+      <% for (const link of [...links, ...linksConta]) { %>
       <li>
         <a class="menu-movel__link" href="<%= link.endereco %>" <% if (link.ativo) { %>aria-current="page" <% } %>
           ><%= link.nome %></a
         >
+      </li>
+      <% } %>
+      <% if (usuarioLogado) { %>
+      <li>
+        <form action="/logout" method="post">
+          <button type="submit" class="menu-movel__link">Sair</button>
+        </form>
       </li>
       <% } %>
     </ul>

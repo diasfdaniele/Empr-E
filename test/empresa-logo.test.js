@@ -62,6 +62,8 @@ test('cadastro salva a URL da logo na empresa usando o bucket próprio', async (
         token_type: 'bearer',
         user: { id: idAuth },
       };
+    } else if (url.pathname === '/rest/v1/categorias') {
+      resposta = [{ id_categoria: 1, nome_categoria: 'Mobilidade e Locomoção' }];
     } else if (url.pathname === '/rest/v1/usuarios') {
       resposta = usuario;
     } else if (url.pathname.startsWith(`/storage/v1/object/${BUCKET_EMPRESAS}/`)) {
@@ -85,12 +87,13 @@ test('cadastro salva a URL da logo na empresa usando o bucket próprio', async (
     senha: 'senha-de-teste',
     confirmarSenha: 'senha-de-teste',
     tipoPessoa: 'pj',
-    perfilComercial: 'vendedor',
     nomeCompleto: 'Pessoa teste',
     cpfPessoa: '12345678901',
     cnpj: '12345678000199',
     razaoSocial: 'Empresa teste',
     nomeFantasia: 'Empresa teste',
+    categoriaEmpresa: '1',
+    descricao: 'Soluções de mobilidade.',
   }, { buffer, size: buffer.length });
 
   assert.match(caminhoEnviado, new RegExp(`/storage/v1/object/${BUCKET_EMPRESAS}/${idAuth}/`));

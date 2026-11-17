@@ -315,46 +315,6 @@ function iniciarAcessibilidade() {
   }
 
   // =========================================================
-  // Cadastro: pessoa física ou jurídica
-  // =========================================================
-
-  function iniciarTipoPessoa() {
-    const pessoa = document.querySelector('#pessoa-tipo');
-
-    if (!pessoa) return;
-
-    const perfilComercial = document.querySelector(
-      '#perfil-comercial',
-    );
-
-    function atualizarTipo() {
-      const juridica = pessoa.value === 'pj';
-
-      for (const grupo of document.querySelectorAll(
-        '[data-campos-pj]',
-      )) {
-        grupo.hidden = !juridica;
-      }
-
-      const opcaoVendedor = perfilComercial?.querySelector(
-        'option[value="vendedor"]',
-      );
-
-      if (opcaoVendedor) {
-        opcaoVendedor.disabled = !juridica;
-
-        if (!juridica && perfilComercial.value === 'vendedor') {
-          perfilComercial.value = 'comprador';
-        }
-      }
-    }
-
-    pessoa.addEventListener('change', atualizarTipo);
-
-    atualizarTipo();
-  }
-
-  // =========================================================
   // Consulta demonstrativa de CEP
   // =========================================================
 
@@ -413,7 +373,6 @@ function iniciarAcessibilidade() {
   iniciarMenu();
   iniciarAcessibilidade();
   iniciarCarrinho();
-  iniciarTipoPessoa();
   iniciarConsultaCep();
 
   // =========================================================

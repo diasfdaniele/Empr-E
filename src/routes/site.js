@@ -38,6 +38,7 @@ import {
 import {
     exibirCadastro,
     exibirLogin,
+    exibirRecuperacaoSenha,
     processarCadastro,
     processarLogin,
     encerrarSessao,
@@ -87,6 +88,7 @@ rotas.post('/cadastro', uploadLogoEmpresa, processarCadastro);
 
 rotas.get('/login', exibirLogin);
 rotas.post('/login', processarLogin);
+rotas.get('/recuperar-senha', exibirRecuperacaoSenha);
 rotas.post('/logout', encerrarSessao);
 
 rotas.get('/catalogo', carregarOpcoes, exibirCatalogo);

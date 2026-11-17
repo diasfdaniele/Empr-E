@@ -87,6 +87,19 @@ npm run dev
 
 Para usar outra porta, defina `PORT` no ambiente antes de iniciar. 
 
+No cadastro, pessoas físicas recebem perfil de compra. Pessoas jurídicas também
+podem vender, mantendo a aprovação da empresa antes de anunciar. Ao selecionar
+pessoa jurídica, o formulário solicita razão social, nome fantasia, CNPJ, categoria
+principal e descrição; inscrição estadual, site e logo são opcionais. As categorias
+são carregadas da mesma tabela usada no catálogo, e os dados adicionais são salvos
+nas colunas existentes de `empresas` no Supabase.
+
+A tela de entrada oferece recuperação de senha simulada em `/recuperar-senha`.
+O código de teste é exibido na própria página e expira após 10 minutos. Não há
+envio de e-mail, consulta de contas ou alteração de senha no Supabase. E-mail,
+código e senha de teste não são persistidos; recarregar a página reinicia o fluxo.
+Não utilize senhas reais na simulação.
+
 Para executar os testes de autorização, upload e transações SQL sem alterar o Supabase:
 
 ```bash

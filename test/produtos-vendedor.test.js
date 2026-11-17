@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { runInNewContext } from 'node:vm';
 import {
   verificarEmpresaVendedora, validarDadosProduto, validarFotos,
   buscarProdutoVendedor, salvarProdutoVendedor, LIMITE_IMAGEM,
@@ -19,7 +20,7 @@ const dados = {
   preco: '20.50', estoque: '10', estoqueMinimo: '1', modalidade: 'Compra', ativo: 'on',
 };
 
-test('cadastro PJ vendedor cria empresa ativa sem aceitar status informado pelo cliente', async (t) => {
+test('cadastro PJ define papel e salva os dados da empresa sem aceitar permissões do formulário', async (t) => {
   const anteriores = {
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY,
@@ -33,6 +34,7 @@ test('cadastro PJ vendedor cria empresa ativa sem aceitar status informado pelo 
     }
   });
   let empresaRecebida;
+  let usuarioRecebido;
   const idAuth = '00000000-0000-0000-0000-000000000001';
   const usuario = { id_usuario: 1, id_auth: idAuth, tipo_pessoa: 'pj', nome_completo: 'Pessoa teste' };
   t.mock.method(globalThis, 'fetch', async (entrada, opcoes) => {
@@ -43,8 +45,11 @@ test('cadastro PJ vendedor cria empresa ativa sem aceitar status informado pelo 
       const payload = Buffer.from(JSON.stringify({ sub: idAuth, exp: Math.floor(Date.now() / 1000) + 3600 })).toString('base64url');
       resposta = { access_token: `eyJhbGciOiJIUzI1NiJ9.${payload}.assinatura-teste`,
         refresh_token: 'refresh-teste', expires_in: 3600, token_type: 'bearer', user: { id: idAuth } };
+    } else if (url.pathname === '/rest/v1/categorias') {
+      resposta = [{ id_categoria: 1, nome_categoria: 'Mobilidade e Locomoção' }];
     } else if (url.pathname === '/rest/v1/usuarios') {
-      resposta = usuario;
+      usuarioRecebido = body;
+      resposta = { ...usuario, ...body };
     } else if (url.pathname === '/rest/v1/empresas') {
       empresaRecebida = body;
       resposta = { ...body, id_empresa: 1 };
@@ -53,19 +58,114 @@ test('cadastro PJ vendedor cria empresa ativa sem aceitar status informado pelo 
     }
     return new Response(JSON.stringify(resposta), { status: 200, headers: { 'Content-Type': 'application/json' } });
   });
-  const resultado = await cadastrarUsuario({
+  const cadastro = {
     email: 'vendedor@example.com', senha: 'senha-de-teste', confirmarSenha: 'senha-de-teste',
-    tipoPessoa: 'pj', perfilComercial: 'vendedor', nomeCompleto: 'Pessoa teste',
+    tipoPessoa: 'pj', perfilComercial: 'comprador', papel: 'administrador', nomeCompleto: 'Pessoa teste',
     cpfPessoa: '12345678901', cnpj: '12345678000199', razaoSocial: 'Empresa teste',
-    nomeFantasia: 'Empresa teste', status_conta: 'Aguardando Aprovação',
-  });
-  assert.equal(empresaRecebida.status_conta, 'Ativo');
-  assert.equal(resultado.empresa.status_conta, 'Ativo');
+    nomeFantasia: 'Empresa teste', status_conta: 'Ativo', categoriaEmpresa: '1',
+    inscricaoEstadual: ' 123456789 ', descricao: ' Soluções de mobilidade. ',
+    site: ' https://empresa.example ',
+  };
+  const resultado = await cadastrarUsuario(cadastro);
+  assert.equal(usuarioRecebido.papel, 'vendedor');
+  assert.equal(resultado.usuario.papel, 'vendedor');
+  assert.equal(empresaRecebida.status_conta, 'Aguardando Aprovação');
+  assert.equal(resultado.empresa.status_conta, 'Aguardando Aprovação');
+  assert.equal(empresaRecebida.inscricao_estadual, '123456789');
+  assert.equal(empresaRecebida.categoria_empresa, 'Mobilidade e Locomoção');
+  assert.equal(empresaRecebida.descricao, 'Soluções de mobilidade.');
+  assert.equal(empresaRecebida.site, 'https://empresa.example');
+
+  await cadastrarUsuario({ ...cadastro, inscricaoEstadual: '', site: '' });
+  assert.equal(empresaRecebida.inscricao_estadual, null);
+  assert.equal(empresaRecebida.site, null);
 });
 
-test('pessoa física não pode se cadastrar como vendedora', async (t) => {
-  t.mock.method(globalThis, 'fetch', () => assert.fail('PF não deve iniciar cadastro de vendedor'));
-  await assert.rejects(cadastrarUsuario({ tipoPessoa: 'pf', perfilComercial: 'vendedor' }), /Somente pessoas jurídicas/);
+test('cadastro PF recebe apenas papel de compra mesmo com tentativa de escolher vendedor ou administrador', async (t) => {
+  let usuarioRecebido;
+  const idAuth = '00000000-0000-0000-0000-000000000001';
+  t.mock.method(globalThis, 'fetch', async (entrada, opcoes) => {
+    const url = new URL(typeof entrada === 'string' ? entrada : entrada.url ?? entrada.toString());
+    let resposta;
+    if (url.pathname === '/auth/v1/signup') {
+      const payload = Buffer.from(JSON.stringify({ sub: idAuth, exp: Math.floor(Date.now() / 1000) + 3600 })).toString('base64url');
+      resposta = { access_token: `eyJhbGciOiJIUzI1NiJ9.${payload}.assinatura-teste`,
+        refresh_token: 'refresh-teste', expires_in: 3600, token_type: 'bearer', user: { id: idAuth } };
+    } else if (url.pathname === '/rest/v1/usuarios') {
+      usuarioRecebido = JSON.parse(opcoes.body);
+      resposta = { ...usuarioRecebido, id_usuario: 1 };
+    } else {
+      assert.fail(`PF não deve consultar ou cadastrar empresa: ${url.pathname}`);
+    }
+    return new Response(JSON.stringify(resposta), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  });
+  const resultado = await cadastrarUsuario({
+    email: 'comprador@example.com', senha: 'senha-de-teste', confirmarSenha: 'senha-de-teste',
+    nomeCompleto: 'Pessoa teste', cpfPessoa: '12345678901', tipoPessoa: 'pf',
+    perfilComercial: 'vendedor', papel: 'administrador', categoriaEmpresa: '999', site: 'invalido',
+  });
+  assert.equal(usuarioRecebido.papel, 'comprador');
+  assert.equal(resultado.empresa, null);
+});
+
+test('cadastro PJ valida descrição, site e categoria antes de criar a credencial', async (t) => {
+  const cadastro = {
+    email: 'vendedor@example.com', senha: 'senha-de-teste', confirmarSenha: 'senha-de-teste',
+    tipoPessoa: 'pj', nomeCompleto: 'Pessoa teste', cpfPessoa: '12345678901',
+    cnpj: '12345678000199', razaoSocial: 'Empresa teste', nomeFantasia: 'Empresa teste',
+    categoriaEmpresa: '1', descricao: 'Soluções de mobilidade.',
+  };
+  t.mock.method(globalThis, 'fetch', async (entrada) => {
+    const url = new URL(typeof entrada === 'string' ? entrada : entrada.url ?? entrada.toString());
+    assert.equal(url.pathname, '/rest/v1/categorias', 'Não deve criar credencial com dados inválidos');
+    return new Response(JSON.stringify([{ id_categoria: 1, nome_categoria: 'Mobilidade' }]),
+      { status: 200, headers: { 'Content-Type': 'application/json' } });
+  });
+  await assert.rejects(cadastrarUsuario({ ...cadastro, descricao: ' ' }), /descrição da empresa/);
+  for (const site of ['empresa.example', 'javascript:alert(1)', 'ftp://empresa.example']) {
+    await assert.rejects(cadastrarUsuario({ ...cadastro, site }), /site válido/);
+  }
+  await assert.rejects(cadastrarUsuario({ ...cadastro, categoriaEmpresa: '' }), /categoria válida/);
+  await assert.rejects(cadastrarUsuario({ ...cadastro, categoriaEmpresa: '999' }), /não está disponível/);
+});
+
+test('cadastro adapta campos PJ ao selecionar o tipo e restaura os novos dados após erro', async () => {
+  const arquivo = fileURLToPath(new URL('../src/views/paginas/cadastro.ejs', import.meta.url));
+  const dadosEmpresa = { tipoPessoa: 'pj', inscricaoEstadual: '123456',
+    categoriaEmpresa: '1', descricao: 'Descrição preservada.', site: 'https://empresa.example' };
+  const renderizar = dados => ejs.renderFile(arquivo, {
+    dados, erro: 'Confira os dados.', categorias: [{ id_categoria: 1, nome_categoria: 'Mobilidade' }],
+  });
+  const htmlPJ = await renderizar(dadosEmpresa);
+  assert.doesNotMatch(htmlPJ, /perfil-comercial|perfilComercial/);
+  assert.doesNotMatch(htmlPJ.match(/<fieldset id="dados-empresa"[^>]*>/)[0], /hidden|disabled/);
+  assert.match(htmlPJ, /value="123456"/);
+  assert.match(htmlPJ, /value="1"\s+selected/);
+  assert.match(htmlPJ, /Descrição preservada\./);
+  assert.match(htmlPJ, /value="https:\/\/empresa\.example"/);
+  const htmlPF = await renderizar({});
+  assert.match(htmlPF.match(/<fieldset id="dados-empresa"[^>]*>/)[0], /hidden disabled/);
+
+  let aoCarregar;
+  let aoAlterar;
+  const tipoPessoa = { value: 'pf', addEventListener(evento, callback) { aoAlterar = callback; } };
+  const campos = { hidden: true, disabled: true };
+  const script = await readFile(new URL('../public/assets/js/cadastro.js', import.meta.url), 'utf8');
+  runInNewContext(script, {
+    document: {
+      addEventListener(evento, callback) { aoCarregar = callback; },
+      getElementById(id) { return id === 'pessoa-tipo' ? tipoPessoa : null; },
+      querySelector() { return campos; },
+      querySelectorAll() { return []; },
+    },
+  });
+  aoCarregar();
+  for (const tipo of ['pj', 'pf', 'pj']) {
+    tipoPessoa.value = tipo;
+    aoAlterar();
+    assert.equal(campos.hidden, tipo !== 'pj');
+    assert.equal(campos.disabled, tipo !== 'pj');
+  }
 });
 
 function consulta(resultado, filtros = []) {

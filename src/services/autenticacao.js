@@ -2,6 +2,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { fileTypeFromBuffer } from 'file-type';
 import { randomUUID } from 'node:crypto';
+import { listarCategorias } from '../models/produto.js';
 
 export const BUCKET_EMPRESAS = 'logosEmpresas';
 export const LIMITE_LOGO_EMPRESA = 5 * 1024 * 1024;
@@ -57,19 +58,12 @@ export async function cadastrarUsuario(dados, arquivoLogo = null) {
   const senha = String(dados.senha ?? '');
 
   const tipoPessoa = dados.tipoPessoa;
-  const perfilComercial = dados.perfilComercial;
 
   if (!['pf', 'pj'].includes(tipoPessoa)) {
     throw new Error('Selecione um tipo de pessoa válido.');
   }
 
-  if (!['comprador', 'vendedor'].includes(perfilComercial)) {
-    throw new Error('Selecione um objetivo válido.');
-  }
-
-  if (perfilComercial === 'vendedor' && tipoPessoa !== 'pj') {
-    throw new Error('Somente pessoas jurídicas podem vender.');
-  }
+  const pessoaJuridica = tipoPessoa === 'pj';
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw new Error('Informe um e-mail válido.');
@@ -97,14 +91,18 @@ export async function cadastrarUsuario(dados, arquivoLogo = null) {
   const cnpj = somenteNumeros(dados.cnpj);
   const razaoSocial = String(dados.razaoSocial ?? '').trim();
   const nomeFantasia = String(dados.nomeFantasia ?? '').trim();
-  if (arquivoLogo && perfilComercial !== 'vendedor') {
-    throw new Error('A logo está disponível apenas para empresas vendedoras.');
+  const inscricaoEstadual = String(dados.inscricaoEstadual ?? '').trim();
+  const descricao = String(dados.descricao ?? '').trim();
+  const site = String(dados.site ?? '').trim();
+
+  if (arquivoLogo && !pessoaJuridica) {
+    throw new Error('A logo está disponível apenas para pessoas jurídicas.');
   }
-  const logo = perfilComercial === 'vendedor'
+  const logo = pessoaJuridica
     ? await validarLogoEmpresa(arquivoLogo)
     : null;
 
-  if (perfilComercial === 'vendedor') {
+  if (pessoaJuridica) {
     if (
       cnpj.length !== 14 ||
       !razaoSocial ||
@@ -114,10 +112,36 @@ export async function cadastrarUsuario(dados, arquivoLogo = null) {
         'Preencha corretamente o CNPJ, a razão social e o nome fantasia.'
       );
     }
+
+    if (!descricao) {
+      throw new Error('Informe uma descrição da empresa.');
+    }
+
+    if (site && (
+      !URL.canParse(site) ||
+      !['http:', 'https:'].includes(new URL(site).protocol)
+    )) {
+      throw new Error('Informe um site válido com http:// ou https://.');
+    }
+  }
+
+  const cliente = criarClienteSupabase();
+  let categoriaEmpresa = null;
+
+  if (pessoaJuridica) {
+    const categoriaId = Number(dados.categoriaEmpresa);
+    if (!Number.isSafeInteger(categoriaId) || categoriaId < 1) {
+      throw new Error('Selecione uma categoria válida para a empresa.');
+    }
+    const categorias = await listarCategorias(cliente);
+    const categoria = categorias.find(item => Number(item.id_categoria) === categoriaId);
+    if (!categoria) {
+      throw new Error('A categoria selecionada para a empresa não está disponível.');
+    }
+    categoriaEmpresa = categoria.nome_categoria;
   }
 
   // 1. Criar a credencial no Supabase Auth.
-  const cliente = criarClienteSupabase();
   const { data: authData, error: authError } =
     await cliente.auth.signUp({
       email,
@@ -146,7 +170,7 @@ export async function cadastrarUsuario(dados, arquivoLogo = null) {
       cpf_pessoa: cpfPessoa,
 
       // O cadastro nunca permite criar administradores.
-      papel: perfilComercial === 'vendedor'
+      papel: pessoaJuridica
         ? 'vendedor'
         : 'comprador',
     })
@@ -163,8 +187,8 @@ export async function cadastrarUsuario(dados, arquivoLogo = null) {
   let empresa = null;
   let avisoLogo = null;
 
-  // 3. Somente vendedores PJ criam um registro em empresas.
-  if (perfilComercial === 'vendedor') {
+  // 3. Todo cadastro PJ cria um registro em empresas.
+  if (pessoaJuridica) {
     let logoUrl = null;
     let caminhoLogo = null;
 
@@ -202,6 +226,10 @@ export async function cadastrarUsuario(dados, arquivoLogo = null) {
         cnpj,
         razao_social: razaoSocial,
         nome_fantasia: nomeFantasia,
+        inscricao_estadual: inscricaoEstadual || null,
+        categoria_empresa: categoriaEmpresa,
+        descricao,
+        site: site || null,
         status_conta: 'Aguardando Aprovação',
         logo_url: logoUrl,
       })

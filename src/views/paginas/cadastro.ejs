@@ -5,7 +5,7 @@
       <h1 class="cadastro-titulo">Criar conta</h1>
       <p class="demo-nota" id="cadastro-aviso">
         Crie sua conta para comprar produtos de acessibilidade.
-        Empresas cadastradas como vendedoras poderão anunciar após concluir o cadastro.
+        Pessoas jurídicas também podem vender, após a aprovação da empresa.
       </p>
     </div>
     <form
@@ -28,84 +28,111 @@
             <label for="pessoa-tipo" class="campo-rotulo">Tipo de pessoa</label
             >
             <select
-  id="pessoa-tipo"
-  name="tipoPessoa"
-  class="campo-entrada campo-seletor"
-  required
->
-  <option value="pf" <%= (dados?.tipoPessoa || 'pf') === 'pf' ? 'selected' : '' %>>
-    Pessoa física
-  </option>
-  <option value="pj" <%= dados?.tipoPessoa === 'pj' ? 'selected' : '' %>>
-    Pessoa jurídica
-  </option>
-</select>
-          </div>
-          <div class="campo-grupo">
-            <label for="perfil-comercial" class="campo-rotulo">Objetivo na plataforma</label
+              id="pessoa-tipo"
+              name="tipoPessoa"
+              class="campo-entrada campo-seletor"
+              aria-controls="dados-empresa"
+              aria-describedby="tipo-pessoa-dica"
+              required
             >
-            <select
-  id="perfil-comercial"
-  name="perfilComercial"
-  class="campo-entrada campo-seletor"
-  required
->
-  <option value="comprador" <%= (dados?.perfilComercial || 'comprador') === 'comprador' ? 'selected' : '' %>>
-    Comprar
-  </option>
-  <option value="vendedor" <%= dados?.perfilComercial === 'vendedor' ? 'selected' : '' %>>
-    Vender — somente pessoa jurídica
-  </option>
-</select>
+              <option value="pf" <%= (dados?.tipoPessoa || 'pf') === 'pf' ? 'selected' : '' %>>
+                Pessoa física
+              </option>
+              <option value="pj" <%= dados?.tipoPessoa === 'pj' ? 'selected' : '' %>>
+                Pessoa jurídica
+              </option>
+            </select>
           </div>
         </div>
-        <p class="campo-dica">
-          Pessoa física e jurídica podem comprar. Apenas pessoa jurídica poderá vender.
+        <p class="campo-dica" id="tipo-pessoa-dica">
+          Pessoas físicas podem comprar. Pessoas jurídicas podem comprar e vender.
         </p>
       </fieldset>
-      <fieldset class="formulario-secao" hidden="" data-campos-pj="">
+      <fieldset id="dados-empresa" class="formulario-secao" data-campos-pj
+        <%= dados?.tipoPessoa === 'pj' ? '' : 'hidden disabled' %>>
         <legend class="formulario-secao__titulo">Dados da empresa</legend>
         <div class="campos-linha">
           <div class="campo-grupo">
-            <label for="razao-social" class="campo-rotulo">Razão social</label
-            >
+            <label for="razao-social" class="campo-rotulo">Razão social</label>
             <input
-  id="razao-social"
-  name="razaoSocial"
-  class="campo-entrada"
-  placeholder="Razão social"
-  autocomplete="organization"
-  value="<%= dados?.razaoSocial || '' %>"
-  required
-/>
-            <label for="nome-fantasia" class="campo-rotulo">Nome Fantasia</label
-            >
-            <input
-  id="nome-fantasia"
-  name="nomeFantasia"
-  class="campo-entrada"
-  placeholder="Nome fantasia"
-  autocomplete="organization"
-  value="<%= dados?.nomeFantasia || '' %>"
-  required
-/>
-
+              id="razao-social"
+              name="razaoSocial"
+              class="campo-entrada"
+              placeholder="Razão social"
+              autocomplete="organization"
+              value="<%= dados?.razaoSocial || '' %>"
+              required
+            />
           </div>
           <div class="campo-grupo">
-            <label for="cnpj" class="campo-rotulo">CNPJ</label
-            >
+            <label for="nome-fantasia" class="campo-rotulo">Nome fantasia</label>
             <input
-    id="cnpj"
-    name="cnpj"
-    class="campo-entrada"
-    placeholder="00.000.000/0000-00"
-    inputmode="numeric"
-    autocomplete="off"
-    maxlength="18"
-    value="<%= dados?.cnpj || '' %>"
-    required
-/>
+              id="nome-fantasia"
+              name="nomeFantasia"
+              class="campo-entrada"
+              placeholder="Nome fantasia"
+              autocomplete="organization"
+              value="<%= dados?.nomeFantasia || '' %>"
+              required
+            />
           </div>
+        </div>
+        <div class="campos-linha">
+          <div class="campo-grupo">
+            <label for="cnpj" class="campo-rotulo">CNPJ</label>
+            <input
+              id="cnpj"
+              name="cnpj"
+              class="campo-entrada"
+              placeholder="00.000.000/0000-00"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="18"
+              value="<%= dados?.cnpj || '' %>"
+              required
+            />
+          </div>
+          <div class="campo-grupo">
+            <label for="inscricao-estadual" class="campo-rotulo">Inscrição estadual (opcional)</label>
+            <input
+              id="inscricao-estadual"
+              name="inscricaoEstadual"
+              class="campo-entrada"
+              value="<%= dados?.inscricaoEstadual || '' %>"
+            />
+          </div>
+        </div>
+        <div class="campo-grupo">
+          <label for="categoria-empresa" class="campo-rotulo">Categoria da empresa</label>
+          <select id="categoria-empresa" name="categoriaEmpresa" class="campo-entrada campo-seletor" required>
+            <option value="">Selecione a categoria principal</option>
+            <% for (const categoria of categorias) { %>
+              <option value="<%= categoria.id_categoria %>"
+                <%= String(dados?.categoriaEmpresa || '') === String(categoria.id_categoria) ? 'selected' : '' %>>
+                <%= categoria.nome_categoria %>
+              </option>
+            <% } %>
+          </select>
+          <p class="campo-dica">Escolha a área principal de atuação entre as categorias do catálogo.</p>
+        </div>
+        <div class="campo-grupo">
+          <label for="descricao-empresa" class="campo-rotulo">Descrição da empresa</label>
+          <textarea id="descricao-empresa" name="descricao" class="campo-entrada campo-texto"
+            rows="4" placeholder="Conte sobre a empresa e as soluções de acessibilidade que oferece."
+            required><%= dados?.descricao || '' %></textarea>
+        </div>
+        <div class="campo-grupo">
+          <label for="site-empresa" class="campo-rotulo">Site da empresa (opcional)</label>
+          <input
+            id="site-empresa"
+            name="site"
+            type="url"
+            class="campo-entrada"
+            placeholder="https://www.suaempresa.com.br"
+            aria-describedby="site-empresa-dica"
+            value="<%= dados?.site || '' %>"
+          />
+          <p class="campo-dica" id="site-empresa-dica">Informe o endereço completo, com http:// ou https://.</p>
         </div>
         <div class="campo-grupo">
           <label for="logo-empresa" class="campo-rotulo">Logo da empresa (opcional)</label>

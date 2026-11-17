@@ -71,8 +71,8 @@ export const faixasPreco = Object.freeze({
     '5000-plus': [5000, Infinity]
 });
 
-export async function listarCategorias() {
-    const { data, error } = await supabase
+export async function listarCategorias(cliente = supabase) {
+    const { data, error } = await cliente
         .from('categorias')
         .select('id_categoria, nome_categoria')
         .order('nome_categoria');

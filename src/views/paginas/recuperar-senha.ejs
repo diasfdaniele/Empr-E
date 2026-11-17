@@ -1,0 +1,66 @@
+<main id="conteudo-principal" class="entrada-recuperacao" tabindex="-1">
+  <section class="entrada-painel" aria-labelledby="recuperacao-titulo">
+    <div class="entrada-painel__interno">
+      <a href="/login" class="entrada-link">Voltar para entrar</a>
+      <header class="entrada-formulario-cabecalho">
+        <h1 id="recuperacao-titulo" class="entrada-formulario-titulo">Recuperar senha</h1>
+        <p class="entrada-formulario-subtitulo">
+          Informe seu e-mail para iniciar a recuperação de acesso.
+        </p>
+      </header>
+
+      <form id="recuperacao-email-form" class="entrada-formulario" hidden>
+        <div class="campo-grupo">
+          <label for="recuperacao-email" class="campo-rotulo">E-mail da conta</label>
+          <input id="recuperacao-email" class="campo-entrada recuperacao-campo" type="email"
+            autocomplete="email" autocapitalize="none" spellcheck="false"
+            placeholder="voce@exemplo.com.br" required />
+        </div>
+        <button type="submit" class="btn botao--principal botao-entrada-enviar">
+          Gerar código de recuperação
+        </button>
+      </form>
+
+      <form id="recuperacao-senha-form" class="entrada-formulario" hidden>
+        <h2 id="recuperacao-etapa-titulo" class="entrada-formulario-titulo" tabindex="-1">Confira seu código</h2>
+        <p class="recuperacao-aviso" role="status">
+          Código de recuperação: <strong id="recuperacao-codigo-exibido"></strong>.
+          Válido por 10 minutos, somente nesta página.
+        </p>
+        <div class="campo-grupo">
+          <label for="recuperacao-codigo" class="campo-rotulo">Código de 6 dígitos</label>
+          <input id="recuperacao-codigo" class="campo-entrada recuperacao-campo" type="text"
+            inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}"
+            minlength="6" maxlength="6" aria-describedby="recuperacao-erro" required />
+        </div>
+        <div class="campo-grupo">
+          <label for="recuperacao-senha" class="campo-rotulo">Nova senha</label>
+          <input id="recuperacao-senha" class="campo-entrada recuperacao-campo" type="password"
+            autocomplete="off" minlength="8" aria-describedby="recuperacao-senha-dica" required />
+          <p id="recuperacao-senha-dica" class="entrada-formulario-subtitulo">
+            Use pelo menos 8 caracteres. 
+          </p>
+        </div>
+        <div class="campo-grupo">
+          <label for="recuperacao-confirmacao" class="campo-rotulo">Confirme a nova senha</label>
+          <input id="recuperacao-confirmacao" class="campo-entrada recuperacao-campo" type="password"
+            autocomplete="off" minlength="8" aria-describedby="recuperacao-erro" required />
+        </div>
+        <p id="recuperacao-erro" class="campo-erro" role="alert" hidden></p>
+        <button type="submit" class="btn botao--principal botao-entrada-enviar">Concluir</button>
+      </form>
+
+      <div id="recuperacao-concluida" hidden>
+        <h2 id="recuperacao-sucesso-titulo" class="entrada-formulario-titulo" tabindex="-1">Simulação concluída</h2>
+        <p class="entrada-formulario-subtitulo" role="status">
+          Código conferido e senha validada.
+        </p>
+        <a href="/login" class="btn botao--principal botao-entrada-enviar">Voltar para entrar</a>
+      </div>
+      <p class="entrada-suporte-texto">
+        Ainda não tem conta? <a href="/cadastro" class="entrada-link">Crie sua conta gratuitamente</a>
+      </p>
+    </div>
+  </section>
+</main>
+<script src="/assets/js/recuperar-senha.js" defer></script>

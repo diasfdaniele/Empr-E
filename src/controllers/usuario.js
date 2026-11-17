@@ -7,6 +7,7 @@ import {
   cadastrarUsuario,
   autenticarUsuario,
 } from '../services/autenticacao.js';
+import { listarCategorias } from '../models/produto.js';
 
 import {
     obterDadosCompletosConta,
@@ -17,20 +18,31 @@ import {
     excluirEndereco
 } from '../models/usuario.js';
 
-export function exibirCadastro(req, res) {
+async function renderizarCadastro(res, { erro = null, dados = {} } = {}) {
+    const categorias = await listarCategorias();
+
     return renderizarPagina(
         res,
         'cadastro',
         'Criar conta | Empr-E',
         {
-            erro: null,
-            dados: {}
+            erro,
+            dados,
+            categorias
         }
     );
 }
 
+export async function exibirCadastro(req, res) {
+    return renderizarCadastro(res);
+}
+
 export function exibirLogin(req, res) {
   renderizarPagina(res, 'login', 'Entrar | Empr-E');
+}
+
+export function exibirRecuperacaoSenha(req, res) {
+  renderizarPagina(res, 'recuperar-senha', 'Recuperar senha | Empr-E');
 }
 
 
@@ -74,19 +86,20 @@ export async function processarCadastro(req, res) {
     } catch (erro) {
         console.error('Erro ao cadastrar usuário:', erro);
 
-        return renderizarPagina(
+        return renderizarCadastro(
             res.status(400),
-            'cadastro',
-            'Criar conta | Empr-E',
             {
                 erro: erro.message,
 
                 dados: {
                     tipoPessoa: req.body.tipoPessoa,
-                    perfilComercial: req.body.perfilComercial,
                     razaoSocial: req.body.razaoSocial,
                     nomeFantasia: req.body.nomeFantasia,
                     cnpj: req.body.cnpj,
+                    inscricaoEstadual: req.body.inscricaoEstadual,
+                    categoriaEmpresa: req.body.categoriaEmpresa,
+                    descricao: req.body.descricao,
+                    site: req.body.site,
                     nomeCompleto: req.body.nomeCompleto,
                     cpfPessoa: req.body.cpfPessoa,
                     email: req.body.email,

@@ -5,6 +5,33 @@
   overflow-y: auto;
 }
 
+.entrada-recuperacao {
+  flex: 1;
+  width: 100%;
+}
+
+.entrada-recuperacao .entrada-painel {
+  height: auto;
+  min-height: 100%;
+}
+
+.recuperacao-aviso {
+  padding: 0.875rem;
+  border: 1px solid currentColor;
+  border-radius: var(--raio-md);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.recuperacao-campo {
+  padding-left: 0.875rem;
+}
+
+#recuperacao-destino {
+  overflow-wrap: anywhere;
+}
+
 .entrada-estrutura {
   display: grid;
   grid-template-columns: 1fr 1fr;

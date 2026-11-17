@@ -62,7 +62,13 @@
               </a>
 
           <% } %>
-          <a href="/carrinho" class="btn botao--contorno">Carrinho</a>
+          <a href="/carrinho" class="btn botao--contorno botao-carrinho" aria-label="Meu carrinho" title="Meu carrinho">
+            <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h3l3 12h11l3-9H6"></path>
+              <circle cx="9" cy="20" r="1"></circle>
+              <circle cx="19" cy="20" r="1"></circle>
+            </svg>
+          </a>
         
           <a href="/conta" class="btn botao--principal">Minha Conta</a>
 
@@ -72,7 +78,7 @@
               </button>
           </form>
       <% } else { %>
-          <a href="/login" class="btn botao--principal">
+          <a href="/login" class="btn botao--contorno botao-entrar">
               Entrar
           </a>
 

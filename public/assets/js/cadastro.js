@@ -6,32 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
 
     const tipoPessoa = document.getElementById('pessoa-tipo');
-    const perfilComercial = document.getElementById('perfil-comercial');
     const camposEmpresa = document.querySelector('[data-campos-pj]');
 
     function atualizarFormulario() {
         const ehPessoaJuridica = tipoPessoa.value === 'pj';
-        const desejaVender = perfilComercial.value === 'vendedor';
-
-        const mostrarEmpresa = ehPessoaJuridica && desejaVender;
-
-        perfilComercial.querySelector('[value="vendedor"]').disabled =
-            !ehPessoaJuridica;
-
-        if (!ehPessoaJuridica) {
-            perfilComercial.value = 'comprador';
-        }
-
-        camposEmpresa.hidden = !mostrarEmpresa;
-        camposEmpresa.disabled = !mostrarEmpresa;
-
-        camposEmpresa.querySelectorAll('input:not([type="file"])').forEach((campo) => {
-            campo.required = mostrarEmpresa;
-        });
+        camposEmpresa.hidden = !ehPessoaJuridica;
+        camposEmpresa.disabled = !ehPessoaJuridica;
     }
 
     tipoPessoa.addEventListener('change', atualizarFormulario);
-    perfilComercial.addEventListener('change', atualizarFormulario);
 
     atualizarFormulario();
 
