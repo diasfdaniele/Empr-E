@@ -2,11 +2,11 @@
 
 Este projeto foi desenvolvido como parte integrante do Projeto de Extensão do 4º Semestre do Curso Superior de Tecnologia em Análise e Desenvolvimento de Sistemas do IFSP - Campinas.
 
-Este sistema é uma nova fase da plataforma Empr-E desenvolvida no 1° Semestre de 2026, que anteriormente foi pensada como um marketplace B2B, mas que agora passa a ser uma plataforma de e-commerce mais abrangente, acessível e robusta, com vendas para empresas e usuários finais.
+Este sistema é uma nova fase da plataforma Empr-E desenvolvida no 1° Semestre de 2026, que anteriormente foi pensada como um marketplace B2B, mas que agora passa a ser uma plataforma de e-commerce mais acessível, robusta e ampla, com vendas para empresas e usuários finais (B2B e B2C).
 
 ## Link de acesso
 
-Em desenvolvimento.
+https://empr-e.onrender.com/
 
 ## Sobre o Projeto
 
@@ -30,20 +30,18 @@ A nova fase da Empr-E busca:
 4. Melhorar o gerenciamento de usuários, produtos, pedidos e vendas;
 5. Implementar um backend para gerenciamento das regras e operações do sistema;
 6. Utilizar um banco de dados para armazenamento e gerenciamento das informações;
-7. Integrar serviços de pagamento por meio de API;
-8. Oferecer uma experiência digital acessível, intuitiva e eficiente;
-9. Aplicar conceitos de arquitetura de software, banco de dados e desenvolvimento web.
+7. Oferecer uma experiência digital acessível, intuitiva e eficiente;
+8. Aplicar conceitos de arquitetura de software, banco de dados e desenvolvimento web.
 
 ## Funcionalidades
 
-O catálogo demonstrativo oferece busca, filtros por categoria, empresa e preço,
-além de páginas de detalhe com variações e imagens locais. O carrinho e o checkout
-exibem exemplos independentes: as interações são temporárias, não criam pedidos e
-não realizam cobranças. Cadastro, login, conta, administração, histórico e painel do vendedor estão indisponíveis nesta fase.
+O catálogo de produtos oferece busca, filtros por categoria, empresa e preço,
+além de páginas de detalhe com variações e imagens. O usuário pode navegar pelo catálogo de empresas cadastradas, produtos, adicionar ao carrinho e prosseguir com o fluxo completo de pagamento. Cadastro, login, conta, administração, histórico e painel do vendedor estão funcionais.
 
-Pessoas físicas e jurídicas poderão comprar; somente pessoas jurídicas poderão
-vender. Essa regra está preparada na interface e nos contratos do model, mas ainda
-não representa autenticação ou autorização implementada.
+Pessoas físicas e jurídicas poderão comprar; somente pessoas jurídicas poderão vender. 
+
+Nos detalhes do produto, as informações e os botões de compra ficam à direita
+da galeria no desktop e abaixo dela em telas de até 800 px.
 
 ## Arquitetura do Sistema
 
@@ -52,19 +50,18 @@ Nesta nova fase, a Empr-E passa a utilizar uma arquitetura composta por:
 * **Frontend:** responsável pela interface e interação com os usuários;
 * **Backend:** responsável pelas regras de negócio, processamento das requisições e comunicação entre as diferentes partes do sistema;
 * **Banco de Dados:** responsável pelo armazenamento e gerenciamento das informações;
-* **API de Pagamento:** responsável pela integração com serviços de pagamento.
 
 O backend está sendo organizado com base no padrão arquitetural **MVC (Model-View-Controller)**.
 
 ## Tecnologias Utilizadas
 
-Em desenvolvimento.
+JavaScript com módulos ES (ESM), executado em Node.js e Express; páginas HTML montadas com EJS, Bootstrap, CSS, Supabase para banco de dados e Render para hospedagem.
 
 ## Estrutura do Projeto
 
 O backend Express renderiza páginas EJS e segue MVC. Os seis módulos principais, são usuário, produto, empresa, pedido, pagamento, vendas, Endereços e contatos ficam com usuário; carrinho, itens e orçamento ficam com pedido. Views compartilhadas ficam em `src/views/partials`.
 
-O CSS, as imagens e as interações do navegador ficam em `public/assets/`. O HTML usa as classes Bootstrap necessárias para manter o layout existente. Produtos, usuários e carrinhos utilizam o Supabase; alguns módulos ainda contêm dados demonstrativos.
+O CSS, as imagens e as interações do navegador ficam em `public/assets/`. O HTML usa as classes Bootstrap necessárias para manter o layout existente. Produtos, usuários e carrinhos utilizam o Supabase.
 
 ## Banco de Dados
 
@@ -86,30 +83,6 @@ npm run dev
 ```
 
 Para usar outra porta, defina `PORT` no ambiente antes de iniciar. 
-
-No cadastro, pessoas físicas recebem perfil de compra. Pessoas jurídicas também
-podem vender, mantendo a aprovação da empresa antes de anunciar. Ao selecionar
-pessoa jurídica, o formulário solicita razão social, nome fantasia, CNPJ, categoria
-principal e descrição; inscrição estadual, site e logo são opcionais. As categorias
-são carregadas da mesma tabela usada no catálogo, e os dados adicionais são salvos
-nas colunas existentes de `empresas` no Supabase.
-Após o cadastro, a página Minha Conta exibe uma confirmação de sucesso uma única
-vez, sem substituir eventuais avisos sobre o envio da logo.
-
-Na página inicial, são exibidas até três empresas ativas com logo e um card de
-cadastro, em quatro colunas no desktop, duas no tablet e uma no celular.
-
-Os filtros do catálogo de produtos atualizam os resultados sem recarregar a
-página: os seletores são aplicados imediatamente e a busca aguarda uma pausa de
-350 ms na digitação. A URL acompanha os filtros; sem JavaScript, o botão Filtrar
-mantém o envio tradicional do formulário.
-
-A tela de entrada oferece recuperação de senha simulada em `/recuperar-senha`.
-O código de teste é exibido na própria página e expira após 10 minutos. Não há
-envio de e-mail, consulta de contas ou alteração de senha no Supabase. E-mail,
-código e senha de teste não são persistidos; recarregar a página reinicia o fluxo.
-Não utilize senhas reais na simulação.
-
 Para executar os testes de autorização, upload e transações SQL sem alterar o Supabase:
 
 ```bash

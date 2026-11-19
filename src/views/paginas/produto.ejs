@@ -48,8 +48,8 @@
                 </button>
               <% }); %>
             </div>
-          </div>
-        <% } %>
+          <% } %>
+        </div>
 
         <div class="produto-detalhe__informacoes">
           <a href="/catalogo" class="btn botao--discreto botao--sm">
@@ -95,7 +95,7 @@
           <% } %>
 
           <div class="produto-detalhe__acoes">
-            <form action="/carrinho/itens" method="post">
+            <form action="/carrinho/itens" method="post" class="produto-detalhe__formulario">
               <input
                 type="hidden"
                 name="produtoId"
